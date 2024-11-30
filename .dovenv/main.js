@@ -30,6 +30,13 @@ export default defineConfig(
 			input  : 'packages/core/src/main.ts',
 			output : 'README.md',
 		} },
+		repo : { commit : { scopes : [
+			{ value: 'packages' },
+			{ value: 'core' },
+			{ value: 'create' },
+			{ value: 'env' },
+			{ value: 'all' },
+		] } },
 		workspace : { check : { pkg : { schema : async ( {
 			v, path, data,
 		} ) => {
