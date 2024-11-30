@@ -1,0 +1,50 @@
+{
+	"name": "create-creatium",
+	"version": "0.0.1",
+	"description": "Create a new creatium project",
+	"bugs": {
+		"url": "https://github.com/pigeonposse/creatium/issues",
+		"email": "dev@pigeonposse.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pigeonposse/creatium",
+		"directory": "packages/create"
+	},
+	"funding": {
+		"type": "individual",
+		"url": "https://pigeonposse.com/?popup=donate"
+	},
+	"license": "GPL-3.0",
+	"author": {
+		"name": "Angelo",
+		"email": "angelo@pigeonposse.com",
+		"url": "https://github.com/angelespejo"
+	},
+	"type": "module",
+	"main": "dist/main.mjs",
+	"module": "dist/main.mjs",
+	"types": "dist/main.d.ts",
+	"bin": {
+		"create-creatium": "./dist/bin.mjs"
+	},
+	"files": [
+		"dist",
+		"data"
+	],
+	"scripts": {
+		"build": "unbuild",
+		"dev": "tsx src/bin.ts",
+		"test": "vitest run -r src --passWithNoTests"
+	},
+	"dependencies": {
+		"@creatium/core": "workspace:*"
+	},
+	"devDependencies": {
+		"@creatium/repo-config": "workspace:*"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npmjs.org/"
+	}
+}

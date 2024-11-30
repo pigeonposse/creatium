@@ -1,0 +1,192 @@
+import {
+	dirname,
+	join,
+} from 'node:path'
+import process           from 'node:process'
+import { fileURLToPath } from 'node:url'
+
+import {
+	version,
+	author,
+} from '../../package.json'
+import {
+	CreatiumPrompt,
+	prompt,
+	sys,
+	style,
+} from '../../src/main'
+
+const { copyDir }  = sys
+const { color }    = style
+const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
+const templatesDir = join( currentDir, 'templates' )
+const name         = 'Advanced test'
+const cancelFn     = ( ) => {
+
+	prompt.cancel( color.red( 'Chaooo 💔' ) )
+	process.exit( 0 )
+
+}
+
+/** Instance of your create-project */
+export const creatium = new CreatiumPrompt( {
+	name,
+	version,
+	updater  : true,
+	cache    : true,
+	onCancel : cancelFn,
+	prompt   : {
+		// Add a box information first of all
+		intro : {
+			// The option void will not appear in cli options
+			type : 'void',
+			desc : 'Hello world',
+			fn   : ( ) => {
+
+				const value = `Package version: ${color.green( version )}\nAuthor: ${color.green( author.name )}`
+				prompt.box( {
+					value : value,
+					opts  : {
+						padding   : 1,
+						dimBorder : true,
+					},
+				} )
+
+			},
+		},
+		output : {
+			type         : 'output',
+			alias        : [ 'o' ],
+			desc         : 'Where do you want create a new project?',
+			initialValue : 'my project',
+		},
+		name : {
+			type  : 'name',
+			alias : [ 'n' ],
+		},
+		wsFiles : {
+			type      : 'boolean',
+			desc      : 'Include workspace files',
+			promptMsg : 'Do you want add a workspace files like LICENSE, .npmrc and .gitignore?',
+		},
+		desc : {
+			type : 'text',
+			desc : 'Add a description of your project',
+		},
+		input : {
+			type    : 'template',
+			desc    : 'Select template',
+			options : {
+				js : {
+					input : join( templatesDir, 'js-project' ),
+					name  : 'JavaScript project',
+				},
+				ts : {
+					input : join( templatesDir, 'ts-project' ),
+					name  : 'TypeScript project',
+				},
+			},
+		},
+		install : {
+			type        : 'install',
+			desc        : 'Select package manager',
+			onlyOptions : [
+				'pnpm',
+				'npm',
+				'deno',
+			],
+		},
+		openEditor : { type: 'openEditor' },
+	},
+} )
+
+/**
+ * Function for create a new project template.
+ * @param {Awaited<ReturnType<typeof creatium.cli>>} params - The values to create the template.
+ * @returns {Promise<void>} - A promise that resolves when the template is created.
+ */
+export const createTemplate = async ( params: Awaited<ReturnType<typeof creatium.cli>> ) => {
+
+	try {
+
+		const {
+			output,
+			input,
+			install,
+			openEditor,
+			name,
+			wsFiles,
+			// extract constants for used in createTemplate
+			...consts
+		} = params
+		const partialsDir = join( currentDir, 'partials' )
+
+		const getGPL3License = async () => {
+
+			try {
+
+				const response = await fetch( 'https://www.gnu.org/licenses/gpl-3.0.txt' )
+
+				if ( !response.ok )
+					throw new Error( `Failed to fetch GPL-3 license: ${response.status} ${response.statusText}` )
+
+				return await response.text()
+
+			}
+			catch ( error ) {
+
+				console.error( 'Error fetching the GPL-3 license:', error )
+				throw error
+
+			}
+
+		}
+
+		if ( !output )  throw new Error( 'Output is required' )
+
+		// Copy the workspace files if wsFiles is true.
+		// this must be first than the creatium.createTemplate because creatium.createTemplate ends the line process
+		// and wsFiles must be override in the creatium.createTemplate function.
+		if ( wsFiles ) {
+
+			await copyDir( {
+				input : join( partialsDir, 'workspace' ),
+				output,
+			} )
+			prompt.log.success( 'Added workspace files!' )
+
+		}
+
+		await creatium.createTemplate( {
+			output,
+			input,
+			install,
+			openEditor,
+			name,
+			consts : {
+				...consts,
+				pkg : JSON.stringify( {
+					name        : name,
+					description : consts.desc,
+					version     : '0.0.1',
+				}, null, 2 ),
+				license : await getGPL3License(),
+			},
+		} )
+
+	}
+	catch ( error ) {
+
+		prompt.log.step( '' )
+
+		if ( error instanceof Error )
+			prompt.log.error( color.red( error.message ) )
+		else
+			console.error( 'Unexpected error:', error )
+
+		prompt.log.step( '' )
+		cancelFn()
+
+	}
+
+}

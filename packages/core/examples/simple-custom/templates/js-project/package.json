@@ -1,0 +1,7 @@
+{
+	"name": "{{prompt.name}}",
+	"version": "0.0.1",
+	"dependencies": {
+		"unbuild": "2.0.0"
+	}
+}
