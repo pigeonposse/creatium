@@ -146,7 +146,7 @@ export const createTemplate = async ( params: Awaited<ReturnType<typeof creatium
 			types   : 'dist/lib.d.ts',
 			files   : [ 'dist', 'templates' ],
 			bin     : { [projectName]: 'dist/bin.mjs' },
-			...( output === TEMPLATES.TS
+			...( input === TEMPLATES.TS
 				? {
 					scripts : {
 						build : 'unbuild',
