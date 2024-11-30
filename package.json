@@ -48,6 +48,7 @@
 		"test": "pnpm -F *creatium* test"
 	},
 	"dependencies": {
+		"@changesets/cli": "^2.27.10",
 		"@dovenv/convert": "^0.0.6",
 		"@dovenv/lint": "^0.0.6"
 	},

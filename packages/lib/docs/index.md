@@ -1,6 +1,6 @@
 # 🚀 Usage
 
-Create a cli and a library project with `{{name}}`
+Create a cli and a library project with `{{pkg.extra.id}}`
 
 Simple usage example:
 
@@ -21,14 +21,14 @@ Create a project with the following structure:
 
 ## src/main.js
 
-Create a new instance of `{{name}}` and export it as `core`
+Create a new instance of `{{pkg.extra.id}}` and export it as `core`
 
 ```javascript
 
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { version }  from './package.json'
-import { Creatium } from '{{name}}'
+import { Creatium } from '{{pkg.extra.id}}'
 
 const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
 const templatesDir = join( currentDir, '..', 'templates' )

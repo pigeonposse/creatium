@@ -57,7 +57,7 @@ bun add creatium
 
 ## 🚀 Usage
 
-Create a cli and a library project with `creatium-monorepo`
+Create a cli and a library project with `creatium`
 
 Simple usage example:
 
@@ -78,14 +78,14 @@ Create a project with the following structure:
 
 ### src/main.js
 
-Create a new instance of `creatium-monorepo` and export it as `core`
+Create a new instance of `creatium` and export it as `core`
 
 ```javascript
 
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { version }  from './package.json'
-import { Creatium } from 'creatium-monorepo'
+import { Creatium } from 'creatium'
 
 const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
 const templatesDir = join( currentDir, '..', 'templates' )
