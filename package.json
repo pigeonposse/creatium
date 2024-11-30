@@ -44,7 +44,7 @@
 		"+": "run() { pnpm -F @creatium/\"${@:1}\"; }; run $@",
 		"++": "pnpm -F $@",
 		".": "dovenv",
-		"build": "pnpm -F @creatium/core build && pnpm -F creatium build && pnpm -F create-creatium build",
+		"build": "pnpm -F creatium build && pnpm -F create-creatium build",
 		"test": "pnpm -F *creatium* test"
 	},
 	"dependencies": {

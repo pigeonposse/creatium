@@ -36,9 +36,8 @@ bun add {{pkg.extra.id}}
 
 ## 📦 Packages
 
-- `{{pkg.extra.id}}` - Library. [Read More]({{pkg.repository.url}}/tree/main/packages/lib)
-- `@{{pkg.extra.id}}/core` - Core of Creatium. [Read More]({{pkg.repository.url}}/tree/main/packages/core)
-- `create-@{{pkg.extra.id}}` - Create Creatium projects in easy way. [Read More]({{pkg.repository.url}}/tree/main/packages/create)
+- `{{pkg.extra.id}}` - Library. [Read More]({{pkg.repository.url}}/tree/main/packages/core)
+- `create-{{pkg.extra.id}}` - Create Creatium projects in easy way. [Read More]({{pkg.repository.url}}/tree/main/packages/create)
 
 ***
 

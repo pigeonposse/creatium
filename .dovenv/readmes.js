@@ -178,10 +178,6 @@ export default defineConfig( { custom : { readmes : {
 		const data = [
 			{
 				id    : 'core',
-				title : 'Creatium Core Package',
-			},
-			{
-				id    : 'lib',
 				title : 'Creatium',
 			},
 			{

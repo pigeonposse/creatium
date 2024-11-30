@@ -1,7 +1,7 @@
 {
-	"name": "@creatium/core",
-	"version": "0.0.1",
-	"description": "Core of the creatium package.",
+	"name": "creatium",
+	"version": "0.0.2",
+	"description": "Build your create-bins quickly and easily",
 	"bugs": {
 		"url": "https://github.com/pigeonposse/creatium/issues",
 		"email": "dev@pigeonposse.com"

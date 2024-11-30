@@ -3,7 +3,7 @@ import {
 	prompt,
 	sys,
 	style,
-} from '@creatium/core'
+} from 'creatium'
 import {
 	dirname,
 	join,
