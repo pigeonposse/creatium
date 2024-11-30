@@ -28,7 +28,7 @@ const name         = extra.libraryId
 const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
 const dataDir      = join( currentDir, '..', 'data' )
 const templatesDir = join( dataDir, 'templates' )
-const partialsDir  = join( currentDir, 'partials' )
+const partialsDir  = join( dataDir, 'partials' )
 const TEMPLATES    = {
 	JS : 'js',
 	TS : 'ts',
@@ -56,17 +56,19 @@ export const creatium = new CreatiumPrompt( {
 			desc : 'Documentation of project',
 			fn   : ( ) => {
 
-				const tableData = [
-					[ '', '' ],
-					[ 'Package version', version ],
-					[ 'Documentation', homepage ],
-				]
-				const value     = color.dim( `${description}\n${table( tableData )}` )
+				const tableData = [ [ 'Package version', version ], [ 'Documentation', homepage ] ]
+				const tableOpts = {
+					drawHorizontalLine : () => false,
+					drawVerticalLine   : () => false,
+
+				}
+				const value     = color.dim( `${table( [ [ description ] ], tableOpts )}\n${table( tableData, tableOpts )}` )
 				prompt.box( {
 					value : value,
 					opts  : {
-						padding   : 1,
-						dimBorder : true,
+						padding     : 0,
+						borderStyle : 'none',
+						dimBorder   : true,
 					},
 				} )
 

@@ -35,6 +35,7 @@
 	"scripts": {
 		"build": "unbuild",
 		"dev": "tsx src/bin.ts",
+		"preview": "node dist/bin.mjs",
 		"test": "vitest run -r src --passWithNoTests"
 	},
 	"dependencies": {
