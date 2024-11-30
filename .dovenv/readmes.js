@@ -154,7 +154,7 @@ const buildCoreReadme = async ( {
 		)
 
 		console.log()
-		console.log( color.green( `[${id || 'workspace'}] Successfully created!! ✨` ) )
+		console.log( color.green( `[${id || 'workspace'}] Successfully created!! ✨✨` ) )
 		console.log( line( {
 			title    : '',
 			lineChar : color.cyan.dim( '⎯' ),
@@ -191,7 +191,7 @@ export default defineConfig( { custom : { readmes : {
 				templatePath : [ 'templates', 'readme-ws.md' ],
 				docsPath     : [
 					'packages',
-					'lib',
+					'core',
 					'docs',
 					'index.md',
 				],
