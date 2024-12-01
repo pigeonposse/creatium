@@ -233,7 +233,7 @@ Create a project with the following structure:
 │   │   └── ... (files, folders...)
 │   ├── 📂 ts-project
 │   │   └── ... (files, folders...)
-│   └── 📂 partials/
+│   📂 partials
 │       └── 📂 .../
 📂 src
 ├── bin.js
@@ -256,7 +256,7 @@ import { CreatiumCore } from 'creatium'
 
 const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
 const dataDir      = join( currentDir, '..', 'data' ) // Absolute path for the `data` folder
-const partialsDir = join( currentDir, 'partials' )
+const partialsDir = join( dataDir, 'partials' )
 const templatesDir = join( dataDir, 'templates' )
 
 export const core = new CreatiumCore( {
@@ -450,7 +450,7 @@ Create a data folder with your templates and your partials.
 │   │   └── ... (files, folders...)
 │   ├── 📂 ts-project
 │   │   └── ... (files, folders...)
-│   └── 📂 partials/
+│   📂 partials
 │       └── 📂 .../
 │
 ```
