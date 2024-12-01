@@ -1,5 +1,17 @@
 # creatium
 
+## 0.1.2
+
+### Patch Changes
+
+- Fix version number in create package
+
+## 0.1.1
+
+### Patch Changes
+
+- Fix text mistake in default option description
+
 ## 0.1.0
 
 ### Minor Changes
