@@ -1,8 +1,8 @@
-import { IDE }       from './extended/editor'
+import { TEXT_EDITOR }       from './extended/editor'
 import { INSTALLER } from './extended/install'
 
 export {
-	IDE,
+	TEXT_EDITOR,
 	INSTALLER,
 }
 /** Object of the CREATIUM types */

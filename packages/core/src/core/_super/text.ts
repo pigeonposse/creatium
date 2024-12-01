@@ -24,18 +24,22 @@ export class Text extends Core<OptionText, Value> implements CoreInterface<Value
 
 	}
 
-	async validateInitialValue() {
+	async validateInitialValue( data?: {
+		showSuccess? : boolean
+		showError?   : boolean
+	} ) {
 
 		const message = this.config.promptMsg || this.config.desc
 
 		if ( typeof this.initialValue === 'string' ) {
 
-			this._utils.prompt.log.success( this._text.initialValueSuccess( message, this.initialValue ) )
+			if ( data?.showSuccess !== false )
+				this._utils.prompt.log.success( this._text.initialValueSuccess( message, this.initialValue ) )
 			return this.initialValue
 
 		}
-
-		this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue ) )
+		if ( data?.showError !== false )
+			this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue ) )
 		return undefined
 
 	}

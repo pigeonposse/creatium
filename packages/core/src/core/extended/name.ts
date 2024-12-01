@@ -8,7 +8,7 @@ export class Name extends Text  {
 	constructor( config: OptionName ) {
 
 		const finalConfig = {
-			desc : config.desc ?? 'Set the name of the project.',
+			desc : config.desc ?? 'Set the name of the project',
 			...config,
 		}
 
@@ -17,18 +17,26 @@ export class Name extends Text  {
 
 	}
 
-	async validateInitialValue() {
+	async validateInitialValue( data?: {
+		showSuccess? : boolean
+		showError?   : boolean
+	} ) {
 
-		const validateValue = await super.validateInitialValue()
+		const validateValue = await super.validateInitialValue( { showSuccess: false } )
 		if ( !validateValue ) return undefined // Nothing to print in log because it will be printed in super function
-		if ( validateValue && ( /\s/.test( validateValue ) ) ) {
 
-			this._utils.prompt.log.success( this._text.initialValueSuccess( this.config.promptMsg || this.config.desc, validateValue ) )
+		const hasSpaces = /\s/.test( validateValue )
+
+		if ( validateValue && !hasSpaces ) {
+
+			if ( data?.showSuccess !== false )
+				this._utils.prompt.log.success( this._text.initialValueSuccess( this.config.promptMsg || this.config.desc, validateValue ) )
 			return validateValue
 
 		}
 
-		this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue ) )
+		if ( data?.showError !== false )
+			this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue ) )
 		return undefined
 
 	}

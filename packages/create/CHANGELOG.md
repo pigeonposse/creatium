@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.0.6
+
+### Patch Changes
+
+- Refactor core
+
+- Updated dependencies []:
+  - creatium@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes

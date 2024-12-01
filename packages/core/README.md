@@ -19,12 +19,22 @@ Build your create-bins quickly and easily
 - [🔑 Installation](#-installation)
 - [🤔 What is it Creatium?](#-what-is-it-creatium)
 - [🚀 Usage](#-usage)
-  - [Project structure](#project-structure)
-  - [src/main.js](#srcmainjs)
-  - [src/bin.js](#srcbinjs)
-  - [src/lib.js](#srclibjs)
-  - [package.json](#packagejson)
-  - [templates](#templates)
+  - [Simple use case](#simple-use-case)
+    - [Project structure](#project-structure)
+    - [src/core.js](#srccorejs)
+    - [src/bin.js](#srcbinjs)
+    - [src/lib.js](#srclibjs)
+    - [package.json](#packagejson)
+    - [Data (templates)](#data-templates)
+    - [Execute](#execute)
+  - [Advanced use case](#advanced-use-case)
+    - [Project structure](#project-structure)
+    - [src/core.js](#srccorejs)
+    - [src/bin.js](#srcbinjs)
+    - [src/lib.js](#srclibjs)
+    - [package.json](#packagejson)
+    - [Data (templates & partials)](#data-templates--partials)
+    - [Execute](#execute)
 - [Api documentation](#api-documentation)
   - [Classes](#classes)
     - [Creatium](#creatium)
@@ -36,12 +46,12 @@ Build your create-bins quickly and easily
     - [CreateTemplateOpts](#createtemplateopts)
   - [Variables](#variables)
     - [env](#env)
-    - [IDE](#ide)
     - [INSTALLER](#installer)
     - [OPTION](#option)
     - [prompt](#prompt)
     - [style](#style)
     - [sys](#sys)
+    - [TEXT\_EDITOR](#text_editor)
 - [👨‍💻 Development](#-development)
 - [☕ Donate](#-donate)
 - [📜 License](#-license)
@@ -74,24 +84,34 @@ Creatium is a CLI and Library for creating project templates.
 
 Create a cli and a library project with `creatium`
 
-Simple usage example:
+### Simple use case
 
-### Project structure
+Recommended for most use cases.
+
+Below we show a practical example.
+
+> {my-library-name} refers to the name of your library. Change it to the name of your library.
+
+#### Project structure
 
 Create a project with the following structure:
 
 ```bash
+📂 data
+├── 📂 templates
+│   ├── 📂 js-project
+│   │   └── ... (files, folders...)
+│   └── 📂 ts-project
+│       └── ... (files, folders...)
 📂 src
-  ├── bin.js
-  ├── lib.js
-  └── main.js
-📂 templates
-  └── 📂 js-project
-  └── 📂 ts-project
+├── bin.js
+├── lib.js
+├── core.js
 📄 package.json
+│
 ```
 
-### src/main.js
+#### src/core.js
 
 Create a new instance of `creatium` and export it as `core`
 
@@ -103,10 +123,10 @@ import { version }  from './package.json'
 import { Creatium } from 'creatium'
 
 const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
-const templatesDir = join( currentDir, '..', 'templates' )
+const templatesDir = join( currentDir, '..', 'data','templates' ) // absolute path for `templates` folder
 
 export const core = new Creatium( {
- name: 'Simple test',
+ name: '{my-library-name}', // recomended use the name of your package.json becasue it will be used by updater function
  version,
  templates : {
   js : {
@@ -121,23 +141,25 @@ export const core = new Creatium( {
 } )
 ```
 
-### src/bin.js
+#### src/bin.js
 
 Create a bin file and call the `cli` method of the `core` instance.
 
 ```javascript
 
+#!/usr/bin/env node
+
 // create cli
-import { core } from './main.js'
+import { core } from './core.js'
 await core.cli()
 ```
 
-### src/lib.js
+#### src/lib.js
 
 Create a library file and export the `create` function for use outside.
 
 ```javascript
-import { core } from './main.js'
+import { core } from './core.js'
 
 /**
  * Create project template.
@@ -151,7 +173,9 @@ export const create = async ( params ) => {
 }
 ```
 
-### package.json
+#### package.json
+
+Create a package.json file with the following structure:
 
 ```json
 {
@@ -161,18 +185,306 @@ export const create = async ( params ) => {
  "main": "src/lib.js",
  "module": "src/lib.js",
  "bin": {
-  "create-{my-library-name}": "bin.js"
+  "create-{my-library-name}": "src/bin.js"
+ },
+ "scripts": {
+   "dev": "node src/bin.js",
  },
  "files": [
   "src",
-  "templates",
+  "data",
  ]
 }
 ```
 
-### templates
+#### Data (templates)
 
-Create a template folder with your templates.
+Create a data folder with your `templates`.
+
+```bash
+📂 data
+├── 📂 templates
+│   ├── 📂 js-project
+│   │   └── ... (files, folders...)
+│   ├── 📂 ts-project
+│   │   └── ... (files, folders...)
+│
+```
+
+#### Execute
+
+Once the package is published you can use it with:
+
+```bash
+npm create {my-library-name}
+# or
+pnpm create {my-library-name}
+# or
+yarn create {my-library-name}
+# or
+bun create {my-library-name}
+# or
+deno create {my-library-name}
+```
+
+### Advanced use case
+
+You can use the `CreatiumCore` class to create a fully customized __cli__ and __user prompt__.
+
+This class is the one that the main `Creatium` class uses to function.
+
+Below we show a practical example.
+
+> {my-library-name} refers to the name of your library. Change it to the name of your library.
+
+#### Project structure
+
+Create a project with the following structure:
+
+```bash
+📂 data
+├── 📂 templates
+│   ├── 📂 js-project
+│   │   └── ... (files, folders...)
+│   ├── 📂 ts-project
+│   │   └── ... (files, folders...)
+│   └── 📂 partials/
+│       └── 📂 .../
+📂 src
+├── bin.js
+├── lib.js
+├── core.js
+📄 package.json
+│
+```
+
+#### src/core.js
+
+- Create a new instance of `CreatiumCore` and export it as `core`
+- Create and export `createTemplate` function for use outside in `src/lib.js` and `src/bin.js`
+
+```javascript
+import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { version }  from './package.json'
+import { CreatiumCore } from 'creatium'
+
+const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
+const dataDir      = join( currentDir, '..', 'data' ) // Absolute path for the `data` folder
+const partialsDir = join( currentDir, 'partials' )
+const templatesDir = join( dataDir, 'templates' )
+
+export const core = new CreatiumCore( {
+ name: '{my-library-name}',
+ version,
+ updater  : true,
+ cache    : true,
+ prompt   : {
+  output : {
+   type         : 'output',
+   alias        : [ 'o' ],
+   desc         : 'Where do you want create a new project?',
+  },
+  name : {
+   type  : 'name',
+   alias : [ 'n' ],
+  },
+  wsFiles : {
+   type      : 'boolean',
+   desc      : 'Include workspace files',
+   promptMsg : 'Do you want add a workspace files like LICENSE, .npmrc and .gitignore?',
+  },
+  desc : {
+   type : 'text',
+   desc : 'Add a description of your project',
+  },
+  input : {
+   type    : 'template',
+   desc    : 'Select template',
+   options : {
+    js : {
+     input : join( templatesDir, 'js-project' ),
+     name  : 'JavaScript project',
+    },
+    ts : {
+     input : join( templatesDir, 'ts-project' ),
+     name  : 'TypeScript project',
+    },
+   },
+  },
+  install : {
+   type        : 'install',
+   desc        : 'Select package manager',
+   onlyOptions : [
+    'pnpm',
+    'npm',
+    'deno',
+   ], // Only these package managers can be selected
+  },
+  openEditor : { type: 'openEditor' },
+ },
+} )
+
+/**
+ * Function for create a new project template.
+ * @param {Awaited<ReturnType<typeof core.cli>>} params - The values to create the template.
+ * @returns {Promise<void>} - A promise that resolves when the template is created.
+ */
+export const createTemplate = async ( params ) => {
+
+ try {
+
+  const {
+   output,
+   input,
+   install,
+   openEditor,
+   name,
+   wsFiles,
+  } = params
+
+  const { prompt } = core.utils // extract prompt utils and use it for write in prompt line
+
+  // Copy the workspace partials folder if wsFiles is true.
+  // this must be first than the creatium.createTemplate because creatium.createTemplate ends the line process
+  // and wsFiles must be override in the creatium.createTemplate function.
+  if ( wsFiles ) {
+
+   await core.copyDir( {
+    input : join( partialsDir, 'workspace' ),
+    output,
+   } )
+
+   prompt.log.success( 'Added workspace files!' )
+
+  }
+
+  // example of dynamic pkg json config
+  const pkgJSON = {
+   name        : name,
+   description : consts.desc,
+   version     : '0.0.1',
+   license     : wsFiles ? 'MIT' : undefined
+  }
+
+  await core.createTemplate( {
+   output,
+   input,
+   install,
+   openEditor,
+   name,
+   // custom parameters for been susbstituted in the template files
+   consts : {
+    // example of dynamic pkg json config
+    pkg : JSON.stringify( pkgJSON, null, 2 ),
+   },
+  } )
+
+ }
+ catch ( error ) {
+
+  if ( error instanceof Error ) prompt.log.error( error.message ) // show error message in prompt line
+  else console.error( 'Unexpected error:', error )
+
+  core.cancel() // cancel the process
+
+ }
+
+}
+
+```
+
+#### src/bin.js
+
+Create a bin file and call the `cli` method of the `core` instance.
+
+```javascript
+#!/usr/bin/env node
+
+import { core, createTemplate } from './core.js'
+// Run the CLI and obtain the prompt values
+const res = await core.cli()
+// Call to the create function for create the template
+await createTemplate( res )
+
+```
+
+#### src/lib.js
+
+Create a library file and export the `create` function for use outside.
+
+```javascript
+import { core, createTemplate } from './core.js'
+
+/**
+ * Create project template.
+ * @param {Parameters<typeof core.build>[0]} params - The parameters required for creation.
+ * @returns {Promise<Object>} A promise that resolves to the result of the creation process.
+ */
+export const create = async ( params ) => {
+
+  const res = await core.build( params )
+  await createTemplate( res )
+  return res
+
+}
+```
+
+#### package.json
+
+Create a package.json file with the following structure:
+
+```json
+{
+ "name": "create-{my-library-name}",
+ "version": "0.0.1",
+ "type": "module",
+ "main": "src/lib.js",
+ "module": "src/lib.js",
+ "bin": {
+  "create-{my-library-name}": "src/bin.js"
+ },
+  "scripts": {
+   "dev": "node src/bin.js",
+ },
+ "files": [
+  "src",
+  "data",
+ ]
+}
+```
+
+#### Data (templates & partials)
+
+Create a data folder with your templates and your partials.
+
+```bash
+📂 data
+├── 📂 templates
+│   ├── 📂 js-project
+│   │   └── ... (files, folders...)
+│   ├── 📂 ts-project
+│   │   └── ... (files, folders...)
+│   └── 📂 partials/
+│       └── 📂 .../
+│
+```
+
+#### Execute
+
+Once the package is published you can use it with:
+
+```bash
+npm create {my-library-name}
+# or
+pnpm create {my-library-name}
+# or
+yarn create {my-library-name}
+# or
+bun create {my-library-name}
+# or
+deno create {my-library-name}
+```
 
 
 ## Api documentation
@@ -492,8 +804,20 @@ The result of the callback function.
 ###### cancel()
 
 ```ts
-cancel(): Promise<void>
+cancel(message?: string): Promise<void>
 ```
+
+Cancels the current process and exits with code 0.
+
+If a `message` is provided, it will be displayed in the console.
+If `onCancel` is set in the config, it will be called with the current data.
+If `onCancel` is not set, a default message will be displayed.
+
+###### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `message`? | `string` | The message to display before exiting. |
 
 ###### Returns
 
@@ -534,19 +858,36 @@ await core.cli( { args : process.argv.slice( 4), hideBin : false } )
 ###### copyDir()
 
 ```ts
-copyDir(input: string, output: string): Promise<void>
+copyDir(data: {
+  input: string;
+  output: string;
+}): Promise<void>
 ```
+
+Copy a directory from input path to output path.
 
 ###### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `input` | `string` |
-| `output` | `string` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `data` | `object` | Options object with input and output paths. |
+| `data.input` | `string` | The path to the directory to copy. |
+| `data.output` | `string` | The path to the destination directory. |
 
 ###### Returns
 
 `Promise`\<`void`\>
+
+- Resolves when the directory has been copied.
+
+###### Example
+
+```ts
+const copyResult = await core.copyDir({
+  input : '/path/to/sourceDir',
+  output: '/path/to/destinationDir',
+})
+```
 
 ###### createTemplate()
 
@@ -592,41 +933,88 @@ await core.createTemplate( {
 ###### getTemplateInput()
 
 ```ts
-getTemplateInput(input?: string): Promise<undefined | string>
+getTemplateInput(input?: {
+  input: string;
+}): Promise<undefined | string>
 ```
+
+Return the input path of a template by name or path.
 
 ###### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `input`? | `string` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `input`? | `object` | The name of the template or the path to the template. |
+| `input.input`? | `string` | - |
 
 ###### Returns
 
 `Promise`\<`undefined` \| `string`\>
 
+The input path of the template or undefined if not found.
+
+###### Examples
+
+```ts
+// with template path
+const input = await core.getTemplateInput( { input : 'my/template/path' } )
+```
+
+```ts
+// With template key
+// template key must be specified in the config prompt secction.
+const input = await core.getTemplateInput( { input : 'templateKey' )
+```
+
 ###### install()
 
 ```ts
-install(installer?: Installer, output?: string): Promise<void>
+install(options?: {
+  input: string;
+  installer: Installer;
+}): Promise<void>
 ```
+
+Installs the project with the given package manager.
 
 ###### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `installer`? | `Installer` |
-| `output`? | `string` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `options`? | `object` | The options to install. |
+| `options.input`? | `string` | The path to the folder. If not provided, the current directory is used. |
+| `options.installer`? | `Installer` | The package manager to use for the installation. |
 
 ###### Returns
 
 `Promise`\<`void`\>
 
+###### Example
+
+```ts
+await core.install( {
+  installer : 'pnpm',
+  input     : 'my/project/path',
+} )
+```
+
 ###### intro()
 
 ```ts
-intro(): Promise<void>
+intro(message?: string): Promise<void>
 ```
+
+Intro prompt line.
+
+If the parameter `message` is provided, it will be used as the intro message.
+If the `intro` option is a function, it will be called with the `this.#data` as the argument.
+If the `intro` option is undefined, the default intro message will be used.
+
+###### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `message`? | `string` | The intro message. |
 
 ###### Returns
 
@@ -635,25 +1023,52 @@ intro(): Promise<void>
 ###### openEditor()
 
 ```ts
-openEditor(editor?: TextEditor, output?: string): Promise<void>
+openEditor(params: {
+  editor: TextEditor;
+  input: string;
+}): Promise<void>
 ```
+
+Open the project in the given editor.
 
 ###### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `editor`? | `TextEditor` |
-| `output`? | `string` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `params` | `object` | The parameters for opening the editor. |
+| `params.editor`? | `TextEditor` | The editor to open the project in. |
+| `params.input`? | `string` | The input path. If not provided, the current directory is used. |
 
 ###### Returns
 
 `Promise`\<`void`\>
 
+###### Example
+
+```ts
+await core.openEditor( {
+  editor : 'vscode',
+  input  : 'my/project/path',
+ })
+```
+
 ###### outro()
 
 ```ts
-outro(): Promise<void>
+outro(message?: string): Promise<void>
 ```
+
+Outro prompt line.
+
+If the parameter `message` is provided, it will be used as the outro message.
+If the `outro` option is a function, it will be called with the `this.#data` as the argument.
+If the `outro` option is undefined, the default outro message will be used.
+
+###### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `message`? | `string` | The outro message. |
 
 ###### Returns
 
@@ -662,29 +1077,85 @@ outro(): Promise<void>
 ###### replacePlaceholders()
 
 ```ts
-replacePlaceholders(input: string, params: Params): Promise<void>
+replacePlaceholders(args: {
+  input: string;
+  params: Params;
+}): Promise<void>
 ```
+
+Replaces placeholders in files within the specified directory.
+
+This function searches for files in the provided input directory and replaces
+placeholders within those files using the specified parameters. The placeholders
+in the content are replaced with values from the `params` object.
 
 ###### Parameters
 
-| Parameter | Type |
-| ------ | ------ |
-| `input` | `string` |
-| `params` | `Params` |
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `args` | `object` | The arguments object. |
+| `args.input`? | `string` | The directory path containing files with placeholders. |
+| `args.params`? | `Params` | An object containing key-value pairs for replacing placeholders. |
 
 ###### Returns
 
 `Promise`\<`void`\>
+
+A Promise that resolves once all placeholders have been replaced.
+
+###### Example
+
+```ts
+await core.replacePlaceholders( {
+  input  : 'my/project/path',
+  params : { placeholder1: 'value1', placeholder2: 'value2' },
+})
+```
 
 ###### updateNotify()
 
 ```ts
-updateNotify(): Promise<void>
+updateNotify(opts?: {
+  custom: (info?: UpdateInfo) => Response<void>;
+  opts: NotifyOptions;
+}): Promise<void>
 ```
+
+Shows a notification if the current package is outdated.
+
+**information**: If this 'custom' function is provided, the default
+notification will not be shown.
+
+---
+
+###### Parameters
+
+| Parameter | Type | Description |
+| ------ | ------ | ------ |
+| `opts`? | `object` | Options for the update notification. |
+| `opts.custom`? | (`info`?: `UpdateInfo`) => `Response`\<`void`\> | A custom function to run with the update |
+| `opts.opts`? | `NotifyOptions` | Options for the `update-notifier` package. |
 
 ###### Returns
 
 `Promise`\<`void`\>
+
+###### Examples
+
+```ts
+// With default options. Recommended for most use cases.
+await core.updateNotify()
+```
+
+```ts
+// With custom options
+await core.updateNotify({ opts: { ... } })
+```
+
+```ts
+// With custom function
+await core.updateNotify({ custom: () => {} })
+```
 
 ##### Properties
 
@@ -820,28 +1291,6 @@ Environment functions
 
 ***
 
-#### IDE
-
-```ts
-const IDE: {
-  NONE: 'none';
-  SUBLIME: 'subl';
-  VSCODE: 'code';
-  WEBSTORM: 'webstorm';
-};
-```
-
-##### Type declaration
-
-| Name | Type | Default value |
-| ------ | ------ | ------ |
-| `NONE` | `"none"` | 'none' |
-| `SUBLIME` | `"subl"` | 'subl' |
-| `VSCODE` | `"code"` | 'code' |
-| `WEBSTORM` | `"webstorm"` | 'webstorm' |
-
-***
-
 #### INSTALLER
 
 ```ts
@@ -854,6 +1303,8 @@ const INSTALLER: {
   YARN: 'yarn';
 };
 ```
+
+installer values used in `install` option.
 
 ##### Type declaration
 
@@ -1043,6 +1494,30 @@ const sys: __module = _sys;
 ```
 
 System functions
+
+***
+
+#### TEXT\_EDITOR
+
+```ts
+const TEXT_EDITOR: {
+  NONE: 'none';
+  SUBLIME: 'subl';
+  VSCODE: 'code';
+  WEBSTORM: 'webstorm';
+};
+```
+
+Text editor values used in `openEditor` option.
+
+##### Type declaration
+
+| Name | Type | Default value |
+| ------ | ------ | ------ |
+| `NONE` | `"none"` | 'none' |
+| `SUBLIME` | `"subl"` | 'subl' |
+| `VSCODE` | `"code"` | 'code' |
+| `WEBSTORM` | `"webstorm"` | 'webstorm' |
 
 
 ***

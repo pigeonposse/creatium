@@ -1,7 +1,7 @@
 import { CreatiumCore } from './core'
 import {
 	OPTION,
-	IDE,
+	TEXT_EDITOR,
 	INSTALLER,
 } from './core/const'
 
@@ -24,7 +24,7 @@ export type {
 
 export {
 	OPTION,
-	IDE,
+	TEXT_EDITOR,
 	INSTALLER,
 	CreatiumCore,
 }

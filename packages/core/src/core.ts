@@ -21,6 +21,7 @@ import { OPTION }    from './core/const'
 import { INSTALLER } from './core/extended/install'
 import { Core }      from './core/main'
 
+import type { Response }   from './_shared/ts/return'
 import type { Prettify }   from './_shared/ts/super'
 import type { TextEditor } from './core/extended/editor'
 import type { Installer }  from './core/extended/install'
@@ -35,6 +36,7 @@ import type {
 	GetArgvValues,
 	GetPromptValues,
 } from './types.utils'
+import type { UpdateNotifier } from 'update-notifier'
 
 /**
  * Customizable class of `Creatium` for create project templates (CLI and Library).
@@ -74,6 +76,7 @@ export class CreatiumCore<C extends Config = Config> {
 	utils
 	config : C
 	#style
+	#cwd = currentProcess.cwd()
 
 	constructor( config: C ) {
 
@@ -101,30 +104,30 @@ export class CreatiumCore<C extends Config = Config> {
 
 		this.#data = { values }
 
-		console.debug( { data: this.#data } )
+		console.debug( { initData: this.#data } )
 
 		this.#core.onCancel = async () => await this.cancel()
 
 		if ( this.config.hooks?.beforePrompt )
 			await this.config.hooks.beforePrompt( this.#data )
 
-		console.debug( { beforePrompt: this.#data } )
+		console.debug( { beforePromptData: this.#data } )
 
 		// INTRO
 		await this.intro()
 
 		// PROMPT
-		const prompts = await this.#core.getPrompts()
+		const prompts = await this.#core.getPrompts( this.#data.values )
 		const answers = await this.utils.prompt.group( prompts, { onCancel: this.#core.onCancel } ) as unknown as GetPromptValues<C>
 
 		this.#data.values = answers
 
-		console.debug( { answers } )
+		console.debug( { promptData: this.#data } )
 
 		if ( this.config.hooks?.afterPrompt )
 			await this.config.hooks.afterPrompt( this.#data )
 
-		console.debug( { afterPrompt: this.#data } )
+		console.debug( { afterPromptData: this.#data } )
 
 		// CREATION
 		// await this.#createTemplate( answers as GetPromptValues<C> )
@@ -194,42 +197,32 @@ export class CreatiumCore<C extends Config = Config> {
 
 	}
 
-	async #createTemplate( values: CreateTemplateOpts ) {
-
-		const {
-			openEditor, input, output, install, consts, ...prompt
-		} = values
-
-		const data = {
-			input  : await this.getTemplateInput( input ),
-			output : output ? resolvePath( output ) : undefined,
-		}
-
-		console.debug( { templateData: data } )
-
-		this.utils.prompt.log.step( '' )
-
-		if ( !( data.input && data.output ) )
-			throw new Error( 'Invalid input or output template' )
-
-		await this.copyDir( data.input, data.output )
-		await this.replacePlaceholders( data.output, {
-			name    : this.config.name,
-			version : this.config.version,
-			consts,
-			prompt,
-		} )
-		await this.install( install, data.output )
-		await this.openEditor( openEditor, data.output )
-
-		this.utils.prompt.log.step( '' )
-
-		// OUTRO
-		await this.outro()
-
-	}
-
-	async updateNotify() {
+	/**
+	 * Shows a notification if the current package is outdated.
+	 *
+	 * **information**: If this 'custom' function is provided, the default
+	 * notification will not be shown.
+	 *
+	 * ---
+	 * @param {object} [opts] - Options for the update notification.
+	 * @param {object} [opts.opts] - Options for the `update-notifier` package.
+	 * @param {Function} [opts.custom] - A custom function to run with the update
+	 * @example
+	 * // With default options. Recommended for most use cases.
+	 * await core.updateNotify()
+	 * @example
+	 * // With custom options
+	 * await core.updateNotify({ opts: { ... } })
+	 * @example
+	 * // With custom function
+	 * await core.updateNotify({ custom: () => {} })
+	 */
+	async updateNotify( {
+		custom, opts,
+	}:{
+		opts?   : Parameters<UpdateNotifier['notify']>[0]
+		custom? : ( info?: UpdateNotifier['update'] ) => Response<void>
+	} = {} ) {
 
 		const { default : up } = await import( 'update-notifier' )
 
@@ -237,13 +230,30 @@ export class CreatiumCore<C extends Config = Config> {
 			name    : this.config.name,
 			version : this.config.version,
 		} } )
-		updater.notify()
+
+		if ( custom ) await custom( updater.update )
+		else updater.notify( opts )
 
 	}
 
-	async cancel() {
+	/**
+	 * Cancels the current process and exits with code 0.
+	 *
+	 * If a `message` is provided, it will be displayed in the console.
+	 * If `onCancel` is set in the config, it will be called with the current data.
+	 * If `onCancel` is not set, a default message will be displayed.
+	 * @param {string} [message] - The message to display before exiting.
+	 */
+	async cancel( message?: string ) {
 
-		if ( this.config.onCancel && this.#data )
+		if ( message ) {
+
+			this.utils.prompt.log.step( '' )
+			this.utils.prompt.cancel( message )
+			currentProcess.exit( 0 )
+
+		}
+		else if ( this.config.onCancel && this.#data )
 			await this.config.onCancel( this.#data )
 		else if ( this.config.onCancel === undefined ) {
 
@@ -255,9 +265,19 @@ export class CreatiumCore<C extends Config = Config> {
 
 	}
 
-	async intro() {
+	/**
+	 * Intro prompt line.
+	 *
+	 * If the parameter `message` is provided, it will be used as the intro message.
+	 * If the `intro` option is a function, it will be called with the `this.#data` as the argument.
+	 * If the `intro` option is undefined, the default intro message will be used.
+	 * @param {string} [message] The intro message.
+	 */
+	async intro( message?: string ) {
 
-		if ( typeof this.config.intro === 'function' )
+		if ( message )
+			this.utils.prompt.outro( message )
+		else if ( typeof this.config.intro === 'function' )
 			await this.config.intro( this.#data || {} )
 		else if ( this.config.intro === undefined ) {
 
@@ -269,37 +289,84 @@ export class CreatiumCore<C extends Config = Config> {
 
 	}
 
-	async outro() {
+	/**
+	 * Outro prompt line.
+	 *
+	 * If the parameter `message` is provided, it will be used as the outro message.
+	 * If the `outro` option is a function, it will be called with the `this.#data` as the argument.
+	 * If the `outro` option is undefined, the default outro message will be used.
+	 * @param {string} [message] The outro message.
+	 */
+	async outro( message?: string ) {
 
-		if ( typeof this.config.outro === 'function' && this.#data )
+		if ( message )
+			this.utils.prompt.outro( message )
+		else if ( typeof this.config.outro === 'function' && this.#data )
 			await this.config.outro( this.#data )
 		else if ( this.config.outro === undefined )
 			this.utils.prompt.outro( 'Succesfully finished 🌈' )
 
 	}
 
-	async copyDir( input: string, output: string ) {
+	/**
+	 * Copy a directory from input path to output path.
+	 * @param {object} data - Options object with input and output paths.
+	 * @param {string} data.input  - The path to the directory to copy.
+	 * @param {string} data.output - The path to the destination directory.
+	 * @returns {Promise<void>}    - Resolves when the directory has been copied.
+	 * @example
+	 *
+	 * const copyResult = await core.copyDir({
+	 *   input : '/path/to/sourceDir',
+	 *   output: '/path/to/destinationDir',
+	 * })
+	 */
+	async copyDir( data: {
+		input  : string
+		output : string
+	} ) {
 
-		return await copyDir( {
-			input,
-			output,
-		} )
+		console.debug( { copyDirData: data } )
+		return await copyDir( data )
 
 	}
 
-	async install( installer?: Installer, output?: string ) {
+	/**
+	 * Installs the project with the given package manager.
+	 * @param {object} [options] - The options to install.
+	 * @param {Installer} [options.installer] - The package manager to use for the installation.
+	 * @param {string} [options.input] - The path to the folder. If not provided, the current directory is used.
+	 * @returns {Promise<void>}
+	 * @example
+	 * await core.install( {
+	 *   installer : 'pnpm',
+	 *   input     : 'my/project/path',
+	 * } )
+	 */
+	async install( {
+		installer, input,
+	}:{
+		installer? : Installer
+		input?     : string
+	} = {} ) {
+
+		console.debug( { installData : {
+			installer,
+			input : input || this.#cwd,
+		} } )
 
 		if ( !installer || installer === 'none' ) return
 
 		const s = this.utils.prompt.spinner()
 
 		const  command = {
-			[INSTALLER.PNPM] : !output ? 'pnpm i' : `pnpm i --dir ${output}`,
-			[INSTALLER.NPM]  : !output ? 'npm install' : `npm install --prefix ${output}`,
-			[INSTALLER.YARN] : !output ? 'yarn install' : `yarn install --cwd ${output}`,
-			[INSTALLER.DENO] : !output ? 'deno install' : `deno install --root ${output}`,
-			[INSTALLER.BUN]  : !output ? 'bun install' : `bun install --cwd ${output}`,
+			[INSTALLER.PNPM] : `pnpm install${input ? ` --dir ${input}` : ''}`,
+			[INSTALLER.NPM]  : `npm install${input ? ` --prefix ${input}` : ''}`,
+			[INSTALLER.YARN] : `yarn install${input ? ` --cwd ${input}` : ''}`,
+			[INSTALLER.DENO] : `deno install${input ? ` --root ${input}` : ''}`,
+			[INSTALLER.BUN]  : `bun install${input ? ` --cwd ${input}` : ''}`,
 		}
+
 		try {
 
 			s.start( `Installing with ${installer}` )
@@ -318,7 +385,31 @@ export class CreatiumCore<C extends Config = Config> {
 
 	}
 
-	async openEditor( editor?: TextEditor, output?: string ) {
+	/**
+	 * Open the project in the given editor.
+	 * @param {object} params - The parameters for opening the editor.
+	 * @param {TextEditor} params.editor - The editor to open the project in.
+	 * @param {string} params.input - The input path. If not provided, the current directory is used.
+	 * @returns {Promise<void>}
+	 * @example
+	 * await core.openEditor( {
+	 *   editor : 'vscode',
+	 *   input  : 'my/project/path',
+	 *  })
+	 */
+	async openEditor( {
+		editor, input,
+	}:{
+		editor? : TextEditor
+		input?  : string
+	} = {} ) {
+
+		if ( !input ) input = this.#cwd
+
+		console.debug( { openEditorData : {
+			editor,
+			input,
+		} } )
 
 		if ( !editor || editor === 'none' ) return
 
@@ -327,8 +418,8 @@ export class CreatiumCore<C extends Config = Config> {
 		try {
 
 			s.start( `Opening in ${editor}` )
-			await execChild( `${editor} ${output}` )
-			s.stop( this.#style.tick + ' IDE opened successfully' )
+			await execChild( `${editor} ${input}` )
+			s.stop( this.#style.tick + ' TEXT_EDITOR opened successfully' )
 
 		}
 		catch ( _e ) {
@@ -336,15 +427,46 @@ export class CreatiumCore<C extends Config = Config> {
 			if ( this.debugMode )
 				s.stop( `Error opening in [${editor}]: ${_e?.toString()}` )
 			else
-				s.stop( 'Error opening IDE' )
+				s.stop( 'Error opening TEXT_EDITOR' )
 
 		}
 
 	}
 
-	async replacePlaceholders( input: string, params: Parameters<typeof replacePlaceholders>[0]['params'] ) {
+	/**
+	 * Replaces placeholders in files within the specified directory.
+	 *
+	 * This function searches for files in the provided input directory and replaces
+	 * placeholders within those files using the specified parameters. The placeholders
+	 * in the content are replaced with values from the `params` object.
+	 * @param {object} args - The arguments object.
+	 * @param {string} [args.input] - The directory path containing files with placeholders.
+	 * @param {object} [args.params] - An object containing key-value pairs for replacing placeholders.
+	 * @returns {Promise<void>} A Promise that resolves once all placeholders have been replaced.
+	 * @example
+	 * await core.replacePlaceholders( {
+	 *   input  : 'my/project/path',
+	 *   params : { placeholder1: 'value1', placeholder2: 'value2' },
+	 * })
+	 */
+	async replacePlaceholders( {
+		input, params,
+	}:{
+		input?  : string
+		params? : Parameters<typeof replacePlaceholders>[0]['params']
+	} = {} ) {
 
-		if ( !input || !params ) throw new Error( 'Missing parameters "output" and "params" for replace placeholders' )
+		if ( !input ) input = this.#cwd
+
+		console.debug( { replacePlaceholdersData : {
+			params,
+			input,
+		} } )
+
+		if ( !params ) return
+
+		// if ( !input ) throw new Error( 'Missing property "input" for replace placeholders' )
+		// if ( !params ) throw new Error( 'Missing property "params" for replace placeholders' )
 
 		const getContent = async ( filePath: string ) => {
 
@@ -382,7 +504,19 @@ export class CreatiumCore<C extends Config = Config> {
 
 	}
 
-	async getTemplateInput( input?: string ) {
+	/**
+	 * Return the input path of a template by name or path.
+	 * @param {string} [input] The name of the template or the path to the template.
+	 * @returns {Promise<string | undefined>} The input path of the template or undefined if not found.
+	 * @example
+	 * // with template path
+	 * const input = await core.getTemplateInput( { input : 'my/template/path' } )
+	 * @example
+	 * // With template key
+	 * // template key must be specified in the config prompt secction.
+	 * const input = await core.getTemplateInput( { input : 'templateKey' )
+	 */
+	async getTemplateInput( { input }:{ input?: string } = {} ) {
 
 		const templates = Object.entries( this.config.prompt ).reduce( ( acc, [ _key, value ] ) => {
 
@@ -395,7 +529,11 @@ export class CreatiumCore<C extends Config = Config> {
 			input : string
 			name  : string
 		}> )
-		console.debug( { templates } )
+
+		console.debug( { getTemplateInputData : {
+			input,
+			templates,
+		} } )
 
 		if ( input && templates[input].input ) return templates[input].input
 		if ( input && await existsDir( input ) ) return input
@@ -430,7 +568,52 @@ export class CreatiumCore<C extends Config = Config> {
 
 		try {
 
-			await this.#createTemplate( values )
+			const {
+				openEditor, input, output, install, consts, ...prompt
+			} = values
+
+			const data = {
+				input  : await this.getTemplateInput( { input } ),
+				output : output ? resolvePath( output ) : undefined,
+			}
+
+			console.debug( { createTemplate : {
+				values,
+				data,
+			} } )
+
+			this.utils.prompt.log.step( '' )
+
+			if ( !( data.input && data.output ) )
+				throw new Error( 'Invalid input or output template' )
+
+			await this.copyDir( {
+				input  : data.input,
+				output : data.output,
+			} )
+			await this.replacePlaceholders( {
+				input  : data.output,
+				params : {
+					name    : this.config.name,
+					version : this.config.version,
+					consts,
+					prompt,
+				},
+			} )
+
+			await this.install( {
+				input     : data.output,
+				installer : install,
+			} )
+			await this.openEditor( {
+				input  : data.output,
+				editor : openEditor,
+			} )
+
+			this.utils.prompt.log.step( '' )
+
+			// OUTRO
+			await this.outro()
 
 		}
 		catch ( e ) {

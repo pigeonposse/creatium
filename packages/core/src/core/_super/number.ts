@@ -22,25 +22,31 @@ export class Number extends Core<OptionNumber, Value> implements CoreInterface<V
 
 	}
 
-	async validateInitialValue() {
+	async validateInitialValue( data?: {
+		showSuccess? : boolean
+		showError?   : boolean
+	} ) {
 
 		const message = this.config.promptMsg || this.config.desc
 		const value   = this.initialValue as Value | string | undefined
 
 		if ( typeof value === 'number' ) {
 
-			this._utils.prompt.log.success( this._text.initialValueSuccess( message, value.toString() ) )
+			if ( data?.showSuccess !== false )
+				this._utils.prompt.log.success( this._text.initialValueSuccess( message, value.toString() ) )
 			return value
 
 		}
 		else if ( typeof value === 'string' ) {
 
-			this._utils.prompt.log.success( this._text.initialValueSuccess( message, value ) )
+			if ( data?.showSuccess !== false )
+				this._utils.prompt.log.success( this._text.initialValueSuccess( message, value ) )
 			return globalThis.Number( value )
 
 		}
 
-		this._utils.prompt.log.warn( this._text.initialValueError( value ) )
+		if ( data?.showError !== false )
+			this._utils.prompt.log.warn( this._text.initialValueError( value ) )
 		return undefined
 
 	}

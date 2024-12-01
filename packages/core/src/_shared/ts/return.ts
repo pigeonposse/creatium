@@ -9,13 +9,13 @@ export type GetResponse<T> =
 		: T
 
 /** TEST */
-// const IDE = {
+// const TEXT_EDITOR = {
 // 	VSCODE   : 'code',
 // 	SUBLIME  : 'subl',
 // 	WEBSTORM : 'webstorm',
 // } as const
 
-// type Value = typeof IDE[ keyof typeof IDE ]
+// type Value = typeof TEXT_EDITOR[ keyof typeof TEXT_EDITOR ]
 
 // type ResTest = Response<Value>
 // type FnTest = ( ...args: Any[] ) =>ResTest

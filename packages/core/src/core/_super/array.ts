@@ -31,27 +31,34 @@ export class Array extends Core<OptionArray, Value> implements CoreInterface<Val
 
 	}
 
-	async validateInitialValue() {
+	async validateInitialValue( data?: {
+		showSuccess? : boolean
+		showError?   : boolean
+	} ) {
 
 		const separator = this.config.separator || this.#defaultSeparator
 		const message   = this.config.promptMsg || this.config.desc
 		const value     = this.initialValue as Value | undefined | string
+
 		if ( value && globalThis.Array.isArray( value ) ) {
 
-			this._utils.prompt.log.success( this._text.initialValueSuccess( message, value.join( separator ) ) )
+			if ( data?.showSuccess !== false )
+				this._utils.prompt.log.success( this._text.initialValueSuccess( message, value.join( separator ) ) )
 
 			return value
 
 		}
 		else if ( value && typeof value === 'string' ) {
 
-			this._utils.prompt.log.success( this._text.initialValueSuccess( message, value ) )
+			if ( data?.showSuccess !== false )
+				this._utils.prompt.log.success( this._text.initialValueSuccess( message, value ) )
 
 			return ( value as string ).split( separator ).map( v => v.trim() )
 
 		}
 
-		this._utils.prompt.log.warn( this._text.initialValueError( value ) )
+		if ( data?.showError !== false )
+			this._utils.prompt.log.warn( this._text.initialValueError( value ) )
 		return undefined
 
 	}

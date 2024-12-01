@@ -22,16 +22,23 @@ export class Boolean extends Core<OptionBoolean, Value> implements CoreInterface
 
 	}
 
-	async validateInitialValue() {
+	async validateInitialValue( data?: {
+		showSuccess? : boolean
+		showError?   : boolean
+	} ) {
 
 		const message = this.config.promptMsg || this.config.desc
 		if ( typeof this.initialValue === 'boolean' ) {
 
-			this._utils.prompt.log.success( this._text.initialValueSuccess( message, this.initialValue.toString() ) )
+			if ( data?.showSuccess !== false )
+				this._utils.prompt.log.success( this._text.initialValueSuccess( message, this.initialValue.toString() ) )
 			return this.initialValue
 
 		}
-		this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue ) )
+
+		if ( data?.showError !== false )
+			this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue ) )
+
 		return undefined
 
 	}

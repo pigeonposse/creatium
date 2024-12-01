@@ -34,7 +34,10 @@ export class Multiselect<V extends Value = Value> extends Core<OptionMultiselect
 
 	}
 
-	async validateInitialValue() {
+	async validateInitialValue( data?: {
+		showSuccess? : boolean
+		showError?   : boolean
+	} ) {
 
 		const message = this.config.promptMsg || this.config.desc
 
@@ -43,12 +46,13 @@ export class Multiselect<V extends Value = Value> extends Core<OptionMultiselect
 			&& Object.keys( this.config.options ).every( v => this.initialValue?.includes( v as V ) )
 		) {
 
-			this._utils.prompt.log.success( this._text.initialValueSuccess( message, this.initialValue.join( ', ' ) ) )
+			if ( data?.showSuccess !== false )
+				this._utils.prompt.log.success( this._text.initialValueSuccess( message, this.initialValue.join( ', ' ) ) )
 			return this.initialValue
 
 		}
-
-		this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue?.join( ', ' ) ) )
+		if ( data?.showError !== false )
+			this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue?.join( ', ' ) ) )
 		return undefined
 
 	}

@@ -8,6 +8,7 @@ import { Select }         from '../_super/select'
 import type { SelectBaseOptions } from './_shared'
 import type { ObjectValues }      from '../../_shared/ts/super'
 
+/** installer values used in `install` option. */
 export const INSTALLER = {
 	DENO : 'deno',
 	BUN  : 'bun',
@@ -46,17 +47,26 @@ export class Install extends Select<Installer> {
 
 	}
 
-	async validateInitialValue() {
+	async validateInitialValue( data?: {
+		showSuccess? : boolean
+		showError?   : boolean
+	} ) {
 
-		const validateValue = await super.validateInitialValue()
+		const validateValue = await super.validateInitialValue( { showSuccess: false } )
 		if ( !validateValue ) return undefined // Nothing to print in log because it will be printed in super function
+
 		if ( validateValue && ( await existsLocalBin( validateValue ) ) ) {
 
-			this._utils.prompt.log.success( this._text.initialValueSuccess( this.config.promptMsg || this.config.desc, validateValue ) )
+			if ( data?.showSuccess !== false )
+				this._utils.prompt.log.success( this._text.initialValueSuccess( this.config.promptMsg || this.config.desc, validateValue ) )
+
 			return validateValue
 
 		}
-		this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue ) )
+
+		if ( data?.showError !== false )
+			this._utils.prompt.log.warn( this._text.initialValueError( this.initialValue ) )
+
 		return undefined
 
 	}

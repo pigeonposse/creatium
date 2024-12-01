@@ -49,6 +49,8 @@ export class Core {
 					align    : 'left',
 				} ) )
 				const LINE  = this.utils.style.color.gray.dim( this.utils.style.line( { title: '' } ) )
+
+				// console.log( LINE )
 				console.log( TITLE )
 				console.log( LINE )
 				console.log( ...args )
@@ -140,14 +142,14 @@ export class Core {
 
 	}
 
-	async getPrompts(): Promise<GetPromptsResponse> {
+	async getPrompts( initialValues?: { [key: string]: unknown } ): Promise<GetPromptsResponse> {
 
 		const res: GetPromptsResponse = {}
 		const Klass                   = this.#getClass()
 		const cached                  = await this.#getCache()
 		const cachedValues            = cached?.get()
 
-		console.debug( { cache : {
+		console.debug( { cacheData : {
 			active : this.cache,
 			...cached,
 			values : cachedValues,
@@ -162,11 +164,17 @@ export class Core {
 			if ( !( type in Klass ) ) continue
 
 			// @ts-ignore
-			const instance     = new Klass[type]( props )
+			const instance = new Klass[type]( props )
+
 			instance._onCancel = this.onCancel
 			instance.debugMode = this.debugMode
-			const cachedValue  = cachedValues?.[key]
+
+			const initialValue = initialValues?.[key]
+			if ( initialValue ) instance.initialValue = initialValue
+
+			const cachedValue = cachedValues?.[key]
 			if ( cachedValue ) instance.config.placeholderValue = cachedValue
+
 			// @ts-ignore
 			instance.afterPrompt = async value => cached?.set( { [key]: value } )
 
