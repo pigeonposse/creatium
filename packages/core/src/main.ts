@@ -1,9 +1,9 @@
+import { CreatiumCore } from './core'
 import {
 	OPTION,
 	IDE,
 	INSTALLER,
 } from './core/const'
-import { CreatiumPrompt } from './prompt'
 
 import type {
 	CliOpts,
@@ -26,7 +26,7 @@ export {
 	OPTION,
 	IDE,
 	INSTALLER,
-	CreatiumPrompt,
+	CreatiumCore,
 }
 
 /**
@@ -92,7 +92,7 @@ export class Creatium {
 			},
 		}
 
-		this.#core = new CreatiumPrompt( this.config )
+		this.#core = new CreatiumCore( this.config )
 
 	}
 
@@ -110,7 +110,7 @@ export class Creatium {
 	 */
 	async build( values? : ValuesSimple, opts?: CreateOpts ) {
 
-		const data = await this.#core.build( values as Parameters<CreatiumPrompt['build']>[0], opts )
+		const data = await this.#core.build( values as Parameters<CreatiumCore['build']>[0], opts )
 		await this.#core.createTemplate( {
 			...data,
 			consts : this.options.consts,

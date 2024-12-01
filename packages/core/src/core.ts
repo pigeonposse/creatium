@@ -42,7 +42,7 @@ import type {
  * @example
  * //////////////// core.js ///////////////////
  *
- * export const core = new CreatiumPrompt({
+ * export const core = new CreatiumCore({
  *   name: 'My Project',
  *   version: '1.0.0',
  *   prompts: {
@@ -67,7 +67,7 @@ import type {
  *   await core.createTemplate( res )
  * }
  */
-export class CreatiumPrompt<C extends Config = Config> {
+export class CreatiumCore<C extends Config = Config> {
 
 	#core  : Core
 	#data  : HookParams | undefined

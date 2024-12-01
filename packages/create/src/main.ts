@@ -1,5 +1,5 @@
 import {
-	CreatiumPrompt,
+	CreatiumCore,
 	prompt,
 	sys,
 	style,
@@ -42,7 +42,7 @@ const cancelFn = ( ) => {
 }
 
 /** Instance of your create-project */
-export const creatium = new CreatiumPrompt( {
+export const creatium = new CreatiumCore( {
 	name,
 	version,
 	updater  : true,

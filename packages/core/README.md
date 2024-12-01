@@ -28,7 +28,7 @@ Build your create-bins quickly and easily
 - [Api documentation](#api-documentation)
   - [Classes](#classes)
     - [Creatium](#creatium)
-    - [CreatiumPrompt\<C\>](#creatiumpromptc)
+    - [CreatiumCore\<C\>](#creatiumcorec)
   - [Type Aliases](#type-aliases)
     - [CliOpts](#cliopts)
     - [Config](#config)
@@ -186,22 +186,25 @@ Class of `Creatium` for create project templates (CLI and Library).
 ##### Example
 
 ```ts
-// ./main.js
-export const core = new CreatiumPrompt({
+//////////////// core.js ///////////////////
+
+import { Creatium } from 'creatium'
+export const core = new Creatium({
   name: 'My Project',
   version: '1.0.0',
-  prompts: {
+  templates: {
     ...
   },
-  ...
 })
 
-// ./bin.js
-import { core } from './main.js'
+//////////////// bin.js ///////////////////
+
+import { core } from './core.js'
 core.cli()
 
-// ./lib.js
-import { core } from './main.js'
+//////////////// lib.js ///////////////////
+
+import { core } from './core.js'
 export const create = core.build
 ```
 
@@ -382,16 +385,16 @@ await core.cli( { args : process.argv.slice(4), hideBin : false } )
 
 ***
 
-#### CreatiumPrompt\<C\>
+#### CreatiumCore\<C\>
 
 Customizable class of `Creatium` for create project templates (CLI and Library).
 
 ##### Example
 
 ```ts
-//////////////// main.js ///////////////////
+//////////////// core.js ///////////////////
 
-const core = new CreatiumPrompt({
+export const core = new CreatiumCore({
   name: 'My Project',
   version: '1.0.0',
   prompts: {
@@ -402,14 +405,14 @@ const core = new CreatiumPrompt({
 
 //////////////// bin.js ///////////////////
 
-import { core } from './main.js'
+import { core } from './core.js'
 const res = await core.cli()
 // do something with res...
 await core.createTemplate( res )
 
 //////////////// lib.js ///////////////////
 
-import { core } from './main.js'
+import { core } from './core.js'
 export const create = async (args) => {
   const res = await core.build( args )
   // do something with res...
@@ -447,10 +450,10 @@ Force debug mode
 
 ##### Constructors
 
-###### new CreatiumPrompt()
+###### new CreatiumCore()
 
 ```ts
-new CreatiumPrompt<C>(config: C): CreatiumPrompt<C>
+new CreatiumCore<C>(config: C): CreatiumCore<C>
 ```
 
 ###### Parameters
@@ -461,7 +464,7 @@ new CreatiumPrompt<C>(config: C): CreatiumPrompt<C>
 
 ###### Returns
 
-[`CreatiumPrompt`](index.md#creatiumpromptc)\<`C`\>
+[`CreatiumCore`](index.md#creatiumcorec)\<`C`\>
 
 ##### Methods
 
@@ -485,6 +488,16 @@ Initialize the CLI and executes the callback function passed in the config.
 `Promise`\<\{ \[K in string \| number \| symbol\]: \{ \[K in string \| number \| symbol\]?: \{ \[K in string \| number \| symbol\]: (C\["prompt"\]\[K\] extends Object ? T extends keyof OptionsClasses ? \{ \[K in (...) \| (...) \| (...)\]: (...)\[(...)\] \} : never : never)\[K\] \} \}\[K\] \}\>
 
 The result of the callback function.
+
+###### cancel()
+
+```ts
+cancel(): Promise<void>
+```
+
+###### Returns
+
+`Promise`\<`void`\>
 
 ###### cli()
 
@@ -517,6 +530,23 @@ await core.cli()
 // custom usage
 await core.cli( { args : process.argv.slice( 4), hideBin : false } )
 ```
+
+###### copyDir()
+
+```ts
+copyDir(input: string, output: string): Promise<void>
+```
+
+###### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `input` | `string` |
+| `output` | `string` |
+
+###### Returns
+
+`Promise`\<`void`\>
 
 ###### createTemplate()
 
@@ -558,6 +588,103 @@ await core.createTemplate( {
   },
 } )
 ```
+
+###### getTemplateInput()
+
+```ts
+getTemplateInput(input?: string): Promise<undefined | string>
+```
+
+###### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `input`? | `string` |
+
+###### Returns
+
+`Promise`\<`undefined` \| `string`\>
+
+###### install()
+
+```ts
+install(installer?: Installer, output?: string): Promise<void>
+```
+
+###### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `installer`? | `Installer` |
+| `output`? | `string` |
+
+###### Returns
+
+`Promise`\<`void`\>
+
+###### intro()
+
+```ts
+intro(): Promise<void>
+```
+
+###### Returns
+
+`Promise`\<`void`\>
+
+###### openEditor()
+
+```ts
+openEditor(editor?: TextEditor, output?: string): Promise<void>
+```
+
+###### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `editor`? | `TextEditor` |
+| `output`? | `string` |
+
+###### Returns
+
+`Promise`\<`void`\>
+
+###### outro()
+
+```ts
+outro(): Promise<void>
+```
+
+###### Returns
+
+`Promise`\<`void`\>
+
+###### replacePlaceholders()
+
+```ts
+replacePlaceholders(input: string, params: Params): Promise<void>
+```
+
+###### Parameters
+
+| Parameter | Type |
+| ------ | ------ |
+| `input` | `string` |
+| `params` | `Params` |
+
+###### Returns
+
+`Promise`\<`void`\>
+
+###### updateNotify()
+
+```ts
+updateNotify(): Promise<void>
+```
+
+###### Returns
+
+`Promise`\<`void`\>
 
 ##### Properties
 
