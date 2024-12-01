@@ -17,11 +17,11 @@ export const INSTALLER = {
 	...SELECT_BASE_OPTS,
 } as const
 
-export type PkgManager = ObjectValues<typeof INSTALLER>
+export type Installer = ObjectValues<typeof INSTALLER>
 
-export type OptionInstall = SelectBaseOptions<PkgManager>
+export type OptionInstall = SelectBaseOptions<Installer>
 
-export class Install extends Select<PkgManager> {
+export class Install extends Select<Installer> {
 
 	constructor( config: OptionInstall ) {
 
@@ -38,7 +38,7 @@ export class Install extends Select<PkgManager> {
 
 		if ( !config.desc ) config.desc = 'Select the package manager to install the dependencies.'
 
-		const finalConfig = mergeSelectBaseOptions( config, defaultOptions ) as Select<PkgManager>['config']
+		const finalConfig = mergeSelectBaseOptions( config, defaultOptions ) as Select<Installer>['config']
 
 		super( finalConfig )
 
@@ -61,7 +61,7 @@ export class Install extends Select<PkgManager> {
 
 	}
 
-	async prompt(): Promise<PkgManager> {
+	async prompt(): Promise<Installer> {
 
 		let value = await super.prompt()
 
@@ -82,7 +82,7 @@ export class Install extends Select<PkgManager> {
 
 		}
 
-		return value as PkgManager
+		return value as Installer
 
 	}
 

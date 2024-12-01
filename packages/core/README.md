@@ -268,7 +268,7 @@ new Creatium(options: {
 ```ts
 build(values?: {
   input: string;
-  install: PkgManager;
+  install: Installer;
   name: string;
   openEditor: TextEditor;
   output: string;
@@ -289,7 +289,7 @@ A simplified version of the `build` method from the main class.
 | ------ | ------ | ------ |
 | `values`? | `object` | The values to override the CLI prompts. If not set, the CLI prompts will be executed. |
 | `values.input`? | `string` | Set the input path or the template key |
-| `values.install`? | `PkgManager` | Set the installer |
+| `values.install`? | `Installer` | Set the installer |
 | `values.name`? | `string` | Set the name of the template |
 | `values.openEditor`? | `TextEditor` | Open editor |
 | `values.output`? | `string` | Set the output path |
@@ -645,7 +645,7 @@ type CreateOpts: CliOpts & {
 type CreateTemplateOpts: {
   consts: Record<string, string>;
   input: string;
-  install: PkgManager;
+  install: Installer;
   name: string;
   openEditor: TextEditor;
   output: string;
@@ -658,7 +658,7 @@ type CreateTemplateOpts: {
 | ------ | ------ | ------ |
 | `consts`? | `Record`\<`string`, `string`\> | Add consts to use in your templates. |
 | `input`? | `string` | Set the input path or the template key |
-| `install`? | `PkgManager` | Set the installer |
+| `install`? | `Installer` | Set the installer |
 | `name`? | `string` | Set the name of the template |
 | `openEditor`? | `TextEditor` | Open editor |
 | `output`? | `string` | Set the output path |

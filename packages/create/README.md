@@ -120,14 +120,14 @@ await create( {
 ```ts
 function create(params: undefined | {
   input: string;
-  install: PkgManager;
+  install: Installer;
   intro: void;
   name: string;
   openEditor: TextEditor;
   output: string;
  }): Promise<{
   input: string;
-  install: PkgManager;
+  install: Installer;
   intro: void;
   name: string;
   openEditor: TextEditor;
@@ -139,13 +139,13 @@ function create(params: undefined | {
 
 | Parameter | Type |
 | ------ | ------ |
-| `params` | `undefined` \| \{ `input`: `string`; `install`: `PkgManager`; `intro`: `void`; `name`: `string`; `openEditor`: `TextEditor`; `output`: `string`; \} |
+| `params` | `undefined` \| \{ `input`: `string`; `install`: `Installer`; `intro`: `void`; `name`: `string`; `openEditor`: `TextEditor`; `output`: `string`; \} |
 
 ##### Returns
 
 `Promise`\<\{
   `input`: `string`;
-  `install`: `PkgManager`;
+  `install`: `Installer`;
   `intro`: `void`;
   `name`: `string`;
   `openEditor`: `TextEditor`;
@@ -155,7 +155,7 @@ function create(params: undefined | {
 | Name | Type |
 | ------ | ------ |
 | `input`? | `string` |
-| `install`? | `PkgManager` |
+| `install`? | `Installer` |
 | `intro`? | `void` |
 | `name`? | `string` |
 | `openEditor`? | `TextEditor` |

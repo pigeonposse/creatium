@@ -5,7 +5,7 @@ import type {
 } from './_shared/ts/main'
 import type { OPTION }     from './core/const'
 import type { TextEditor } from './core/extended/editor'
-import type { PkgManager } from './core/extended/install'
+import type { Installer }  from './core/extended/install'
 import type {
 	Options,
 	OptionsParams,
@@ -24,7 +24,7 @@ export type CreateTemplateOpts = {
 	/** Set the name of the template */
 	name?       : string
 	/** Set the installer */
-	install?    : PkgManager
+	install?    : Installer
 	/**
 	 * Open editor
 	 */

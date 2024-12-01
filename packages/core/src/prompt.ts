@@ -16,13 +16,14 @@ import {
 	writeFile,
 	existsDir,
 	resolvePath,
-	getBaseName,
 } from './_shared/sys/main'
 import { OPTION }    from './core/const'
 import { INSTALLER } from './core/extended/install'
 import { Core }      from './core/main'
 
-import type { Prettify } from './_shared/ts/super'
+import type { Prettify }   from './_shared/ts/super'
+import type { TextEditor } from './core/extended/editor'
+import type { Installer }  from './core/extended/install'
 import type {
 	CliOpts,
 	Config,
@@ -39,9 +40,9 @@ import type {
  * Customizable class of `Creatium` for create project templates (CLI and Library).
  * @template C
  * @example
- * //////////////// main.js ///////////////////
+ * //////////////// core.js ///////////////////
  *
- * const core = new CreatiumPrompt({
+ * export const core = new CreatiumPrompt({
  *   name: 'My Project',
  *   version: '1.0.0',
  *   prompts: {
@@ -52,14 +53,14 @@ import type {
  *
  * //////////////// bin.js ///////////////////
  *
- * import { core } from './main.js'
+ * import { core } from './core.js'
  * const res = await core.cli()
  * // do something with res...
  * await core.createTemplate( res )
  *
  * //////////////// lib.js ///////////////////
  *
- * import { core } from './main.js'
+ * import { core } from './core.js'
  * export const create = async (args) => {
  *   const res = await core.build( args )
  *   // do something with res...
@@ -72,6 +73,7 @@ export class CreatiumPrompt<C extends Config = Config> {
 	#data  : HookParams | undefined
 	utils
 	config : C
+	#style
 
 	constructor( config: C ) {
 
@@ -84,6 +86,7 @@ export class CreatiumPrompt<C extends Config = Config> {
 		this.#core.cache       = this.config.cache === undefined ? true : this.config.cache
 		this.#core.projectName = this.config.name
 		this.debugMode         = false
+		this.#style            = { tick: this.utils.style.color.green.dim( '✓' ) }
 
 	}
 
@@ -94,37 +97,13 @@ export class CreatiumPrompt<C extends Config = Config> {
 
 	}
 
-	async #updateNotify() {
-
-		const { default : up } = await import( 'update-notifier' )
-
-		const updater = up( { pkg : {
-			name    : this.config.name,
-			version : this.config.version,
-		} } )
-		updater.notify()
-
-	}
-
 	async #exec( values?: GetPromptValues<C> ): Promise<GetPromptValues<C>> {
 
 		this.#data = { values }
 
 		console.debug( { data: this.#data } )
 
-		this.#core.onCancel = async () => {
-
-			if ( this.config.onCancel && this.#data )
-				await this.config.onCancel( this.#data )
-			else if ( this.config.onCancel === undefined ) {
-
-				this.utils.prompt.log.step( '' )
-				this.utils.prompt.cancel( 'Canceled 💔' )
-				currentProcess.exit( 0 )
-
-			}
-
-		}
+		this.#core.onCancel = async () => await this.cancel()
 
 		if ( this.config.hooks?.beforePrompt )
 			await this.config.hooks.beforePrompt( this.#data )
@@ -132,20 +111,8 @@ export class CreatiumPrompt<C extends Config = Config> {
 		console.debug( { beforePrompt: this.#data } )
 
 		// INTRO
-		if ( typeof this.config.intro === 'function' )
-			await this.config.intro( this.#data )
-		else if ( this.config.intro === undefined ) {
+		await this.intro()
 
-			console.log()
-			// const title = this.utils.style.gradient(  ` ${this.config.name} `, [
-			// 	'cyan',
-			// 	'green',
-			// 	'white',
-			// ] )
-			this.utils.prompt.intro( this.utils.style.color.cyan.inverse( ` ${this.config.name} ` ) )
-			this.utils.prompt.log.step( '' )
-
-		}
 		// PROMPT
 		const prompts = await this.#core.getPrompts()
 		const answers = await this.utils.prompt.group( prompts, { onCancel: this.#core.onCancel } ) as unknown as GetPromptValues<C>
@@ -178,7 +145,7 @@ export class CreatiumPrompt<C extends Config = Config> {
 
 	async #initCli( props?: CliOpts ): Promise<GetArgvValues<C>> {
 
-		if ( this.config.updater ) await this.#updateNotify()
+		if ( this.config.updater ) await this.updateNotify()
 
 		const args = this.#getCliArgs( props )
 
@@ -230,8 +197,192 @@ export class CreatiumPrompt<C extends Config = Config> {
 	async #createTemplate( values: CreateTemplateOpts ) {
 
 		const {
-			openEditor, input, output, install,
+			openEditor, input, output, install, consts, ...prompt
 		} = values
+
+		const data = {
+			input  : await this.getTemplateInput( input ),
+			output : output ? resolvePath( output ) : undefined,
+		}
+
+		console.debug( { templateData: data } )
+
+		this.utils.prompt.log.step( '' )
+
+		if ( !( data.input && data.output ) )
+			throw new Error( 'Invalid input or output template' )
+
+		await this.copyDir( data.input, data.output )
+		await this.replacePlaceholders( data.output, {
+			name    : this.config.name,
+			version : this.config.version,
+			consts,
+			prompt,
+		} )
+		await this.install( install, data.output )
+		await this.openEditor( openEditor, data.output )
+
+		this.utils.prompt.log.step( '' )
+
+		// OUTRO
+		await this.outro()
+
+	}
+
+	async updateNotify() {
+
+		const { default : up } = await import( 'update-notifier' )
+
+		const updater = up( { pkg : {
+			name    : this.config.name,
+			version : this.config.version,
+		} } )
+		updater.notify()
+
+	}
+
+	async cancel() {
+
+		if ( this.config.onCancel && this.#data )
+			await this.config.onCancel( this.#data )
+		else if ( this.config.onCancel === undefined ) {
+
+			this.utils.prompt.log.step( '' )
+			this.utils.prompt.cancel( 'Canceled 💔' )
+			currentProcess.exit( 0 )
+
+		}
+
+	}
+
+	async intro() {
+
+		if ( typeof this.config.intro === 'function' )
+			await this.config.intro( this.#data || {} )
+		else if ( this.config.intro === undefined ) {
+
+			console.log()
+			this.utils.prompt.intro( this.utils.style.color.cyan.inverse( ` ${this.config.name} ` ) )
+			this.utils.prompt.log.step( '' )
+
+		}
+
+	}
+
+	async outro() {
+
+		if ( typeof this.config.outro === 'function' && this.#data )
+			await this.config.outro( this.#data )
+		else if ( this.config.outro === undefined )
+			this.utils.prompt.outro( 'Succesfully finished 🌈' )
+
+	}
+
+	async copyDir( input: string, output: string ) {
+
+		return await copyDir( {
+			input,
+			output,
+		} )
+
+	}
+
+	async install( installer?: Installer, output?: string ) {
+
+		if ( !installer || installer === 'none' ) return
+
+		const s = this.utils.prompt.spinner()
+
+		const  command = {
+			[INSTALLER.PNPM] : !output ? 'pnpm i' : `pnpm i --dir ${output}`,
+			[INSTALLER.NPM]  : !output ? 'npm install' : `npm install --prefix ${output}`,
+			[INSTALLER.YARN] : !output ? 'yarn install' : `yarn install --cwd ${output}`,
+			[INSTALLER.DENO] : !output ? 'deno install' : `deno install --root ${output}`,
+			[INSTALLER.BUN]  : !output ? 'bun install' : `bun install --cwd ${output}`,
+		}
+		try {
+
+			s.start( `Installing with ${installer}` )
+			await execChild( command[installer] )
+			s.stop( this.#style.tick + ' Package installed successfully' )
+
+		}
+		catch ( _e ) {
+
+			if ( this.debugMode )
+				s.stop( `Error in installation with [${installer}]: ${_e?.toString()}` )
+			else
+				s.stop( `Error in installation with [${installer}]` )
+
+		}
+
+	}
+
+	async openEditor( editor?: TextEditor, output?: string ) {
+
+		if ( !editor || editor === 'none' ) return
+
+		const s = this.utils.prompt.spinner()
+
+		try {
+
+			s.start( `Opening in ${editor}` )
+			await execChild( `${editor} ${output}` )
+			s.stop( this.#style.tick + ' IDE opened successfully' )
+
+		}
+		catch ( _e ) {
+
+			if ( this.debugMode )
+				s.stop( `Error opening in [${editor}]: ${_e?.toString()}` )
+			else
+				s.stop( 'Error opening IDE' )
+
+		}
+
+	}
+
+	async replacePlaceholders( input: string, params: Parameters<typeof replacePlaceholders>[0]['params'] ) {
+
+		if ( !input || !params ) throw new Error( 'Missing parameters "output" and "params" for replace placeholders' )
+
+		const getContent = async ( filePath: string ) => {
+
+			try {
+
+				const content = await readFile( filePath, 'utf-8' )
+				return typeof content === 'string' && content.trim().length > 0 ? content : undefined
+
+			}
+			catch ( _e ) {
+
+				return undefined
+
+			}
+
+		}
+
+		const paths = await getPaths( [ input ], { onlyFiles: true } )
+
+		console.debug( { templatePaths: paths } )
+
+		for ( const path of paths ) {
+
+			const content = await getContent( path )
+			if ( !content ) continue
+
+			const res = await replacePlaceholders( {
+				content,
+				params,
+			} )
+
+			await writeFile( path, res, 'utf-8' )
+
+		}
+
+	}
+
+	async getTemplateInput( input?: string ) {
 
 		const templates = Object.entries( this.config.prompt ).reduce( ( acc, [ _key, value ] ) => {
 
@@ -244,148 +395,14 @@ export class CreatiumPrompt<C extends Config = Config> {
 			input : string
 			name  : string
 		}> )
+		console.debug( { templates } )
 
-		const getTemplate = async () => {
+		if ( input && templates[input].input ) return templates[input].input
+		if ( input && await existsDir( input ) ) return input
 
-			if ( input && templates[input].input ) return templates[input].input
-			if ( input && await existsDir( input ) ) return input
+		this.utils.prompt.log.error( `Error creating Template: template input "${input}" not found` )
 
-			this.utils.prompt.log.error( `Error creating Template: template input "${input}" not found` )
-
-			return
-
-		}
-
-		const data = {
-			input  : await getTemplate(),
-			output : output ? resolvePath( output ) : undefined,
-		}
-
-		console.debug( {
-			templates,
-			templateData : data,
-		} )
-
-		const open = async ( ) => {
-
-			if ( !openEditor || openEditor === 'none' ) return
-
-			const s = this.utils.prompt.spinner()
-
-			try {
-
-				s.start( `Opening in ${openEditor}` )
-				await execChild( `${openEditor} ${output}` )
-				s.stop( tick + ' IDE opened successfully' )
-
-			}
-			catch ( _e ) {
-
-				if ( this.debugMode )
-					s.stop( `Error opening in [${openEditor}]: ${_e?.toString()}` )
-				else
-					s.stop( 'Error opening IDE' )
-
-			}
-
-		}
-
-		const tick = this.utils.style.color.green.dim( '✓' )
-
-		const installation = async ( ) => {
-
-			if ( !install || install === 'none' ) return
-
-			const s        = this.utils.prompt.spinner()
-			const  command = {
-				[INSTALLER.PNPM] : `pnpm i --dir ${output}`,
-				[INSTALLER.NPM]  : `npm install --prefix ${output}`,
-				[INSTALLER.YARN] : `yarn install --cwd ${output}`,
-				[INSTALLER.DENO] : `deno install --root ${output}`,
-				[INSTALLER.BUN]  : `bun install --cwd ${output}`,
-			}
-			try {
-
-				s.start( `Installing with ${install}` )
-				await execChild( command[install] )
-				s.stop( tick + ' Package installed successfully' )
-
-			}
-			catch ( _e ) {
-
-				if ( this.debugMode )
-					s.stop( `Error in installation with [${install}]: ${_e?.toString()}` )
-				else
-					s.stop( `Error in installation with [${install}]` )
-
-			}
-
-		}
-
-		const getContent = async ( filePath: string ) => {
-
-			try {
-
-				const content = await readFile( filePath, 'utf-8' )
-				return typeof content === 'string' && content.trim().length > 0 ? content : undefined
-
-			}
-			catch ( _e ) {
-
-				// console.error( `Error al leer el archivo ${filePath}:`, error )
-				return undefined
-
-			}
-
-		}
-
-		this.utils.prompt.log.step( '' )
-
-		if ( !( data.input && data.output ) )
-			throw new Error( 'Invalid input or output template' )
-
-		// @ts-ignore
-		await copyDir( data )
-
-		const paths = await getPaths( [ data.output ], { onlyFiles: true } )
-
-		console.debug( { templatePaths: paths } )
-
-		for ( const path of paths ) {
-
-			const content = await getContent( path )
-			if ( !content ) continue
-
-			const {
-				consts, ...prompt
-			} = values
-
-			if ( !prompt.name ) prompt.name = getBaseName( data.output )
-
-			const res = await replacePlaceholders( {
-				content,
-				params : {
-					name    : this.config.name,
-					version : this.config.version,
-					consts,
-					prompt,
-				},
-			} )
-
-			await writeFile( path, res, 'utf-8' )
-
-		}
-
-		await installation()
-		await open( )
-
-		this.utils.prompt.log.step( '' )
-
-		// OUTRO
-		if ( typeof this.config.outro === 'function' && this.#data )
-			await this.config.outro( this.#data )
-		else if ( this.config.outro === undefined )
-			this.utils.prompt.outro( 'Succesfully finished 🌈' )
+		return
 
 	}
 

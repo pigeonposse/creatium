@@ -86,7 +86,7 @@ export class Core {
 
 		return await cache( {
 			projectName : this.projectName,
-			id          : 'prompts',
+			id          : 'create-prompts',
 			values      : resetObjectValues( this.config ),
 		} )
 

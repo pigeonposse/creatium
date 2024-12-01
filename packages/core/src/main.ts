@@ -32,22 +32,25 @@ export {
 /**
  * Class of `Creatium` for create project templates (CLI and Library).
  * @example
- * // ./main.js
- * export const core = new CreatiumPrompt({
+ * //////////////// core.js ///////////////////
+ *
+ * import { Creatium } from 'creatium'
+ * export const core = new Creatium({
  *   name: 'My Project',
  *   version: '1.0.0',
- *   prompts: {
+ *   templates: {
  *     ...
  *   },
- *   ...
  * })
  *
- * // ./bin.js
- * import { core } from './main.js'
+ * //////////////// bin.js ///////////////////
+ *
+ * import { core } from './core.js'
  * core.cli()
  *
- * // ./lib.js
- * import { core } from './main.js'
+ * //////////////// lib.js ///////////////////
+ *
+ * import { core } from './core.js'
  * export const create = core.build
  */
 export class Creatium {
