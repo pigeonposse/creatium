@@ -81,7 +81,7 @@ Below we show a practical example.
 
 Create a project with the following structure:
 
-```bash
+```text
 📂 data
 ├── 📂 templates
 │   ├── 📂 js-project
@@ -186,7 +186,7 @@ Create a package.json file with the following structure:
 
 Create a data folder with your `templates`.
 
-```bash
+```text
 📂 data
 ├── 📂 templates
 │   ├── 📂 js-project
@@ -226,7 +226,7 @@ Below we show a practical example.
 
 Create a project with the following structure:
 
-```bash
+```text
 📂 data
 ├── 📂 templates
 │   ├── 📂 js-project
@@ -445,7 +445,7 @@ Create a package.json file with the following structure:
 
 Create a data folder with your templates and your partials.
 
-```bash
+```text
 📂 data
 ├── 📂 templates
 │   ├── 📂 js-project
