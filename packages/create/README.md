@@ -17,7 +17,7 @@ Create a new creatium project
 ## Table of contents
 
 - [🔑 Installation](#-installation)
-- [🤔 What is it Creatium?](#-what-is-it-creatium)
+- [🤔 What is it `creatium`?](#-what-is-it-creatium)
 - [Usage](#usage)
   - [As a CLI](#as-a-cli)
   - [Simple way](#simple-way)
@@ -47,9 +47,9 @@ deno install create-creatium
 bun add create-creatium
 ```
 
-## 🤔 What is it Creatium?
+## 🤔 What is it `creatium`?
 
-Creatium is a CLI and Library for creating project templates.
+`creatium` is a CLI and Library for creating project templates.
 
 > Useful for create-binaries like `pnpm create backan`
 

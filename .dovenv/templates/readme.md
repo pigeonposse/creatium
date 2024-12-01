@@ -20,9 +20,9 @@ deno install {{name}}
 bun add {{name}}
 ```
 
-## 🤔 What is it Creatium?
+## 🤔 What is it `{{pkg.extra.id}}`?
 
-Creatium is a CLI and Library for creating project templates.
+`{{pkg.extra.id}}` is a CLI and Library for creating project templates.
 
 > Useful for create-binaries like `pnpm create backan`
 

@@ -75,6 +75,7 @@
 		"productName": "creatium",
 		"libraryUrl": "https://www.npmjs.com/package/creatium",
 		"licenseUrl": "https://github.com/pigeonposse/creatium/blob/main/LICENSE",
+		"rawRepoUrl": "https://raw.githubusercontent.com/pigeonposse/creatium/tree/main",
 		"libraryId": "creatium",
 		"docsUrl": "https://www.npmjs.com/package/creatium",
 		"collective": {
