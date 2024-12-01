@@ -1,5 +1,11 @@
 # @creatium/repo-config
 
+## 0.1.4
+
+### Patch Changes
+
+- Fix text mistakes
+
 ## 0.1.3
 
 ### Patch Changes

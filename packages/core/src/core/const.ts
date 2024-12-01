@@ -1,5 +1,5 @@
-import { TEXT_EDITOR }       from './extended/editor'
-import { INSTALLER } from './extended/install'
+import { TEXT_EDITOR } from './extended/editor'
+import { INSTALLER }   from './extended/install'
 
 export {
 	TEXT_EDITOR,

@@ -304,7 +304,7 @@ export class CreatiumCore<C extends Config = Config> {
 		else if ( typeof this.config.outro === 'function' && this.#data )
 			await this.config.outro( this.#data )
 		else if ( this.config.outro === undefined )
-			this.utils.prompt.outro( 'Succesfully finished 🌈' )
+			this.utils.prompt.outro( 'Successfully completed 🌈' )
 
 	}
 
@@ -371,7 +371,7 @@ export class CreatiumCore<C extends Config = Config> {
 
 			s.start( `Installing with ${installer}` )
 			await execChild( command[installer] )
-			s.stop( this.#style.tick + ' Package installed successfully' )
+			s.stop( `${this.#style.tick} Package installed with [${installer}] successfully` )
 
 		}
 		catch ( _e ) {
@@ -419,15 +419,15 @@ export class CreatiumCore<C extends Config = Config> {
 
 			s.start( `Opening in ${editor}` )
 			await execChild( `${editor} ${input}` )
-			s.stop( this.#style.tick + ' TEXT_EDITOR opened successfully' )
+			s.stop( `${this.#style.tick} Text editor [${editor}] opened successfully` )
 
 		}
 		catch ( _e ) {
 
 			if ( this.debugMode )
-				s.stop( `Error opening in [${editor}]: ${_e?.toString()}` )
+				s.stop( `Error opening [${editor}] text editor: ${_e?.toString()}` )
 			else
-				s.stop( 'Error opening TEXT_EDITOR' )
+				s.stop( `Error opening [${editor}] text editor` )
 
 		}
 

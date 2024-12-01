@@ -1,5 +1,11 @@
 # creatium
 
+## 0.1.5
+
+### Patch Changes
+
+- Fix text mistakes
+
 ## 0.1.4
 
 ### Patch Changes
