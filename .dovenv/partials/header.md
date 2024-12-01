@@ -1,5 +1,3 @@
-{{social}}
-
 ## 🤔 What is it `{{pkg.extra.id}}`?
 
 `{{pkg.extra.id}}` is a JavaScript Library for creating project templates.

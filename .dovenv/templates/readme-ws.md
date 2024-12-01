@@ -1,5 +1,7 @@
 # {{title}}
 
+{{social}}
+
 {{header}}
 
 ## 🔑 Installation

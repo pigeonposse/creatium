@@ -12,6 +12,9 @@
 [![Medium](https://img.shields.io/badge/Medium-black?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@pigeonposse)
 
 
+[![License](https://img.shields.io/github/license/pigeonposse/create-creatium?color=green&style=for-the-badge&logoColor=white)](https://github.com/pigeonposse/creatium/blob/main/LICENSE)
+[![Version](https://img.shields.io/npm/v/create-creatium?color=blue&style=for-the-badge&label=Version)](https://www.npmjs.com/package/create-creatium)
+
 ## 🤔 What is it `creatium`?
 
 `creatium` is a JavaScript Library for creating project templates.
