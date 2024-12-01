@@ -35,7 +35,7 @@ export class Editor extends Select<TextEditor> {
 			},
 		}
 
-		if ( !config.desc ) config.desc = 'Select the code editor to open the project'
+		if ( !config.desc ) config.desc = 'Select the text editor to open the project'
 		const finalConfig = mergeSelectBaseOptions( config, defaultOptions ) as Select<TextEditor>['config']
 
 		super( finalConfig )

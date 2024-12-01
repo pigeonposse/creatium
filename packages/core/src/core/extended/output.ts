@@ -12,7 +12,7 @@ export class Output extends Path {
 
 		const finalConfig = {
 			desc      : config.desc ?? 'Set the path where you want to create your project',
-			promptMsg : config.promptMsg ?? 'What do you want to create your project?',
+			promptMsg : config.promptMsg ?? 'Where do you want to create your project?',
 			...config,
 		}
 
