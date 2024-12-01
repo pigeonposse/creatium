@@ -249,6 +249,8 @@ Create a project with the following structure:
 │   ├── 📂 ts-project
 │   │   └── ... (files, folders...)
 │   📂 partials
+│       ├── 📂 workspace (used in example)
+│       │   └── ... (files, folders...)
 │       └── 📂 .../
 📂 src
 ├── bin.js
@@ -466,6 +468,8 @@ Create a data folder with your templates and your partials.
 │   ├── 📂 ts-project
 │   │   └── ... (files, folders...)
 │   📂 partials
+│       ├── 📂 workspace (used in example)
+│       │   └── ... (files, folders...)
 │       └── 📂 .../
 │
 ```
