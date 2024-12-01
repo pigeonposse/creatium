@@ -1,5 +1,11 @@
 # @creatium/repo-config
 
+## 0.1.3
+
+### Patch Changes
+
+- update pks docs
+
 ## 0.1.2
 
 ### Patch Changes

@@ -1,6 +1,5 @@
 {
 	"name": "creatium-monorepo",
-	"version": "0.0.1",
 	"private": true,
 	"description": "Build your create-bins quickly and easily",
 	"keywords": [

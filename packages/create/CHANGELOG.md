@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.1.4
+
+### Patch Changes
+
+- update pks docs
+
+- Updated dependencies []:
+  - creatium@0.1.4
+
 ## 0.1.3
 
 ### Patch Changes
