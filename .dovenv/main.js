@@ -25,6 +25,7 @@ export default defineConfig(
 	},
 	readmes,
 	bandaTheme( {
+		media   : { termgif: { demo: {} } },
 		convert : { readme : {
 			type   : 'ts2md',
 			input  : 'packages/core/src/main.ts',
