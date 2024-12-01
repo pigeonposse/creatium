@@ -148,7 +148,7 @@ const buildCoreReadme = async ( {
 				input           : readmeContentPre2,
 				title           : 'Table of contents',
 				removeH1        : true,
-				maxHeadingLevel : 4,
+				maxHeadingLevel : 3,
 			} ) },
 		} )
 

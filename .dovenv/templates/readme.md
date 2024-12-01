@@ -7,8 +7,6 @@
 
 {{header}}
 
-{{toc}}
-
 ## 🔑 Installation
 
 ```bash

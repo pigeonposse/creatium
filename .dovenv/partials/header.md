@@ -10,8 +10,8 @@ Demo of the `{{pkg.extra.id}}` library:
 
 ![demo]({{ pkg.repository.url }}/raw/main/docs/public/example.gif)
 
+{{toc}}
+
 ## 📄 Description
 
 {{desc}}
-
-{{toc}}
