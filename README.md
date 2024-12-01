@@ -12,8 +12,6 @@
 [![Medium](https://img.shields.io/badge/Medium-black?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@pigeonposse)
 
 
-Build your create-bins quickly and easily
-
 ## 🤔 What is it `creatium`?
 
 `creatium` is a JavaScript Library for creating project templates.
@@ -26,9 +24,14 @@ Demo of the `creatium` library:
 
 ![demo](https://github.com/pigeonposse/creatium/raw/main/docs/public/example.gif)
 
+## 📄 Description
+
+Build your create-bins quickly and easily
+
 ## Table of contents
 
 - [🤔 What is it `creatium`?](#-what-is-it-creatium)
+- [📄 Description](#-description)
 - [🔑 Installation](#-installation)
 - [🚀 Usage](#-usage)
   - [Simple use case](#simple-use-case)
@@ -53,6 +56,7 @@ Demo of the `creatium` library:
 - [☕ Donate](#-donate)
 - [📜 License](#-license)
 - [🐦 About us](#-about-us)
+
 
 
 ## 🔑 Installation

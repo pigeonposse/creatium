@@ -12,12 +12,73 @@
 [![Medium](https://img.shields.io/badge/Medium-black?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@pigeonposse)
 
 
+## 🤔 What is it `creatium`?
+
+`creatium` is a JavaScript Library for creating project templates.
+
+> Useful for create-binaries like `pnpm create backan`
+
+[Read more](https://www.npmjs.com/package/creatium)
+
+Demo of the `creatium` library:
+
+![demo](https://github.com/pigeonposse/creatium/raw/main/docs/public/example.gif)
+
+## 📄 Description
+
 Build your create-bins quickly and easily
 
 ## Table of contents
 
-- [🔑 Installation](#-installation)
 - [🤔 What is it `creatium`?](#-what-is-it-creatium)
+- [📄 Description](#-description)
+- [🔑 Installation](#-installation)
+- [🚀 Usage](#-usage)
+  - [Simple use case](#simple-use-case)
+    - [Project structure](#project-structure)
+    - [src/core.js](#srccorejs)
+    - [src/bin.js](#srcbinjs)
+    - [src/lib.js](#srclibjs)
+    - [package.json](#packagejson)
+    - [Data (templates)](#data-templates)
+    - [Execute](#execute)
+  - [Advanced use case](#advanced-use-case)
+    - [Project structure](#project-structure)
+    - [src/core.js](#srccorejs)
+    - [src/bin.js](#srcbinjs)
+    - [src/lib.js](#srclibjs)
+    - [package.json](#packagejson)
+    - [Data (templates & partials)](#data-templates--partials)
+    - [Execute](#execute)
+- [Api documentation](#api-documentation)
+  - [Classes](#classes)
+    - [Creatium](#creatium)
+    - [CreatiumCore\<C\>](#creatiumcorec)
+  - [Type Aliases](#type-aliases)
+    - [CliOpts](#cliopts)
+    - [Config](#config)
+    - [CreateOpts](#createopts)
+    - [CreateTemplateOpts](#createtemplateopts)
+  - [Variables](#variables)
+    - [env](#env)
+    - [INSTALLER](#installer)
+    - [OPTION](#option)
+    - [prompt](#prompt)
+    - [style](#style)
+    - [sys](#sys)
+    - [TEXT\_EDITOR](#text_editor)
+- [👨‍💻 Development](#-development)
+- [☕ Donate](#-donate)
+- [📜 License](#-license)
+- [🐦 About us](#-about-us)
+
+
+
+## Table of contents
+
+- [🤔 What is it `creatium`?](#-what-is-it-creatium)
+- [📄 Description](#-description)
+- [🔑 Installation](#-installation)
 - [🚀 Usage](#-usage)
   - [Simple use case](#simple-use-case)
     - [Project structure](#project-structure)
@@ -71,14 +132,6 @@ deno install creatium
 # or 
 bun add creatium
 ```
-
-## 🤔 What is it `creatium`?
-
-`creatium` is a CLI and Library for creating project templates.
-
-> Useful for create-binaries like `pnpm create backan`
-
-[Read more](https://www.npmjs.com/package/creatium)
 
 ## 🚀 Usage
 
@@ -1523,8 +1576,6 @@ Text editor values used in `openEditor` option.
 | `VSCODE` | `"code"` | 'code' |
 | `WEBSTORM` | `"webstorm"` | 'webstorm' |
 
-
-***
 
 ## 👨‍💻 Development
 

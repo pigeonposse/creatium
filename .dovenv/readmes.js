@@ -62,6 +62,7 @@ const buildCoreReadme = async ( {
 		const tsconfigPath       = joinPath( projectPath, 'tsconfig.json' )
 		const socialPath         = joinPath( partialsDir, 'social.md' )
 		const footerPath         = joinPath( partialsDir, 'footer.md' )
+		const headerPath         = joinPath( partialsDir, 'header.md' )
 		const data               = await getObjectFromJSONFile( projectPackage )
 		console.log( line( {
 			title    : color.cyan( `Build README [${id || 'workspace'}]` ),
@@ -110,19 +111,20 @@ const buildCoreReadme = async ( {
 			mark  : config.const.mark,
 		}
 
-		const socialTemplate = await replacePlaceholders( {
+		params.social = await replacePlaceholders( {
 			content : await getMD( socialPath ),
 			params,
 		} )
 
-		params.social = socialTemplate
-
-		const footerTemplate = await replacePlaceholders( {
-			content : await getMD( footerPath ),
+		params.header = await replacePlaceholders( {
+			content : await getMD( headerPath ),
 			params,
 		} )
 
-		params.footer = footerTemplate
+		params.footer = await replacePlaceholders( {
+			content : await getMD( footerPath ),
+			params,
+		} )
 
 		const readmeTemplate    = await getMD( readmeTemplatePath )
 		const readmeContentPre1 = await replacePlaceholders( {
@@ -134,11 +136,13 @@ const buildCoreReadme = async ( {
 				api : api,
 			},
 		} )
+
 		const readmeContentPre2 = await replacePlaceholders( {
 			content : readmeContentPre1,
 			params,
 		} )
-		const readmeContent     = await replacePlaceholders( {
+
+		const readmeContent = await replacePlaceholders( {
 			content : readmeContentPre2,
 			params  : { toc : await geMDTocString( {
 				input           : readmeContentPre2,

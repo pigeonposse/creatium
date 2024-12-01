@@ -12,12 +12,48 @@
 [![Medium](https://img.shields.io/badge/Medium-black?style=for-the-badge&logo=medium&logoColor=white)](https://medium.com/@pigeonposse)
 
 
+## 🤔 What is it `creatium`?
+
+`creatium` is a JavaScript Library for creating project templates.
+
+> Useful for create-binaries like `pnpm create backan`
+
+[Read more](https://www.npmjs.com/package/creatium)
+
+Demo of the `creatium` library:
+
+![demo](https://github.com/pigeonposse/creatium/raw/main/docs/public/example.gif)
+
+## 📄 Description
+
 Create a new creatium project
 
 ## Table of contents
 
-- [🔑 Installation](#-installation)
 - [🤔 What is it `creatium`?](#-what-is-it-creatium)
+- [📄 Description](#-description)
+- [🔑 Installation](#-installation)
+- [Usage](#usage)
+  - [As a CLI](#as-a-cli)
+  - [Simple way](#simple-way)
+  - [Show help](#show-help)
+  - [With flags](#with-flags)
+  - [As a JavaScript module](#as-a-javascript-module)
+- [Api documentation](#api-documentation)
+  - [Functions](#functions)
+    - [create()](#create)
+- [👨‍💻 Development](#-development)
+- [☕ Donate](#-donate)
+- [📜 License](#-license)
+- [🐦 About us](#-about-us)
+
+
+
+## Table of contents
+
+- [🤔 What is it `creatium`?](#-what-is-it-creatium)
+- [📄 Description](#-description)
+- [🔑 Installation](#-installation)
 - [Usage](#usage)
   - [As a CLI](#as-a-cli)
   - [Simple way](#simple-way)
@@ -46,14 +82,6 @@ deno install create-creatium
 # or 
 bun add create-creatium
 ```
-
-## 🤔 What is it `creatium`?
-
-`creatium` is a CLI and Library for creating project templates.
-
-> Useful for create-binaries like `pnpm create backan`
-
-[Read more](https://www.npmjs.com/package/creatium)
 
 <!-- TEMPLATE FOR README - END -->
 
@@ -161,8 +189,6 @@ function create(params: undefined | {
 | `openEditor`? | `TextEditor` |
 | `output`? | `string` |
 
-
-***
 
 ## 👨‍💻 Development
 

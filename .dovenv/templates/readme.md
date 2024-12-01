@@ -1,8 +1,6 @@
 # {{title}}
 
-{{social}}
-
-{{desc}}
+{{header}}
 
 {{toc}}
 
@@ -20,19 +18,9 @@ deno install {{name}}
 bun add {{name}}
 ```
 
-## 🤔 What is it `{{pkg.extra.id}}`?
-
-`{{pkg.extra.id}}` is a CLI and Library for creating project templates.
-
-> Useful for create-binaries like `pnpm create backan`
-
-[Read more](https://www.npmjs.com/package/creatium)
-
 {{content}}
 
 {{api}}
-
-***
 
 {{footer}}
 
