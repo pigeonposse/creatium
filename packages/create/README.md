@@ -27,49 +27,28 @@ Demo of the `creatium` library:
 
 ![demo](https://github.com/pigeonposse/creatium/raw/main/docs/public/example.gif)
 
+## Table of contents
+
+- [🤔 What is it `creatium`?](#-what-is-it-creatium)
+- [📄 Description](#-description)
+- [🔑 Installation](#-installation)
+- [Usage](#usage)
+  - [As a CLI](#as-a-cli)
+  - [Simple way](#simple-way)
+  - [Show help](#show-help)
+  - [With flags](#with-flags)
+  - [As a JavaScript module](#as-a-javascript-module)
+- [Api documentation](#api-documentation)
+  - [Functions](#functions)
+- [👨‍💻 Development](#-development)
+- [☕ Donate](#-donate)
+- [📜 License](#-license)
+- [🐦 About us](#-about-us)
+
+
 ## 📄 Description
 
 Create a new creatium project
-
-## Table of contents
-
-- [🤔 What is it `creatium`?](#-what-is-it-creatium)
-- [📄 Description](#-description)
-- [🔑 Installation](#-installation)
-- [Usage](#usage)
-  - [As a CLI](#as-a-cli)
-  - [Simple way](#simple-way)
-  - [Show help](#show-help)
-  - [With flags](#with-flags)
-  - [As a JavaScript module](#as-a-javascript-module)
-- [Api documentation](#api-documentation)
-  - [Functions](#functions)
-    - [create()](#create)
-- [👨‍💻 Development](#-development)
-- [☕ Donate](#-donate)
-- [📜 License](#-license)
-- [🐦 About us](#-about-us)
-
-
-
-## Table of contents
-
-- [🤔 What is it `creatium`?](#-what-is-it-creatium)
-- [📄 Description](#-description)
-- [🔑 Installation](#-installation)
-- [Usage](#usage)
-  - [As a CLI](#as-a-cli)
-  - [Simple way](#simple-way)
-  - [Show help](#show-help)
-  - [With flags](#with-flags)
-  - [As a JavaScript module](#as-a-javascript-module)
-- [Api documentation](#api-documentation)
-  - [Functions](#functions)
-    - [create()](#create)
-- [👨‍💻 Development](#-development)
-- [☕ Donate](#-donate)
-- [📜 License](#-license)
-- [🐦 About us](#-about-us)
 
 
 ## 🔑 Installation

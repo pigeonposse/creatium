@@ -27,10 +27,6 @@ Demo of the `creatium` library:
 
 ![demo](https://github.com/pigeonposse/creatium/raw/main/docs/public/example.gif)
 
-## 📄 Description
-
-Build your create-bins quickly and easily
-
 ## Table of contents
 
 - [🤔 What is it `creatium`?](#-what-is-it-creatium)
@@ -38,21 +34,7 @@ Build your create-bins quickly and easily
 - [🔑 Installation](#-installation)
 - [🚀 Usage](#-usage)
   - [Simple use case](#simple-use-case)
-    - [Project structure](#project-structure)
-    - [src/core.js](#srccorejs)
-    - [src/bin.js](#srcbinjs)
-    - [src/lib.js](#srclibjs)
-    - [package.json](#packagejson)
-    - [Data (templates)](#data-templates)
-    - [Execute](#execute)
   - [Advanced use case](#advanced-use-case)
-    - [Project structure](#project-structure)
-    - [src/core.js](#srccorejs)
-    - [src/bin.js](#srcbinjs)
-    - [src/lib.js](#srclibjs)
-    - [package.json](#packagejson)
-    - [Data (templates & partials)](#data-templates--partials)
-    - [Execute](#execute)
 - [📝 Examples](#-examples)
 - [📦 Packages](#-packages)
 - [👨‍💻 Development](#-development)
@@ -60,6 +42,10 @@ Build your create-bins quickly and easily
 - [📜 License](#-license)
 - [🐦 About us](#-about-us)
 
+
+## 📄 Description
+
+Build your create-bins quickly and easily
 
 
 ## 🔑 Installation
