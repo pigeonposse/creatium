@@ -1,0 +1,16 @@
+###############################################################################
+# PRE COMMIT
+#
+# @description runs before creating the COMMIT message
+# @see https://typicode.github.io/husky/
+# @see https://git-scm.com/docs/git-commit#_hooks
+# @see https://www.npmjs.com/package/lint-staged
+###############################################################################
+
+echo 'Precommit 🚀'
+echo
+pnpm --silent . readmes --silent
+echo
+pnpm --silent . ws check --silent
+echo
+pnpm --silent . lint staged --silent

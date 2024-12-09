@@ -3,7 +3,7 @@ import {
 	formatValidationError,
 	schema2type,
 	serializeValidation,
-} from '@dovenv/utils'
+} from '@dovenv/core/utils'
 
 export const pkgSchema = z.object( {
 	name        : z.string(),

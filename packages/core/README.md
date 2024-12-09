@@ -1067,6 +1067,7 @@ If the `outro` option is undefined, the default outro message will be used.
 ```ts
 replacePlaceholders(args: {
   input: string;
+  inputOpts: Options;
   params: Params;
 }): Promise<void>
 ```
@@ -1083,6 +1084,7 @@ in the content are replaced with values from the `params` object.
 | ------ | ------ | ------ |
 | `args` | `object` | The arguments object. |
 | `args.input`? | `string` | The directory path containing files with placeholders. |
+| `args.inputOpts`? | `Options` | - |
 | `args.params`? | `Params` | An object containing key-value pairs for replacing placeholders. |
 
 ###### Returns
@@ -1096,7 +1098,7 @@ A Promise that resolves once all placeholders have been replaced.
 ```ts
 await core.replacePlaceholders( {
   input  : 'my/project/path',
-  params : { placeholder1: 'value1', placeholder2: 'value2' },
+  params : { consts: { version: '1.0.0' }, prompt: { name: 'My Project' } },
 })
 ```
 

@@ -13,7 +13,7 @@ import {
 	resolvePath,
 	incrementMdHeaders,
 	line,
-} from '@dovenv/utils'
+} from '@dovenv/core/utils'
 
 import {
 	markSchema,

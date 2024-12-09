@@ -276,7 +276,7 @@ export class CreatiumCore<C extends Config = Config> {
 	async intro( message?: string ) {
 
 		if ( message )
-			this.utils.prompt.outro( message )
+			this.utils.prompt.intro( message )
 		else if ( typeof this.config.intro === 'function' )
 			await this.config.intro( this.#data || {} )
 		else if ( this.config.intro === undefined ) {
@@ -299,12 +299,17 @@ export class CreatiumCore<C extends Config = Config> {
 	 */
 	async outro( message?: string ) {
 
+		this.utils.prompt.log.step( '' )
+
 		if ( message )
 			this.utils.prompt.outro( message )
 		else if ( typeof this.config.outro === 'function' && this.#data )
 			await this.config.outro( this.#data )
-		else if ( this.config.outro === undefined )
+		else if ( this.config.outro === undefined ) {
+
 			this.utils.prompt.outro( 'Successfully completed 🌈' )
+
+		}
 
 	}
 
@@ -446,14 +451,15 @@ export class CreatiumCore<C extends Config = Config> {
 	 * @example
 	 * await core.replacePlaceholders( {
 	 *   input  : 'my/project/path',
-	 *   params : { placeholder1: 'value1', placeholder2: 'value2' },
+	 *   params : { consts: { version: '1.0.0' }, prompt: { name: 'My Project' } },
 	 * })
 	 */
 	async replacePlaceholders( {
-		input, params,
+		input, params, inputOpts,
 	}:{
-		input?  : string
-		params? : Parameters<typeof replacePlaceholders>[0]['params']
+		input?     : string
+		params?    : Parameters<typeof replacePlaceholders>[0]['params']
+		inputOpts? : Parameters<typeof getPaths>[1]
 	} = {} ) {
 
 		if ( !input ) input = this.#cwd
@@ -484,7 +490,11 @@ export class CreatiumCore<C extends Config = Config> {
 
 		}
 
-		const paths = await getPaths( [ input ], { onlyFiles: true } )
+		const paths = await getPaths( [ input ], {
+			onlyFiles : true,
+			dot       : true,
+			...inputOpts || {},
+		} )
 
 		console.debug( { templatePaths: paths } )
 
@@ -609,8 +619,6 @@ export class CreatiumCore<C extends Config = Config> {
 				input  : data.output,
 				editor : openEditor,
 			} )
-
-			this.utils.prompt.log.step( '' )
 
 			// OUTRO
 			await this.outro()
