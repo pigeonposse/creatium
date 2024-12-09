@@ -91,8 +91,10 @@ const buildCoreReadme = async ( {
 					tsconfigPath    : tsconfigPath,
 					packageJsonPath : projectPackage,
 					typedocMarkdown : {
-						hidePageHeader : true,
-						hidePageTitle  : true,
+						hidePageHeader   : true,
+						hidePageTitle    : true,
+						sanitizeComments : true,
+
 					},
 				},
 			} )
@@ -100,6 +102,10 @@ const buildCoreReadme = async ( {
 			const { content } = ( await ts2md.run() )[0]
 
 			api = `## Api documentation\n\n` + await incrementMdHeaders( content )
+			api = api
+				.split( '\n' )
+				.filter( line => line.trim() !== '***' )
+				.join( '\n' )
 
 		}
 

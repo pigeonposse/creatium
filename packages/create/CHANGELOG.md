@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.1.8
+
+### Patch Changes
+
+- fix readme
+
+- Updated dependencies []:
+  - creatium@0.1.8
+
 ## 0.1.7
 
 ### Patch Changes

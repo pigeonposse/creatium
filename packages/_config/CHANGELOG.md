@@ -1,5 +1,11 @@
 # @creatium/repo-config
 
+## 0.1.7
+
+### Patch Changes
+
+- fix readme
+
 ## 0.1.6
 
 ### Patch Changes

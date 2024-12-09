@@ -683,7 +683,6 @@ await core.cli()
 await core.cli( { args : process.argv.slice(4), hideBin : false } )
 ```
 
-***
 
 #### CreatiumCore\<C\>
 
@@ -1172,7 +1171,6 @@ type CliOpts: {
 | `args`? | `string`[] | Arguments to pass to the command **Default** `process.argv.slice(2)` |
 | `hideBin`? | `boolean` | Hide the first two arguments **Default** `false` |
 
-***
 
 #### Config
 
@@ -1209,7 +1207,6 @@ type Config: {
 | `updater`? | `boolean` | Use updater **Default** `false` |
 | `version` | `string` | Set version of you current project Used in for the updater notifications. |
 
-***
 
 #### CreateOpts
 
@@ -1225,7 +1222,6 @@ type CreateOpts: CliOpts & {
 | ------ | ------ | ------ |
 | `activeCli`? | `boolean` | Options for activate cli. **Default** `true` |
 
-***
 
 #### CreateTemplateOpts
 
@@ -1279,7 +1275,6 @@ Environment functions
 | `isNode` | `boolean` |
 | `isWebWorker` | `boolean` |
 
-***
 
 #### INSTALLER
 
@@ -1307,7 +1302,6 @@ installer values used in `install` option.
 | `PNPM` | `"pnpm"` | 'pnpm' |
 | `YARN` | `"yarn"` | 'yarn' |
 
-***
 
 #### OPTION
 
@@ -1349,7 +1343,6 @@ Object of the CREATIUM types
 | `text` | `"text"` | 'text' |
 | `void` | `"void"` | 'void' |
 
-***
 
 #### prompt
 
@@ -1443,7 +1436,6 @@ Prompt functions
 | `tasks()` | `Promise`\<`void`\> | Define a group of tasks to be executed |
 | `text()` | `Promise`\<`string` \| `symbol`\> | - |
 
-***
 
 #### style
 
@@ -1475,7 +1467,6 @@ Style functions
 | `line` | (`__namedParameters`: \{ `align`: `'center'`; `lineChar`: `'⎯'`; `title`: `string`; \}) => `string` |
 | `table` | (`data`: `TableData`, `options`?: `TableUserConfig`) => `string` |
 
-***
 
 #### sys
 
@@ -1485,7 +1476,6 @@ const sys: __module = _sys;
 
 System functions
 
-***
 
 #### TEXT\_EDITOR
 
