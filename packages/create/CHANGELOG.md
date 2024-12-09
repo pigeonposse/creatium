@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.1.9
+
+### Patch Changes
+
+- update package json
+
+- Updated dependencies []:
+  - creatium@0.1.9
+
 ## 0.1.8
 
 ### Patch Changes

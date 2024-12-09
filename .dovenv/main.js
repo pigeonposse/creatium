@@ -62,11 +62,17 @@ export default defineConfig(
 
 			if ( !content ) throw new Error( `No data in ${path}` )
 			if ( 'private' in content ) return
+
+			if ( !content.keywords.includes( 'pp' ) || !content.keywords.includes( 'pigeonposse' ) )
+				throw new Error( `You must add "pigeonposse" and "pp" keywords in ${path}` )
+
 			return v.object( {
-				name        : v.string(),
-				version     : v.string(),
-				description : v.string(),
-				files       : v.array( v.string() ),
+				name          : v.string(),
+				version       : v.string(),
+				description   : v.string(),
+				files         : v.array( v.string() ),
+				keywords      : v.array( v.string() ),
+				publishConfig : v.object( { access: v.literal( 'public' ) } ),
 			} )
 
 		} } } },

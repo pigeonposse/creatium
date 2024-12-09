@@ -1,5 +1,11 @@
 # @creatium/repo-config
 
+## 0.1.8
+
+### Patch Changes
+
+- update package json
+
 ## 0.1.7
 
 ### Patch Changes

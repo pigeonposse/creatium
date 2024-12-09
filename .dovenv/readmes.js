@@ -94,7 +94,6 @@ const buildCoreReadme = async ( {
 						hidePageHeader   : true,
 						hidePageTitle    : true,
 						sanitizeComments : true,
-
 					},
 				},
 			} )

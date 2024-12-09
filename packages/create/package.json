@@ -1,7 +1,17 @@
 {
 	"name": "create-creatium",
-	"version": "0.1.8",
+	"version": "0.1.9",
 	"description": "Create a new creatium project",
+	"keywords": [
+		"cli",
+		"library",
+		"create-bins",
+		"create",
+		"node",
+		"bin",
+		"pigeonposse",
+		"pp"
+	],
 	"bugs": {
 		"url": "https://github.com/pigeonposse/creatium/issues",
 		"email": "dev@pigeonposse.com"
