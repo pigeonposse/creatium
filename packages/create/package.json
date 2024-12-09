@@ -1,6 +1,6 @@
 {
 	"name": "create-creatium",
-	"version": "0.1.6",
+	"version": "0.1.7",
 	"description": "Create a new creatium project",
 	"bugs": {
 		"url": "https://github.com/pigeonposse/creatium/issues",

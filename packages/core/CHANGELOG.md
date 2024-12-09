@@ -1,5 +1,11 @@
 # creatium
 
+## 0.1.7
+
+### Patch Changes
+
+- Update with issues fixed
+
 ## 0.1.6
 
 ### Patch Changes

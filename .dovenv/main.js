@@ -49,7 +49,7 @@ export default defineConfig(
 			},
 			{
 				value : 'all',
-				desc  : 'nv/packages etc',
+				desc  : 'env, packages etc',
 			},
 		] } },
 		lint : {
