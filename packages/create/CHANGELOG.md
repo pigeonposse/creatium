@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.1.11
+
+### Patch Changes
+
+- up workflows
+
+- Updated dependencies []:
+  - creatium@0.1.11
+
 ## 0.1.10
 
 ### Patch Changes

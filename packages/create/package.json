@@ -1,6 +1,6 @@
 {
 	"name": "create-creatium",
-	"version": "0.1.10",
+	"version": "0.1.11",
 	"description": "Create a new creatium project",
 	"keywords": [
 		"cli",

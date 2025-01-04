@@ -1,5 +1,11 @@
 # @creatium/repo-config
 
+## 0.1.10
+
+### Patch Changes
+
+- up workflows
+
 ## 0.1.9
 
 ### Patch Changes
