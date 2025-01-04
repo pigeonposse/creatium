@@ -12,6 +12,7 @@
 		"pigeonposse",
 		"pp"
 	],
+	"homepage": "https://creatium.pigeonposse.com/guide/create",
 	"bugs": {
 		"url": "https://github.com/pigeonposse/creatium/issues",
 		"email": "dev@pigeonposse.com"
@@ -57,6 +58,5 @@
 	"publishConfig": {
 		"access": "public",
 		"registry": "https://registry.npmjs.org/"
-	},
-	"homepage": "https://creatium.pigeonposse.com/guide/create"
+	}
 }
