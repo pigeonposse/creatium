@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.1.12
+
+### Patch Changes
+
+- fix gh workflows
+
+- Updated dependencies []:
+  - creatium@0.1.12
+
 ## 0.1.11
 
 ### Patch Changes
