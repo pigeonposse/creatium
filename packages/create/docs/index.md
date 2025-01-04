@@ -1,4 +1,8 @@
-# Usage
+# Init Creatium Project
+
+Create a new creatium project
+
+## 🔑 Installation
 
 ```bash
 npm create creatium
@@ -12,36 +16,38 @@ bun create creatium
 deno create creatium
 ```
 
-## As a CLI
+## 🚀 Usage
+
+### As a CLI
 
 ```bash
-{{name}} [options]
+create-creatium [options]
 ```
 
-## Simple way
+### Simple way
 
 Run with anything and a user prompt will appear.
 
 ```bash
-{{name}}
+create-creatium
 ```
 
-## Show help
+### Show help
 
 ```bash
-{{name}} --help
+create-creatium --help
 ```
 
-## With flags
+### With flags
 
 ```bash
-{{name}} --input ts --output ./build --name 'my-library'
+create-creatium --input ts --output ./build --name 'my-library'
 ```
 
-## As a JavaScript module
+### As a JavaScript module
 
 ```js
-import { create } from '{{name}}'
+import { create } from 'create-creatium'
 
 await create( {
  input: '...',

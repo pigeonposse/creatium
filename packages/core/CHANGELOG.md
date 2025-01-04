@@ -1,5 +1,11 @@
 # creatium
 
+## 0.1.10
+
+### Patch Changes
+
+- Update documentation, fix create pkg issues
+
 ## 0.1.9
 
 ### Patch Changes

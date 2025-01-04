@@ -56,7 +56,7 @@ jobs:
             GH_TOKEN: ${{ env.GITHUB_TOKEN }}
 
       - name: ⬇️📦 Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile --ignore-scripts
 
       - name: ⬇️🌐 Install Playwright Browsers
         run: npx playwright install --with-deps
@@ -109,15 +109,12 @@ jobs:
       - name: Get updated versions if exists
         id: updated
         run: |
-          docs_version=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[] | select(.name == "@backan/docs") | .version')
-          core_version=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r 'map(select(.name == "@backan/core" or .name == "@backan/builder" or .name == "@backan/server")) | .[0].version // empty' )
+          core_version=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[] | select(.name == "@dovenv/core") | .version')
           core_version_major=${core_version%%.*}
           echo Set changesets outputs
-          echo '${{ steps.changesets.outputs }}'
+          echo '${{ toJSON(steps.changesets.outputs) }}'
           echo Set updated versions
-          echo "CORE=$core_version CORE_MAJOR=$core_version_major DOCS=$docs_version"
           echo "core_version=$core_version" >> $GITHUB_OUTPUT
-          echo "docs_version=$docs_version" >> $GITHUB_OUTPUT
           echo "core_version_major=$core_version_major" >> $GITHUB_OUTPUT
 
       - name: Add core version TAG to Github
@@ -134,32 +131,21 @@ jobs:
           git diff --name-only HEAD origin/main | grep 'package.json' || echo "No changes in package.json"
         continue-on-error: true
         id: check_package_json
+      - name: ℹ️🐙😺➡️ Update repo info
+        if: steps.check_package_json.outputs.stdout != 'No changes in package.json'
+        run: pnpm . gh info update
+        continue-on-error: true
 
       #########################################################################
       # CALL TO WORKFLOWS
       #########################################################################
 
-      - name: ℹ️🐙😺➡️ Update repo info
-        if: steps.check_package_json.outputs.stdout != 'No changes in package.json'
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: update-repo.yml
-        continue-on-error: true
-
       - name: 📚🐙😺➡️ Call to workflow for deploy Documentation
-        if: steps.updated.outputs.docs_version != ''
+        if: steps.updated.outputs.core_version != ''
         uses: benc-uk/workflow-dispatch@v1
         with:
           workflow: release-docs.yml
-          inputs: '{ "version": "${{ steps.updated.outputs.docs_version }}"}'
+          inputs: '{ "version": "${{ steps.updated.outputs.core_version }}"}'
         continue-on-error: true
-
-    #   - name: 💾🐙😺➡️ Call to workflow for create lib releases
-    #     if: steps.updated.outputs.core_version != ''
-    #     uses: benc-uk/workflow-dispatch@v1
-    #     with:
-    #       workflow: release-lib.yml
-    #       inputs: '{ "version": "${{ steps.updated.outputs.core_version }}"}'
-    #     continue-on-error: true
 
 ###############################################################################

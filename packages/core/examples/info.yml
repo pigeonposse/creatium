@@ -1,0 +1,47 @@
+simple:
+  title: "Simple Example"
+  data:
+    main:
+      input: "./simple/main.ts"
+      title: Instance file
+      desc: "Set de configuration and build the [creatiium] instance."
+    bin:
+      input: "./simple/bin.ts"
+      title: Bin file
+      desc: "Create binary and then call cli method of [creatium] instance"
+    lib:
+      input: "./simple/lib.ts"
+      title: Library file
+      desc: "Create Function for use it as a library"
+
+simple-custom:
+  title: "Simple Example (custom)"
+  data:
+    main:
+      input: "./simple-custom/main.ts"
+      title: Instance file
+      desc: "Set de configuration and build the [creatiium] instance."
+    bin:
+      input: "./simple-custom/bin.ts"
+      title: Bin file
+      desc: "Create binary and then call cli method of [creatium] instance"
+    lib:
+      input: "./simple-custom/lib.ts"
+      title: Library file
+      desc: "Create Function for use it as a library"
+
+advanced:
+  title: "Advanced Example"
+  data:
+    main:
+      input: "./advanced/main.ts"
+      title: Instance file
+      desc: "Set de configuration and build the [creatiium] instance."
+    bin:
+      input: "./advanced/bin.ts"
+      title: Bin file
+      desc: "Create binary and then call cli method of [creatium] instance"
+    lib:
+      input: "./advanced/lib.ts"
+      title: Library file
+      desc: "Create Function for use it as a library"

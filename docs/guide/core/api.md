@@ -1,4 +1,4 @@
-# creatium
+# `creatium` - API documentation
 
 ## Classes
 
@@ -85,7 +85,7 @@ new Creatium(options: {
 
 ###### Returns
 
-[`Creatium`](api.md#creatium)
+[`Creatium`](#creatium)
 
 #### Methods
 
@@ -119,7 +119,7 @@ A simplified version of the `build` method from the main class.
 | `values.name`? | `string` | Set the name of the template |
 | `values.openEditor`? | `TextEditor` | Open editor |
 | `values.output`? | `string` | Set the output path |
-| `opts`? | [`CreateOpts`](api.md#createopts) | The options to pass to the CLI. |
+| `opts`? | [`CreateOpts`](#createopts) | The options to pass to the CLI. |
 
 ###### Returns
 
@@ -172,7 +172,7 @@ Initializes and executes the command-line interface (CLI) process.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `props`? | [`CliOpts`](api.md#cliopts) | Optional CLI options to configure the initialization process. |
+| `props`? | [`CliOpts`](#cliopts) | Optional CLI options to configure the initialization process. |
 
 ###### Returns
 
@@ -247,7 +247,7 @@ export const create = async (args) => {
 
 | Type Parameter | Default type | Description |
 | ------ | ------ | ------ |
-| `C` *extends* [`Config`](api.md#config) | [`Config`](api.md#config) |  |
+| `C` *extends* [`Config`](#config) | [`Config`](#config) |  |
 
 #### Accessors
 
@@ -287,7 +287,7 @@ new CreatiumCore<C>(config: C): CreatiumCore<C>
 
 ###### Returns
 
-[`CreatiumCore`](api.md#creatiumcorec)\<`C`\>
+[`CreatiumCore`](#creatiumcorec)\<`C`\>
 
 #### Methods
 
@@ -304,7 +304,7 @@ Initialize the CLI and executes the callback function passed in the config.
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
 | `values`? | \{ \[K in string \| number \| symbol\]: \{ \[K in string \| number \| symbol\]: \{ \[K in string \| number \| symbol\]?: \{ \[K in string \| number \| symbol\]: ((...)\[(...)\] extends Object ? (...) extends (...) ? (...) : (...) : never)\[K\] \} \}\[K\] \}\[K\] \} | The values to override the CLI prompts. If not set, the CLI prompts will be executed. |
-| `opts`? | [`CreateOpts`](api.md#createopts) | The options to pass to the CLI. |
+| `opts`? | [`CreateOpts`](#createopts) | The options to pass to the CLI. |
 
 ###### Returns
 
@@ -346,7 +346,7 @@ Initializes and executes the command-line interface (CLI) process.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `props`? | [`CliOpts`](api.md#cliopts) | Optional CLI options to configure the initialization process. |
+| `props`? | [`CliOpts`](#cliopts) | Optional CLI options to configure the initialization process. |
 
 ###### Returns
 
@@ -412,7 +412,7 @@ Create a new project template.
 
 | Parameter | Type | Description |
 | ------ | ------ | ------ |
-| `values` | [`CreateTemplateOpts`](api.md#createtemplateopts) | The values to create the template. |
+| `values` | [`CreateTemplateOpts`](#createtemplateopts) | The values to create the template. |
 
 ###### Returns
 

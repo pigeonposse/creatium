@@ -9,8 +9,6 @@
 
 echo 'Precommit 🚀'
 echo
-pnpm --silent . ws check --silent
-echo
-pnpm --silent . readmes --silent
+pnpm --silent . check --silent
 echo
 pnpm --silent . lint staged --silent

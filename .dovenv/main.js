@@ -2,9 +2,7 @@ import { defineConfig } from '@dovenv/core'
 import ppTheme, {
 	getWorkspaceConfig,
 	Predocs,
-	predocsCommand,
 } from '@dovenv/theme-pigeonposse'
-import { features } from 'process'
 
 // import readmes from './readmes.js'
 
@@ -57,6 +55,8 @@ export default defineConfig(
 				'plugin',
 			] } )
 
+			await docs.setPkgFiles()
+
 		},
 	} } },
 
@@ -73,14 +73,6 @@ export default defineConfig(
 				path    : '../packages/core',
 			},
 		} ),
-		web : { values : {
-			type     : 'library',
-			subtypes : [
-				'Bin',
-				'CLI',
-				'Node',
-			],
-		} },
 		docs : async () => ( {
 			version   : core.corePkg.version,
 			vitepress : {

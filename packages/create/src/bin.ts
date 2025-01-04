@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
 import {
-	creatium,
+	core,
 	createTemplate,
-} from './main'
+} from './core'
 
 const run = async () => {
 
-	const res = await creatium.cli()
+	const res = await core.cli()
 	await createTemplate( res )
 
 }

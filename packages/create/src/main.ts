@@ -1,15 +1,19 @@
 import {
-	creatium,
+	core,
 	createTemplate,
 } from './core'
 
-export type CreateParams = Parameters<typeof creatium.build>[0]
+import type { CreateTemplateParams } from './core'
 
-export const create = async ( params: CreateParams ) => {
+/**
+ * Creates a new project using the specified parameters.
+ * @param {CreateTemplateParams} params - The parameters required for building the project.
+ * @returns {Promise<object>} A promise that resolves to the result of the build process.
+ */
+export const create = async ( params: CreateTemplateParams ) => {
 
-	const res = await creatium.build( params, { activeCli: false } )
+	const res = await core.build( params, { activeCli: false } )
 	await createTemplate( res )
 	return res
 
 }
-

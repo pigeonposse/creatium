@@ -1,5 +1,11 @@
 # @creatium/repo-config
 
+## 0.1.9
+
+### Patch Changes
+
+- Update documentation, fix create pkg issues
+
 ## 0.1.8
 
 ### Patch Changes

@@ -1,10 +1,14 @@
 # What is it `creatium`?
 
+![BANNER](https://github.com/pigeonposse/creatium/blob/main/docs/public/banner.png?raw=true)
+
 `creatium` is a JavaScript Library for creating project templates.
 
 > Useful for create-binaries like `pnpm create backan`
 
 [Read more](https://www.npmjs.com/package/creatium)
+
+## Demo
 
 Demo of the `creatium` library:
 

@@ -40,9 +40,9 @@ const cancelFn = ( ) => {
 	process.exit( 0 )
 
 }
-
+export type CreateTemplateParams = Awaited<ReturnType<typeof core.cli>>
 /** Instance of your create-project */
-export const creatium = new CreatiumCore( {
+export const core = new CreatiumCore( {
 	name,
 	version,
 	updater  : true,
@@ -102,10 +102,10 @@ export const creatium = new CreatiumCore( {
 
 /**
  * Function for create a new project template.
- * @param {Awaited<ReturnType<typeof creatium.cli>>} params - The values to create the template.
+ * @param {CreateTemplateParams} params - The values to create the template.
  * @returns {Promise<void>} - A promise that resolves when the template is created.
  */
-export const createTemplate = async ( params: Awaited<ReturnType<typeof creatium.cli>> ) => {
+export const createTemplate = async ( params: CreateTemplateParams ) => {
 
 	try {
 
@@ -183,7 +183,7 @@ export const createTemplate = async ( params: Awaited<ReturnType<typeof creatium
 		}
 
 		// Create the template
-		await creatium.createTemplate( {
+		await core.createTemplate( {
 			output,
 			input,
 			install,

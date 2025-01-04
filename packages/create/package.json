@@ -1,6 +1,6 @@
 {
 	"name": "create-creatium",
-	"version": "0.1.9",
+	"version": "0.1.10",
 	"description": "Create a new creatium project",
 	"keywords": [
 		"cli",
@@ -57,5 +57,6 @@
 	"publishConfig": {
 		"access": "public",
 		"registry": "https://registry.npmjs.org/"
-	}
+	},
+	"homepage": "https://creatium.pigeonposse.com/guide/create"
 }

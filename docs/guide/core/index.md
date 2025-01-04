@@ -437,3 +437,9 @@ bun create {my-library-name}
 # or
 deno create {my-library-name}
 ```
+
+## More
+
+- 💡 [Examples](examples.md)
+- 📖 [API Docs](api.md)
+- 📦 [NPM](https://www.npmjs.com/package/creatium)
