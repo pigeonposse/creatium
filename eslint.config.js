@@ -1,12 +1,16 @@
-import { dovenvEslintConfig } from '@dovenv/lint'
+import { lint } from '@dovenv/theme-pigeonposse'
+
+const conf = lint.dovenvEslintConfig
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-	dovenvEslintConfig.includeGitIgnore(),
-	...dovenvEslintConfig.config,
-	dovenvEslintConfig.setIgnoreConfig( [
-		'**/templates/**/*',
-		'**/README.md',
-		'**/partials/**/*',
+	conf.includeGitIgnore(),
+	...conf.config,
+	conf.setIgnoreConfig( [
+		'./docs/**/*',
+		'**/CHANGELOG.md',
+		'**/examples/**/partials/*',
+		'**/examples/**/templates/*',
 	] ),
+
 ]

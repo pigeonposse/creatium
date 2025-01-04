@@ -1,5 +1,4 @@
-import { Typescript2Markdown } from '@dovenv/convert'
-import { defineConfig }        from '@dovenv/core'
+import { defineConfig } from '@dovenv/core'
 import {
 	getCurrentDir,
 	getMD,
@@ -14,6 +13,7 @@ import {
 	incrementMdHeaders,
 	line,
 } from '@dovenv/core/utils'
+import { convert  } from '@dovenv/theme-pigeonposse'
 
 import {
 	markSchema,
@@ -44,138 +44,129 @@ const buildCoreReadme = async ( {
 	input = [ 'src', 'main.ts' ],
 } ) => {
 
-	try {
+	if ( !config.const.pkg ) throw 'Must exist [pkg] const in dovenv configuration'
+	if ( !config.const.mark ) throw 'Must exist [mark] const in dovenv config.\nThis must be a text, for example a watermark, a trademark, or a simple text about the project.'
 
-		if ( !config.const.pkg ) throw 'Must exist [pkg] const in dovenv configuration'
-		if ( !config.const.mark ) throw 'Must exist [mark] const in dovenv config.\nThis must be a text, for example a watermark, a trademark, or a simple text about the project.'
+	await validateSchema( pkgSchema, config.const.pkg, 'pkg' )
+	await validateSchema( markSchema, config.const.mark, 'mark' )
 
-		await validateSchema( pkgSchema, config.const.pkg, 'pkg' )
-		await validateSchema( markSchema, config.const.mark, 'mark' )
+	const projectPath        = id ? joinPath( 'packages', id ) : '.'
+	const currentDir         = getCurrentDir( import.meta.url )
+	const partialsDir        = joinPath( currentDir, 'partials' )
+	const readmeTemplatePath = joinPath( currentDir, ...templatePath )
+	const readmePath         = joinPath( projectPath, 'README.md' )
+	const projectPackage     = joinPath( projectPath, 'package.json' )
+	const contentPath        = joinPath( projectPath, ...docsPath )
+	const tsconfigPath       = joinPath( projectPath, 'tsconfig.json' )
+	const socialPath         = joinPath( partialsDir, 'social.md' )
+	const footerPath         = joinPath( partialsDir, 'footer.md' )
+	const headerPath         = joinPath( partialsDir, 'header.md' )
+	const data               = await getObjectFromJSONFile( projectPackage )
+	console.log( line( {
+		title    : color.cyan( `Build README [${id || 'workspace'}]` ),
+		lineChar : ' ',
+	} )  )
+	console.log( line( {
+		title    : '',
+		lineChar : color.cyan.dim( '⎯' ),
+	} )  )
+	console.debug( {
+		config,
+		id,
+		templatePath,
+		docsPath,
+		title,
+		input,
+	} )
 
-		const projectPath        = id ? joinPath( 'packages', id ) : '.'
-		const currentDir         = getCurrentDir( import.meta.url )
-		const partialsDir        = joinPath( currentDir, 'partials' )
-		const readmeTemplatePath = joinPath( currentDir, ...templatePath )
-		const readmePath         = joinPath( projectPath, 'README.md' )
-		const projectPackage     = joinPath( projectPath, 'package.json' )
-		const contentPath        = joinPath( projectPath, ...docsPath )
-		const tsconfigPath       = joinPath( projectPath, 'tsconfig.json' )
-		const socialPath         = joinPath( partialsDir, 'social.md' )
-		const footerPath         = joinPath( partialsDir, 'footer.md' )
-		const headerPath         = joinPath( partialsDir, 'header.md' )
-		const data               = await getObjectFromJSONFile( projectPackage )
-		console.log( line( {
-			title    : color.cyan( `Build README [${id || 'workspace'}]` ),
-			lineChar : ' ',
-		} )  )
-		console.log( line( {
-			title    : '',
-			lineChar : color.cyan.dim( '⎯' ),
-		} )  )
-		console.debug( {
-			config,
-			id,
-			templatePath,
-			docsPath,
-			title,
-			input,
-		} )
+	let api = ''
 
-		let api = ''
+	if ( input ) {
 
-		if ( input ) {
-
-			const ts2md = new Typescript2Markdown( {
-				input : [ joinPath( projectPath, ...input ) ],
-				opts  : {
-					tsconfigPath    : tsconfigPath,
-					packageJsonPath : projectPackage,
-					typedocMarkdown : {
-						hidePageHeader   : true,
-						hidePageTitle    : true,
-						sanitizeComments : true,
-					},
+		const ts2md = new convert.Typescript2Markdown( {
+			input : [ joinPath( projectPath, ...input ) ],
+			opts  : {
+				tsconfigPath    : tsconfigPath,
+				packageJsonPath : projectPackage,
+				typedocMarkdown : {
+					hidePageHeader   : true,
+					hidePageTitle    : true,
+					sanitizeComments : true,
 				},
-			} )
-
-			const { content } = ( await ts2md.run() )[0]
-
-			api = `## Api documentation\n\n` + await incrementMdHeaders( content )
-			api = api
-				.split( '\n' )
-				.filter( line => line.trim() !== '***' )
-				.join( '\n' )
-
-		}
-
-		const params = {
-			pkg   : config.const.pkg,
-			desc  : data.description,
-			name  : data.name,
-			title : title || data.name,
-			mark  : config.const.mark,
-		}
-
-		params.social = await replacePlaceholders( {
-			content : await getMD( socialPath ),
-			params,
-		} )
-
-		params.header = await replacePlaceholders( {
-			content : await getMD( headerPath ),
-			params,
-		} )
-
-		params.footer = await replacePlaceholders( {
-			content : await getMD( footerPath ),
-			params,
-		} )
-
-		const readmeTemplate    = await getMD( readmeTemplatePath )
-		const readmeContentPre1 = await replacePlaceholders( {
-			content : readmeTemplate,
-			params  : {
-				content : await existsFile( contentPath )
-					? ( await incrementMdHeaders( await getMD( resolvePath( contentPath ) ) ) )
-					: '',
-				api : api,
 			},
 		} )
 
-		const readmeContentPre2 = await replacePlaceholders( {
-			content : readmeContentPre1,
-			params,
-		} )
+		const { content } = ( await ts2md.run() )[0]
 
-		const readmeContent = await replacePlaceholders( {
-			content : readmeContentPre2,
-			params  : { toc : await geMDTocString( {
-				input           : readmeContentPre2,
-				title           : 'Table of contents',
-				removeH1        : true,
-				maxHeadingLevel : 3,
-			} ) },
-		} )
-
-		await writeFileContent(
-			readmePath,
-			'<!-- AUTOGEN BY DOVENV - START\n Do not edit this file -->\n\n' + readmeContent + '\n\n<!-- AUTOGEN BY DOVENV - END -->',
-		)
-
-		console.log()
-		console.log( color.green( `[${id || 'workspace'}] Successfully created!! ✨✨` ) )
-		console.log( line( {
-			title    : '',
-			lineChar : color.cyan.dim( '⎯' ),
-		} )  )
-		console.log()
+		api = `## Api documentation\n\n` + await incrementMdHeaders( content )
+		api = api
+			.split( '\n' )
+			.filter( line => line.trim() !== '***' )
+			.join( '\n' )
 
 	}
-	catch ( e ) {
 
-		console.error( color.red( e ) )
-
+	const params = {
+		pkg   : config.const.pkg,
+		desc  : data.description,
+		name  : data.name,
+		title : title || data.name,
+		mark  : config.const.mark,
 	}
+
+	params.social = await replacePlaceholders( {
+		content : await getMD( socialPath ),
+		params,
+	} )
+
+	params.header = await replacePlaceholders( {
+		content : await getMD( headerPath ),
+		params,
+	} )
+
+	params.footer = await replacePlaceholders( {
+		content : await getMD( footerPath ),
+		params,
+	} )
+
+	const readmeTemplate    = await getMD( readmeTemplatePath )
+	const readmeContentPre1 = await replacePlaceholders( {
+		content : readmeTemplate,
+		params  : {
+			content : await existsFile( contentPath )
+				? ( await incrementMdHeaders( await getMD( resolvePath( contentPath ) ) ) )
+				: '',
+			api : api,
+		},
+	} )
+
+	const readmeContentPre2 = await replacePlaceholders( {
+		content : readmeContentPre1,
+		params,
+	} )
+
+	const readmeContent = await replacePlaceholders( {
+		content : readmeContentPre2,
+		params  : { toc : await geMDTocString( {
+			input           : readmeContentPre2,
+			title           : 'Table of contents',
+			removeH1        : true,
+			maxHeadingLevel : 3,
+		} ) },
+	} )
+
+	await writeFileContent(
+		readmePath,
+		'<!-- AUTOGEN BY DOVENV - START\n Do not edit this file -->\n\n' + readmeContent + '\n\n<!-- AUTOGEN BY DOVENV - END -->',
+	)
+
+	console.log()
+	console.log( color.green( `[${id || 'workspace'}] Successfully created!! ✨✨` ) )
+	console.log( line( {
+		title    : '',
+		lineChar : color.cyan.dim( '⎯' ),
+	} )  )
+	console.log()
 
 }
 

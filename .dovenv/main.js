@@ -1,35 +1,93 @@
 import { defineConfig } from '@dovenv/core'
-import {
-	asciiFont,
-	getCurrentDir,
-	getObjectFromJSONFile,
-	joinPath,
-} from '@dovenv/core/utils'
-import { config as bandaTheme } from '@dovenv/theme-banda'
+import ppTheme, {
+	getWorkspaceConfig,
+	Predocs,
+	predocsCommand,
+} from '@dovenv/theme-pigeonposse'
+import { features } from 'process'
 
-import readmes from './readmes.js'
+// import readmes from './readmes.js'
 
-const workspaceDir = joinPath( getCurrentDir( import.meta.url ), '..' )
-const pkgPath      = joinPath( workspaceDir, 'package.json' )
-const pkg          = await getObjectFromJSONFile( pkgPath )
-const name         = pkg.extra.productName
-export default defineConfig(
-	{
-		name  : name,
-		desc  : 'Workspaces for ' + name,
-		const : {
-			workspaceDir,
-			pkg,
-			mark : `\n${asciiFont( `pigeonposse\n-------\n${pkg.extra.id}`, 'ANSI Shadow' )}\nAuthor: ${pkg.author.name}\n`,
-		},
+const core = await getWorkspaceConfig( {
+	metaURL  : import.meta.url,
+	path     : '..',
+	packages : {
+		metaURL : import.meta.url,
+		path    : '../packages',
 	},
-	readmes,
-	bandaTheme( {
-		convert : { readme : {
-			type   : 'ts2md',
-			input  : 'packages/core/src/main.ts',
-			output : 'README.md',
+	core : {
+		metaURL : import.meta.url,
+		path    : '../packages/core',
+	},
+} )
+export default defineConfig(
+	{ custom : { predocs : {
+		desc : 'build docs pages',
+		fn   : async ( { config } ) => {
+
+			const docs = new Predocs( undefined, config )
+			await docs.setIndexFile( {
+				noFeatures : true,
+				custom     : { features : [
+					{
+						title   : 'Get started',
+						icon    : '🏁',
+						details : 'Start your project now',
+						link    : '/guide',
+					},
+					{
+						title   : 'Library / CLI',
+						icon    : '📚',
+						details : 'Check the documentation',
+						link    : '/guide/core',
+					},
+					{
+						title   : 'Set up',
+						icon    : '🚀 ',
+						details : 'Start your project with a template',
+						link    : '/guide/create',
+					},
+				] },
+			} )
+			await docs.setContributorsFile()
+			await docs.setGuideIndexFile()
+			await docs.setGuideSectionIndexFile( { none : [
+				'config',
+				'theme',
+				'plugin',
+			] } )
+
+		},
+	} } },
+
+	ppTheme( {
+		core : await getWorkspaceConfig( {
+			metaURL  : import.meta.url,
+			path     : '..',
+			packages : {
+				metaURL : import.meta.url,
+				path    : '../packages',
+			},
+			core : {
+				metaURL : import.meta.url,
+				path    : '../packages/core',
+			},
+		} ),
+		web : { values : {
+			type     : 'library',
+			subtypes : [
+				'Bin',
+				'CLI',
+				'Node',
+			],
 		} },
+		docs : async () => ( {
+			version   : core.corePkg.version,
+			vitepress : {
+				ignoreDeadLinks : true,
+				themeConfig     : { outline: { level: [ 2, 3 ] } },
+			},
+		} ),
 		repo : { commit : { scopes : [
 			{
 				value : 'packages',
@@ -52,10 +110,7 @@ export default defineConfig(
 				desc  : 'env, packages etc',
 			},
 		] } },
-		lint : {
-			staged : { '*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,json,yml,yaml}': 'pnpm --silent . lint eslint --silent' },
-			eslint : { flags: [ '--fix' ] },
-		},
+		lint      : { staged: { '*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,json,yml,yaml}': 'pnpm --silent . lint eslint --silent' } },
 		workspace : { check : { pkg : { schema : async ( {
 			v, path, content,
 		} ) => {

@@ -1,5 +1,3 @@
-<!-- TEMPLATE FOR README - END -->
-
 # Usage
 
 ```bash
@@ -51,4 +49,3 @@ await create( {
  ...
 } )
 ```
-<!-- TEMPLATE FOR README - END -->
