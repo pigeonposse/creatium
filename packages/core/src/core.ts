@@ -16,7 +16,6 @@ import {
 	writeFile,
 	existsDir,
 	resolvePath,
-	joinPath,
 } from './_shared/sys'
 import { OPTION }    from './core/const'
 import { INSTALLER } from './core/extended/install'
@@ -479,12 +478,13 @@ export class CreatiumCore<C extends Config = Config> {
 
 		}
 
-		const paths = ( await getPaths( '*', {
+		const paths = ( await getPaths( '**', {
 			filesOnly : true,
 			cwd       : input,
+			absolute  : true,
 			dot       : true,
 			...inputOpts || {},
-		} ) ).map( path => joinPath( input, path ) )
+		} ) )
 
 		console.debug( {
 			templatePaths : paths,

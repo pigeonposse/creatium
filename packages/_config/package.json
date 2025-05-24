@@ -1,6 +1,6 @@
 {
 	"name": "@creatium/repo-config",
-	"version": "0.1.14",
+	"version": "0.1.15",
 	"private": true,
 	"description": "Config for monorepo",
 	"homepage": "https://creatium.pigeonposse.com/guide/config/repo-config",
