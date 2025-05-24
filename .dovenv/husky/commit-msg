@@ -9,5 +9,5 @@
 echo
 echo 'commit meessage 🚀'
 echo
-node --run . lint:commit -- $1
+node --run lint:commit -- $1
 echo
