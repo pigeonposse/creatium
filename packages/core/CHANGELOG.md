@@ -1,5 +1,11 @@
 # creatium
 
+## 0.1.14
+
+### Patch Changes
+
+- fix getPaths error
+
 ## 0.1.13
 
 ### Patch Changes

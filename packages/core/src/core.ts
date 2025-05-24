@@ -16,6 +16,7 @@ import {
 	writeFile,
 	existsDir,
 	resolvePath,
+	joinPath,
 } from './_shared/sys'
 import { OPTION }    from './core/const'
 import { INSTALLER } from './core/extended/install'
@@ -292,7 +293,7 @@ export class CreatiumCore<C extends Config = Config> {
 			await this.config.outro( this.#data )
 		else if ( this.config.outro === undefined ) {
 
-			this.utils.prompt.outro( 'Successfully completed 🌈' )
+			this.utils.prompt.outro( this.utils.style.color.greenBright( 'Successfully completed 🌈' ) )
 
 		}
 
@@ -452,11 +453,10 @@ export class CreatiumCore<C extends Config = Config> {
 	} = {} ) {
 
 		if ( !input ) input = this.#cwd
-
-		console.debug( { replacePlaceholdersData : {
+		if ( this.debugMode ) console.dir( { replacePlaceholdersData : {
 			params,
 			input,
-		} } )
+		} }, { depth: null } )
 
 		if ( !params ) return
 
@@ -479,18 +479,22 @@ export class CreatiumCore<C extends Config = Config> {
 
 		}
 
-		const paths = await getPaths( input, {
+		const paths = ( await getPaths( '*', {
 			filesOnly : true,
+			cwd       : input,
 			dot       : true,
 			...inputOpts || {},
+		} ) ).map( path => joinPath( input, path ) )
+
+		console.debug( {
+			templatePaths : paths,
+			input,
 		} )
 
-		console.debug( { templatePaths: paths } )
-
-		for ( const path of paths ) {
+		await Promise.all( paths.map( async path => {
 
 			const content = await getContent( path )
-			if ( !content ) continue
+			if ( !content ) return
 
 			const res = await replacePlaceholders( {
 				content,
@@ -499,7 +503,7 @@ export class CreatiumCore<C extends Config = Config> {
 
 			await writeFile( path, res, 'utf-8' )
 
-		}
+		} ) )
 
 	}
 

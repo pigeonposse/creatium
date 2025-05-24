@@ -121,13 +121,13 @@ export class Core {
 		const res: GetCMDsResponse = {}
 		const Klass                = this.#getClass()
 
-		for ( const [ key, value ] of Object.entries( this.config ) ) {
+		await Promise.all( Object.entries( this.config ).map( async ( [ key, value ] ) => {
 
 			const {
 				type, ...props
 			} = value
 
-			if ( !( type in Klass ) ) continue
+			if ( !( type in Klass ) ) return
 
 			// @ts-ignore
 			const instance = new Klass[type]( props )
@@ -139,7 +139,7 @@ export class Core {
 
 			}
 
-		}
+		} ) )
 		return res
 
 	}
@@ -157,13 +157,13 @@ export class Core {
 			values : cachedValues,
 		} } )
 
-		for ( const [ key, value ] of Object.entries( this.config ) ) {
+		await Promise.all( Object.entries( this.config ).map( async ( [ key, value ] ) => {
 
 			const {
 				type, ...props
 			} = value
 
-			if ( !( type in Klass ) ) continue
+			if ( !( type in Klass ) ) return
 
 			// @ts-ignore
 			const instance = new Klass[type]( props )
@@ -183,7 +183,7 @@ export class Core {
 			if ( 'prompt' in instance )
 				res[key] = await instance.getPromptHooked.bind( instance )
 
-		}
+		} ) )
 		return res
 
 	}

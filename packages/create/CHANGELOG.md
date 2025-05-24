@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.1.14
+
+### Patch Changes
+
+- fix getPaths error
+
+- Updated dependencies []:
+  - creatium@0.1.14
+
 ## 0.1.13
 
 ### Patch Changes
