@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.1.16
+
+### Patch Changes
+
+- up create pkg, add getClosestPackageDir function in core pkg
+
+- Updated dependencies []:
+  - creatium@0.1.16
+
 ## 0.1.15
 
 ### Patch Changes

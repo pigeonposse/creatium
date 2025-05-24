@@ -1,7 +1,4 @@
-import {
-	core,
-	createTemplate,
-} from './core'
+import { core } from './core'
 
 import type { CreateTemplateParams } from './core'
 
@@ -13,8 +10,9 @@ import type { CreateTemplateParams } from './core'
  */
 export const create = async ( params: CreateTemplateParams ) => {
 
-	const res = await core.build( params, { activeCli: false } )
-	await createTemplate( res )
+	const instance = await core()
+	const res      = await instance.build( params, { activeCli: false } )
+	await instance.createTemplate( res )
 	return res
 
 }

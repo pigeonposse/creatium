@@ -3,13 +3,9 @@ import {
 	prompt,
 	sys,
 	style,
+	Config,
 } from 'creatium'
-import {
-	dirname,
-	join,
-} from 'node:path'
-import process           from 'node:process'
-import { fileURLToPath } from 'node:url'
+import process from 'node:process'
 
 import {
 	extra,
@@ -20,16 +16,18 @@ import {
 	description,
 } from '../package.json'
 
-const { copyDir }  = sys
 const {
-	color, table,
+	copyDir,
+	joinPath: join,
+} = sys
+const {
+	color,
+	table,
 } = style
-const name         = extra.libraryId
-const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
-const dataDir      = join( currentDir, '..', 'data' )
-const templatesDir = join( dataDir, 'templates' )
-const partialsDir  = join( dataDir, 'partials' )
-const TEMPLATES    = {
+
+const name = extra.libraryId
+
+const TEMPLATES = {
 	JS : 'js',
 	TS : 'ts',
 } as const
@@ -40,9 +38,8 @@ const cancelFn = ( ) => {
 	process.exit( 0 )
 
 }
-export type CreateTemplateParams = Awaited<ReturnType<typeof core.cli>>
-/** Instance of your create-project */
-export const core = new CreatiumCore( {
+
+const setCoreProps = ( templatesDir: string ) => ( {
 	name,
 	version,
 	updater  : true,
@@ -110,117 +107,152 @@ export const core = new CreatiumCore( {
 		install    : { type: 'install' },
 		openEditor : { type: 'openEditor' },
 	},
-} )
+} ) as const satisfies Config
+
+type CoreConfig = ReturnType<typeof setCoreProps>
+
+export type CreateTemplateParams = Awaited<ReturnType<CreatiumCore<CoreConfig>['cli']>>
+export type CoreRes = {
+	/**
+	 * Initializes and executes the command-line interface (CLI) process.
+	 */
+	cli            : CreatiumCore<CoreConfig>['cli']
+	/**
+	 * Function for create a new project template.
+	 *
+	 * @param   {CreateTemplateParams} params - The values to create the template.
+	 * @returns {Promise<void>}               - A promise that resolves when the template is created.
+	 */
+	createTemplate : ( params: CreateTemplateParams ) => Promise<void>
+	/**
+	 * Initialize the CLI and executes the callback function passed in the config.
+	 */
+	build          : CreatiumCore<CoreConfig>['build']
+}
 
 /**
- * Function for create a new project template.
+ * Instance of your create-project
  *
- * @param   {CreateTemplateParams} params - The values to create the template.
- * @returns {Promise<void>}               - A promise that resolves when the template is created.
+ * @returns {Promise<object>} - A promise that resolves to an instance of your create-project
  */
-export const createTemplate = async ( params: CreateTemplateParams ) => {
+export const core = async (): Promise<CoreRes> => {
 
-	try {
+	const pkgDir       = await sys.getClosestPackageDir( sys.getCurrentDir( import.meta.url ) )
+	const dataDir      = join( pkgDir, 'data' )
+	const partialsDir  = join( dataDir, 'partials' )
+	const templatesDir = join( dataDir, 'templates' )
 
-		const {
-			output,
-			input,
-			install,
-			openEditor,
-			name: projectName,
-			// extract constants for used in createTemplate
-			...consts
-		} = params
+	const core = new CreatiumCore( setCoreProps( templatesDir ) )
 
-		if ( !output ) throw new Error( 'Output is required' )
-		if ( !input ) throw new Error( 'Input is required' )
-		if ( !projectName ) throw new Error( 'Project name is required' )
+	return {
+		cli            : ( ...args ) => core.cli( ...args ),
+		build          : ( ...args ) => core.build( ...args ),
+		createTemplate : async params => {
 
-		// Add the partial files
+			try {
 
-		await copyDir( {
-			input : join( partialsDir, 'workspace' ),
-			output,
-		} )
+				const {
+					output,
+					input,
+					install,
+					openEditor,
+					name: projectName,
+					// extract constants for used in createTemplate
+					...consts
+				} = params
 
-		await copyDir( {
-			input  : join( partialsDir, 'templates' ),
-			output : join( output, 'templates' ),
-		} )
+				if ( !output ) throw new Error( 'Output is required' )
+				if ( !input ) throw new Error( 'Input is required' )
+				if ( !projectName ) throw new Error( 'Project name is required' )
 
-		// Define the package.json
-		const pkg = {
-			name    : projectName,
-			version : '0.0.1',
-			license : 'GPL-3.0',
-			type    : 'module',
-			main    : 'dist/lib.mjs',
-			module  : 'dist/lib.mjs',
-			types   : 'dist/lib.d.ts',
-			files   : [ 'dist', 'templates' ],
-			bin     : { [projectName]: 'dist/bin.mjs' },
-			...( input === TEMPLATES.TS
-				? {
-					scripts : {
-						build : 'unbuild',
-						dev   : 'tsx src/bin.ts',
-						test  : 'vitest run -r src --passWithNoTests',
-					},
-					devDependencies : {
-						'@types/node' : '22.10.1',
-						'tslib'       : '2.8.1',
-						'tsx'         : '4.19.2',
-						'typescript'  : '5.7.2',
-						'unbuild'     : '2.0.0',
-						'vitest'      : '2.1.6',
+				// Add the partial files
+
+				await copyDir( {
+					input : join( partialsDir, 'workspace' ),
+					output,
+				} )
+
+				await copyDir( {
+					input  : join( partialsDir, 'templates' ),
+					output : join( output, 'templates' ),
+				} )
+
+				// Define the package.json
+				const pkg = {
+					name    : projectName,
+					version : '0.0.1',
+					license : 'GPL-3.0',
+					type    : 'module',
+					main    : 'dist/lib.mjs',
+					module  : 'dist/lib.mjs',
+					types   : 'dist/lib.d.ts',
+					files   : [ 'dist', 'templates' ],
+					bin     : { [projectName]: 'dist/bin.mjs' },
+					...( input === TEMPLATES.TS
+						? {
+							scripts : {
+								build : 'unbuild',
+								dev   : 'tsx src/bin.ts',
+								test  : 'vitest run -r src --passWithNoTests',
+							},
+							devDependencies : {
+								'@types/node' : '22.10.1',
+								'tslib'       : '2.8.1',
+								'tsx'         : '4.19.2',
+								'typescript'  : '5.7.2',
+								'unbuild'     : '2.0.0',
+								'vitest'      : '2.1.6',
+							},
+						}
+						: {
+							scripts : {
+								build : 'unbuild',
+								dev   : 'node src/bin.js',
+								test  : 'vitest run -r src --passWithNoTests',
+							},
+							devDependencies : {
+								'@types/node' : '22.10.1',
+								'unbuild'     : '2.0.0',
+								'vitest'      : '2.1.6',
+							},
+						}
+					),
+					dependencies  : { creatium: version },
+					publishConfig : {
+						access   : 'public',
+						registry : 'https://registry.npmjs.org/',
 					},
 				}
-				: {
-					scripts : {
-						build : 'unbuild',
-						dev   : 'node src/bin.js',
-						test  : 'vitest run -r src --passWithNoTests',
+
+				// Create the template
+				await core.createTemplate( {
+					output,
+					input,
+					install,
+					openEditor,
+					name,
+					consts : {
+						...consts,
+						pkg : JSON.stringify( pkg, null, 2 ),
 					},
-					devDependencies : {
-						'@types/node' : '22.10.1',
-						'unbuild'     : '2.0.0',
-						'vitest'      : '2.1.6',
-					},
-				}
-			),
-			dependencies  : { creatium: version },
-			publishConfig : {
-				access   : 'public',
-				registry : 'https://registry.npmjs.org/',
-			},
-		}
+				} )
 
-		// Create the template
-		await core.createTemplate( {
-			output,
-			input,
-			install,
-			openEditor,
-			name,
-			consts : {
-				...consts,
-				pkg : JSON.stringify( pkg, null, 2 ),
-			},
-		} )
+			}
+			catch ( error ) {
 
-	}
-	catch ( error ) {
+				prompt.log.step( '' )
 
-		prompt.log.step( '' )
+				if ( error instanceof Error )
+					prompt.log.error( color.red( error.message ) )
+				else
+					console.error( 'Unexpected error:', error )
 
-		if ( error instanceof Error )
-			prompt.log.error( color.red( error.message ) )
-		else
-			console.error( 'Unexpected error:', error )
+				prompt.log.step( '' )
+				cancelFn()
 
-		prompt.log.step( '' )
-		cancelFn()
+			}
 
+		},
 	}
 
 }

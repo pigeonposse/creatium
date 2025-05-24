@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 
-import {
-	core,
-	createTemplate,
-} from './core'
+import { core } from './core'
 
 const run = async () => {
 
-	const res = await core.cli()
-	await createTemplate( res )
+	const instance = await core()
+	const res      = await instance.cli()
+	await instance.createTemplate( res )
 
 }
 run()
