@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.1.17
+
+### Patch Changes
+
+- skip in spinner in debug mode
+
+- Updated dependencies []:
+  - creatium@0.1.17
+
 ## 0.1.16
 
 ### Patch Changes

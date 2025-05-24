@@ -1,5 +1,11 @@
 # creatium
 
+## 0.1.17
+
+### Patch Changes
+
+- skip in spinner in debug mode
+
 ## 0.1.16
 
 ### Patch Changes

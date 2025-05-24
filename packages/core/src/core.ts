@@ -92,10 +92,31 @@ export class CreatiumCore<C extends Config = Config> {
 
 	}
 
+	#_spinnerFN : typeof this.utils.prompt.spinner | undefined
+
 	/** Force debug mode */
 	public set debugMode( value: boolean ) {
 
 		this.#core.debugMode = value
+		if ( value === true ) {
+
+			this.#_spinnerFN          = this.utils.prompt.spinner
+			this.utils.prompt.spinner = _ => {
+
+				return {
+					start   : ( m?: string ) => this.utils.prompt.log.message( m ),
+					message : ( m?: string ) => this.utils.prompt.log.message( m ),
+					stop    : ( m?: string ) => this.utils.prompt.log.message( m ),
+				}
+
+			}
+
+		}
+		else {
+
+			if ( this.#_spinnerFN ) this.utils.prompt.spinner = this.#_spinnerFN
+
+		}
 
 	}
 
