@@ -46,7 +46,7 @@
 		"build": "pnpm -F creatium build && pnpm -F create-creatium build",
 		"build-doc": "dovenv predocs && dovenv docs build",
 		"core": "pnpm -F creatium",
-		"lint:commit": "dovenv lint commit --silent",
+		"lint:commit": "dovenv lint commitlint --silent",
 		"lint:eslint": "dovenv lint eslint --silent",
 		"lint:pkg": "dovenv lint custom -k pkg --silent",
 		"lint:staged": "dovenv lint staged --silent",
