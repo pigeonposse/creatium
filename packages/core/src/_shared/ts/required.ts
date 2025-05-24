@@ -7,6 +7,7 @@ import type {
 
 /**
  * DeepRequired
+ *
  * @description Required that works for deeply nested structure
  * @example
  *   type NestedProps = {

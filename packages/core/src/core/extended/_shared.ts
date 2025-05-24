@@ -18,6 +18,7 @@ export type SelectBaseOptions<Value extends string = string> = Partial<Omit<Opti
 	 * Select only specific options by key.
 	 *
 	 * Minimum 2 option.
+	 *
 	 * @example ['yarn', 'pnpm']
 	 */
 	onlyOptions? : [Exclude<Value, OptionNone>, Exclude<Value, OptionNone>, ...Exclude<Value, OptionNone>[]]
@@ -39,7 +40,7 @@ export const mergeSelectBaseOptions = <V extends string, C extends SelectBaseOpt
 
 			return acc
 
-		}, {} as Record<V, OptionsValue>  )
+		}, {} as Record<V, OptionsValue> )
 		: options
 
 	return {

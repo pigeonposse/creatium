@@ -4,7 +4,7 @@ import {
 	PATH_TYPE,
 } from './path'
 
-export type OptionOutput = Partial< Omit<Path['config'], 'pathType' | 'exists'> >
+export type OptionOutput = Partial<Omit<Path['config'], 'pathType' | 'exists'>>
 
 export class Output extends Path {
 

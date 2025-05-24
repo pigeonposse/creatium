@@ -5,7 +5,6 @@
 		"ms-playwright.playwright",
 		"dbaeumer.vscode-eslint",
 		"christian-kohler.npm-intellisense",
-		"jacano.vscode-pnpm",
 		"redhat.vscode-yaml",
 		"github.vscode-github-actions",
 	]

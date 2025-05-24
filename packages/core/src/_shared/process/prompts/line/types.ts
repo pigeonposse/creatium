@@ -26,7 +26,7 @@ export type PromptLineMethod = typeof promptLineMethods[keyof typeof promptLineM
  */
 
 // eslint-disable-next-line @stylistic/object-curly-newline
-export type NumberParams = Prettify< p.TextOptions & {
+export type NumberParams = Prettify<p.TextOptions & {
 	// placeholder?  : number
 	// defaultValue? : number
 	errorText? : string }>
@@ -70,6 +70,6 @@ export type PromptLineCancelProps = typeof p & {
 		value : ColumnsParams[0]
 		opts? : ColumnsParams[1]
 		type? : PromptLineMethod
-	}  ) => void
+	} ) => void
 }
 

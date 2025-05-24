@@ -2,7 +2,7 @@
 import {
 	existsDir,
 	existsFile,
-} from '../../_shared/sys/main'
+} from '../../_shared/sys'
 import { Text } from '../_super/text'
 
 export const PATH_TYPE = {
@@ -10,14 +10,16 @@ export const PATH_TYPE = {
 	file   : 'file',
 }
 export type PathType = typeof PATH_TYPE[ keyof typeof PATH_TYPE ]
-export type OptionPath = Partial< Path['config'] > & {
+export type OptionPath = Partial<Path['config']> & {
 	/**
 	 * Set path type
+	 *
 	 * @default 'file'
 	 */
 	pathType? : PathType
 	/**
 	 * Set if you want to check if path exists or not.
+	 *
 	 * @default false
 	 */
 	exists?   : boolean

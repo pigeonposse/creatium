@@ -9,8 +9,9 @@ import type { Any } from '../../ts/main'
 
 /**
  * Replaces the output of `stdout` or `stderr` streams with a custom transformation function.
- * @param {onStdOpts} opts - Options for customizing the stream transformation.
- * @returns {object} A Object with `start` and `stop` methods.
+ *
+ * @param   {onStdOpts} opts - Options for customizing the stream transformation.
+ * @returns {object}         A Object with `start` and `stop` methods.
  * @example
  * import { onStd } from '@dovenv/utils'
  * const secretOut = onStd({
@@ -97,12 +98,13 @@ export const onStd = ( opts: onStdOpts ) => {
  * objects and stream types.
  *
  * ---
- * @param {ReplaceStdOpts} opts - The options for replacing output.
- * @param {ReplaceStdOpts['params']} opts.params - An object containing key-value pairs
- *                                               where each key is a string to be replaced by its corresponding value in the output.
- * @param {ReplaceStdOpts['proceso']} [opts.process] - An optional Node.js process object. Defaults to the global process.
- * @param {ReplaceStdOpts['type']} [opts.type] - The type of stream to replace output for. Defaults to 'stdout'.
- * @returns {object} A Object with `start` and `stop` methods.
+ *
+ * @param   {ReplaceStdOpts}            opts           - The options for replacing output.
+ * @param   {ReplaceStdOpts['params']}  opts.params    - An object containing key-value pairs
+ *                                                     where each key is a string to be replaced by its corresponding value in the output.
+ * @param   {ReplaceStdOpts['proceso']} [opts.process] - An optional Node.js process object. Defaults to the global process.
+ * @param   {ReplaceStdOpts['type']}    [opts.type]    - The type of stream to replace output for. Defaults to 'stdout'.
+ * @returns {object}                                   A Object with `start` and `stop` methods.
  * @example
  * import { replaceConsole } from '@dovenv/utils'
  * const versionOut = replaceStd({

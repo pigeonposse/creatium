@@ -1,16 +1,29 @@
-import { lint } from '@dovenv/theme-pigeonposse'
+import { setConfig } from '@dovenv/theme-pigeonposse/eslint'
 
-const conf = lint.dovenvEslintConfig
+const config = setConfig(
+	{
+		general   : 'ts',
+		toml      : true,
+		json      : true,
+		package   : true,
+		yaml      : true,
+		jsdoc     : true,
+		md        : true,
+		gitignore : true,
+		ignore    : [
+			'**/docs/**/*.md',
+			'**/README.md',
+			'**/docs/data/**/*.md',
+			'**/CHANGELOG.md',
+			'**/examples/**/partials/*',
+			'**/examples/**/templates/*',
+			'**/.dovenv/**/partials/*',
+			'**/.dovenv/**/templates/*',
+			'**/packages/create/data/**',
+			'**/packages/config/**/tests/**',
+		],
+	},
+)
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
-	conf.includeGitIgnore(),
-	...conf.config,
-	conf.setIgnoreConfig( [
-		'./docs/**/*',
-		'**/CHANGELOG.md',
-		'**/examples/**/partials/*',
-		'**/examples/**/templates/*',
-	] ),
+export default config
 
-]

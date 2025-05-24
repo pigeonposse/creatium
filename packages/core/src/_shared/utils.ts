@@ -1,7 +1,7 @@
 import { env as _env }               from './process/core/env'
 import { corePromptLine as _prompt } from './process/prompts/line/main'
 import { style as _style }           from './styles/main'
-import * as _sys                     from './sys/main'
+import * as _sys                     from './sys'
 
 /** System functions */
 export const sys = _sys

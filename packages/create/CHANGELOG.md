@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.1.13
+
+### Patch Changes
+
+- imporve perf, improve weight, no breacking changes
+
+- Updated dependencies []:
+  - creatium@0.1.13
+
 ## 0.1.12
 
 ### Patch Changes

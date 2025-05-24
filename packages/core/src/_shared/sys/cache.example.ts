@@ -23,14 +23,14 @@ const {
 } )
 
 const res = {
-	boolean    : get( 'boolean' ),
-	number     : get( 'number' ),
-	string     : get( 'string' ),
-	array      : get( 'array' ),
-	arrayMulti : get( 'arrayMulti' ),
+	boolean    : await get( 'boolean' ),
+	number     : await get( 'number' ),
+	string     : await get( 'string' ),
+	array      : await get( 'array' ),
+	arrayMulti : await get( 'arrayMulti' ),
 }
 
-set( {
+await set( {
 	boolean : false,
 	number  : 10,
 	string  : 'es',
@@ -42,7 +42,7 @@ set( {
 	],
 } )
 
-const updatedRes = get()
+const updatedRes = await get()
 
 console.log( {
 	initRes : res,

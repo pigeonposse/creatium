@@ -15,15 +15,6 @@
 		"source.fixAll.stylelint": "explicit"
 	},
 	"eslint.useFlatConfig": true,
-	"stylelint.validate": [
-		"css",
-		"scss",
-		"less",
-		"html",
-		"vue",
-		"svelte",
-		"astro",
-	],
 	"eslint.validate": [
 		"javascript",
 		"javascriptreact",

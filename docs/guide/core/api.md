@@ -628,10 +628,7 @@ await core.replacePlaceholders( {
 ##### updateNotify()
 
 ```ts
-updateNotify(opts?: {
-  custom: (info?: UpdateInfo) => Response<void>;
-  opts: NotifyOptions;
-}): Promise<void>
+updateNotify(): Promise<boolean>
 ```
 
 Shows a notification if the current package is outdated.
@@ -639,36 +636,11 @@ Shows a notification if the current package is outdated.
 **information**: If this 'custom' function is provided, the default
 notification will not be shown.
 
----
-
-###### Parameters
-
-| Parameter | Type | Description |
-| ------ | ------ | ------ |
-| `opts`? | `object` | Options for the update notification. |
-| `opts.custom`? | (`info`?: `UpdateInfo`) => `Response`\<`void`\> | A custom function to run with the update |
-| `opts.opts`? | `NotifyOptions` | Options for the `update-notifier` package. |
-
 ###### Returns
 
-`Promise`\<`void`\>
+`Promise`\<`boolean`\>
 
-###### Examples
-
-```ts
-// With default options. Recommended for most use cases.
-await core.updateNotify()
-```
-
-```ts
-// With custom options
-await core.updateNotify({ opts: { ... } })
-```
-
-```ts
-// With custom function
-await core.updateNotify({ custom: () => {} })
-```
+- A promise that resolves when the notification has finished.
 
 #### Properties
 
@@ -892,7 +864,7 @@ const prompt: {
      errorText: string;
     }) => Promise<number | symbol>;
   table: (opts: {
-     opts: TableUserConfig;
+     opts: TableConstructorOptions;
      type: PromptLineMethod;
      value: TableData;
     }) => void;
@@ -908,7 +880,7 @@ Prompt functions
 | `box` | (`opts`: \{ `opts`: `Options`; `type`: `PromptLineMethod`; `value`: `string`; \}) => `void` |
 | `columns` | (`opts`: \{ `opts`: `GlobalOptions`; `type`: `PromptLineMethod`; `value`: `ColumnData`; \}) => `void` |
 | `number` | (`opts`: \{ `errorText`: `string`; \}) => `Promise`\<`number` \| `symbol`\> |
-| `table` | (`opts`: \{ `opts`: `TableUserConfig`; `type`: `PromptLineMethod`; `value`: `TableData`; \}) => `void` |
+| `table` | (`opts`: \{ `opts`: `TableConstructorOptions`; `type`: `PromptLineMethod`; `value`: `TableData`; \}) => `void` |
 
 ***
 
@@ -917,7 +889,55 @@ Prompt functions
 ```ts
 const style: {
   box: (text: string, options?: Options) => string;
-  color: ChalkInstance;
+  color: Record<
+     | "blink"
+     | "bold"
+     | "black"
+     | "blackBright"
+     | "blue"
+     | "blueBright"
+     | "cyan"
+     | "cyanBright"
+     | "gray"
+     | "green"
+     | "greenBright"
+     | "grey"
+     | "magenta"
+     | "magentaBright"
+     | "red"
+     | "redBright"
+     | "white"
+     | "whiteBright"
+     | "yellow"
+     | "yellowBright"
+     | "bgBlack"
+     | "bgBlackBright"
+     | "bgBlue"
+     | "bgBlueBright"
+     | "bgCyan"
+     | "bgCyanBright"
+     | "bgGray"
+     | "bgGreen"
+     | "bgGreenBright"
+     | "bgGrey"
+     | "bgMagenta"
+     | "bgMagentaBright"
+     | "bgRed"
+     | "bgRedBright"
+     | "bgWhite"
+     | "bgWhiteBright"
+     | "bgYellow"
+     | "bgYellowBright"
+     | "dim"
+     | "doubleunderline"
+     | "framed"
+     | "hidden"
+     | "inverse"
+     | "italic"
+     | "overlined"
+     | "reset"
+     | "strikethrough"
+     | "underline", (v: string) => string>;
   columns: <Data>(data: Data, options?: GlobalOptions) => string;
   gradient: (txt: string, colors: GradientColors, opts?: GradientOpts) => string;
   line: (__namedParameters: {
@@ -925,7 +945,7 @@ const style: {
      lineChar: '⎯';
      title: string;
     }) => string;
-  table: (data: TableData, options?: TableUserConfig) => string;
+  table: (data: TableData, options?: TableConstructorOptions) => string;
  } = _style;
 ```
 
@@ -936,11 +956,11 @@ Style functions
 | Name | Type |
 | ------ | ------ |
 | `box` | (`text`: `string`, `options`?: `Options`) => `string` |
-| `color` | `ChalkInstance` |
+| `color` | `Record`\< \| `"blink"` \| `"bold"` \| `"black"` \| `"blackBright"` \| `"blue"` \| `"blueBright"` \| `"cyan"` \| `"cyanBright"` \| `"gray"` \| `"green"` \| `"greenBright"` \| `"grey"` \| `"magenta"` \| `"magentaBright"` \| `"red"` \| `"redBright"` \| `"white"` \| `"whiteBright"` \| `"yellow"` \| `"yellowBright"` \| `"bgBlack"` \| `"bgBlackBright"` \| `"bgBlue"` \| `"bgBlueBright"` \| `"bgCyan"` \| `"bgCyanBright"` \| `"bgGray"` \| `"bgGreen"` \| `"bgGreenBright"` \| `"bgGrey"` \| `"bgMagenta"` \| `"bgMagentaBright"` \| `"bgRed"` \| `"bgRedBright"` \| `"bgWhite"` \| `"bgWhiteBright"` \| `"bgYellow"` \| `"bgYellowBright"` \| `"dim"` \| `"doubleunderline"` \| `"framed"` \| `"hidden"` \| `"inverse"` \| `"italic"` \| `"overlined"` \| `"reset"` \| `"strikethrough"` \| `"underline"`, (`v`: `string`) => `string`\> |
 | `columns` | \<`Data`\>(`data`: `Data`, `options`?: `GlobalOptions`) => `string` |
 | `gradient` | (`txt`: `string`, `colors`: `GradientColors`, `opts`?: `GradientOpts`) => `string` |
 | `line` | (`__namedParameters`: \{ `align`: `'center'`; `lineChar`: `'⎯'`; `title`: `string`; \}) => `string` |
-| `table` | (`data`: `TableData`, `options`?: `TableUserConfig`) => `string` |
+| `table` | (`data`: `TableData`, `options`?: `TableConstructorOptions`) => `string` |
 
 ***
 

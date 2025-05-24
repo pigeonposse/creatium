@@ -1,5 +1,11 @@
 # @creatium/repo-config
 
+## 0.1.13
+
+### Patch Changes
+
+- imporve perf, improve weight, no breacking changes
+
 ## 0.1.11
 
 ### Patch Changes

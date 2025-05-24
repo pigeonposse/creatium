@@ -4,10 +4,7 @@
  * File for set fylesystem functions.
  *
  */
-import {
-	globby,
-	globbyStream,
-} from 'globby'
+
 import {
 	stat,
 	writeFile as nodeWriteFile,
@@ -22,7 +19,6 @@ import {
 	copyFile as nodeCopyFile,
 	rm,
 } from 'node:fs/promises'
-import { homedir } from 'node:os'
 import {
 	join,
 	resolve,
@@ -34,6 +30,10 @@ import {
 	normalize,
 } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import glob              from 'tiny-glob'
+
+import { getHomeDir }                from './os'
+import { currentProcess as process } from '../../process/main'
 
 export const resolvePath = resolve
 export const relativePath = relative
@@ -49,29 +49,21 @@ export const writeFile = nodeWriteFile
 
 /**
  * Find files and directories using glob patterns.
+ *
  * @example const paths = await getPaths(['*', '!src']);
  * console.log(paths);
- * //=> ['pigeon', 'rainbow']
  */
-export const getPaths = globby
-
-/**
- * Find files and directories using glob patterns.
- * @example
- * for await (const path of getPathsStream('*.tmp')) {
- *    console.log(paths);
- * }
- */
-export const getPathsStream = globbyStream
+export const getPaths = glob
 
 /**
  * Checks if two file paths are equal after normalization.
  * Normalization ensures that differences like trailing slashes or redundant path segments are ignored.
  *
  * ---
- * @param {string} path1 - The first file path to compare.
- * @param {string} path2 - The second file path to compare.
- * @returns {boolean} `true` if the paths are equal, `false` otherwise.
+ *
+ * @param   {string}  path1 - The first file path to compare.
+ * @param   {string}  path2 - The second file path to compare.
+ * @returns {boolean}       `true` if the paths are equal, `false` otherwise.
  */
 export const arePathsEqual = ( path1: string, path2: string ): boolean => {
 
@@ -84,6 +76,9 @@ export const arePathsEqual = ( path1: string, path2: string ): boolean => {
 
 /**
  * Check if a string is a valid path.
+ *
+ * @param   {string}  str - The string to test.
+ * @returns {boolean}     True if the string is a valid path.
  * @example
  * isPath('..') // true
  * isPath('foo bar') // false
@@ -91,8 +86,6 @@ export const arePathsEqual = ( path1: string, path2: string ): boolean => {
  * isPath('foo\\bar') // true
  * isPath('foo/bar') // true
  * isPath('foo bar/baz') // false
- * @param {string} str - The string to test.
- * @returns {boolean} True if the string is a valid path.
  */
 export const isPath = ( str: string ) => {
 
@@ -124,8 +117,9 @@ export const isPath = ( str: string ) => {
 
 /**
  * Creates a directory if it does not exist.
- * @param {string} path - Path to the directory to create.
- * @returns {Promise<void>} - A promise that resolves when the directory has been created.
+ *
+ * @param   {string}        path - Path to the directory to create.
+ * @returns {Promise<void>}      - A promise that resolves when the directory has been created.
  * @example
  * await ensureDir('./path/to/directory')
  */
@@ -138,8 +132,9 @@ export const ensureDir = async ( path: string ) => {
 
 /**
  * Reads the contents of a directory.
- * @param   {string}           path - Path to the directory to read.
- * @returns {Promise<import('node:fs').Dirent[]>} - A promise that resolves to an array of {@link https://nodejs.org/api/fs.html#class-fs-dirent | fs.Dirent} objects.
+ *
+ * @param   {string}                              path - Path to the directory to read.
+ * @returns {Promise<import('node:fs').Dirent[]>}      - A promise that resolves to an array of {@link https://nodejs.org/api/fs.html#class-fs-dirent | fs.Dirent} objects.
  * @example
  * const dirItems = await readDir('./path/to/directory')
  */
@@ -152,6 +147,7 @@ export const readDir = async ( path: string ) => {
 
 /**
  * Gets the file names in a directory and filters them by extension.
+ *
  * @param   {object}            props            - Function props.
  * @param   {string}            props.path       - Path to the directory.
  * @param   {string[]}          props.extensions - Array of extensions to filter by, e.g., ['.md', '.txt'].
@@ -179,6 +175,7 @@ export async function getFilteredFileNames( {
 
 /**
  * Gets the current directory.
+ *
  * @param   {string} [path] - An optional path to resolve the directory from.
  * @returns {string}        - The current directory.
  * @example getCurrentDir()
@@ -188,6 +185,7 @@ export const getCurrentDir = ( path = import.meta.url ) =>
 
 /**
  * Joins path segments.
+ *
  * @param   {...string} paths - Path segments to join.
  * @returns {string}          - The joined path.
  * @example joinPath('user', 'pigeonposse')
@@ -200,6 +198,7 @@ export function joinPath( ...paths: string[] ): string {
 
 /**
  * Resolves path segments into an absolute path.
+ *
  * @param   {...string} paths - Path segments to resolve.
  * @returns {string}          - The resolved absolute path.
  */
@@ -207,6 +206,7 @@ export const getAbsolutePath = resolve
 
 /**
  * Validates and resolves a path with home directory replacement.
+ *
  * @param   {string} path - The path to validate and resolve.
  * @returns {string}      - The validated and resolved absolute path.
  * @example
@@ -225,7 +225,7 @@ export function validateHomeDir( path: string ): string {
 	let resolvedPath: string = path
 	if ( path.startsWith( '~/' ) ) {
 
-		resolvedPath = path.replace( /^~(?=$|\/|\\)/, homedir() )
+		resolvedPath = path.replace( /^~(?=$|\/|\\)/, getHomeDir() )
 
 	}
 	return getAbsolutePath( resolvedPath )
@@ -234,6 +234,7 @@ export function validateHomeDir( path: string ): string {
 
 /**
  * Reads the content of a file at the specified path.
+ *
  * @param   {string}                   path - The path of the file to read.
  * @returns {Promise<string | Buffer>}      - A promise that resolves to the content of the file as a string or buffer.
  * @throws {Error} If an error occurs while reading the file.
@@ -250,6 +251,7 @@ export const readFile = nodeReadFile
 
 /**
  * Removes a directory and its contents if it exists.
+ *
  * @param {string} path - The path of the directory to remove.
  * @throws {Error} If an error occurs while removing the directory.
  * @example import { removeDir } from '@dovenv/utils'
@@ -282,6 +284,7 @@ export async function removeDir( path: string ): Promise<void> {
 
 /**
  * Removes a directory and its contents if it exists.
+ *
  * @param {string} path - The path of the directory to remove.
  * @throws {Error} If an error occurs while removing the directory.
  * @example import { removeDirIfExist } from '@dovenv/utils'
@@ -298,6 +301,7 @@ export async function removeDirIfExist( path: string ): Promise<void> {
 
 /**
  * Removes a file or directory if it exists.
+ *
  * @param {string} path - The path of the file or directory to remove.
  * @throws {Error} If an error occurs while removing the file or directory.
  * @example
@@ -318,6 +322,7 @@ export async function removePathIfExist( path: string ): Promise<void> {
 
 /**
  * Removes a file if it exists.
+ *
  * @param {string} path - The path of the file to remove.
  * @throws {Error} If an error occurs while removing the file.
  * @example
@@ -337,6 +342,7 @@ export async function removeFileIfExist( path: string ): Promise<void> {
 
 /**
  * Removes a file.
+ *
  * @param {string} path - The path of the file to remove.
  * @throws {Error} If an error occurs while removing the file.
  * @example
@@ -354,6 +360,7 @@ export async function removeFile( path: string ): Promise<void> {
 
 /**
  * Checks if the given path points to a directory.
+ *
  * @param   {string}           path - The path to check.
  * @returns {Promise<boolean>}      - A promise that resolves to true if the path points to a directory, otherwise false.
  * @example import { isDirectory } from '@dovenv/utils'
@@ -370,6 +377,7 @@ export async function isDirectory( path: string ): Promise<boolean> {
 
 /**
  * Creates a directory at the specified path.
+ *
  * @param {string} path - The path of the directory to create.
  * @throws {Error} If an error occurs while creating the directory.
  * @example import { createDir } from '@dovenv/utils'
@@ -393,6 +401,7 @@ export async function createDir( path: string ): Promise<void> {
 
 /**
  * Checks if a directory exists at the specified path.
+ *
  * @param   {string}           path - The path to check.
  * @returns {Promise<boolean>}      - A promise that resolves to true if a directory exists at the specified path, otherwise false.
  * @example import { existsDir } from '@dovenv/utils'
@@ -428,6 +437,7 @@ export async function existsDir( path: string ): Promise<boolean> {
 
 /**
  * Checks if a file exists at the specified path.
+ *
  * @param   {string}           path - The path to the file.
  * @returns {Promise<boolean>}      - A promise that resolves to true if the file exists, otherwise false.
  * @throws {Error} If an error occurs while checking the existence of the file.
@@ -465,6 +475,7 @@ export async function existsFile( path: string ): Promise<boolean> {
 
 /**
  * Writes content to a file at the specified path.
+ *
  * @param {string}          path    - The path of the file to write to.
  * @param {string | Buffer} content - The content to write to the file.
  * @throws {Error} If an error occurs while writing to the file.
@@ -481,6 +492,7 @@ export async function writeFileContent( path: string, content: string | Buffer )
 
 /**
  * Checks if a file or directory exists at the specified path.
+ *
  * @param   {string}           path - The path to check.
  * @returns {Promise<boolean>}      - A promise that resolves to true if a file or directory exists at the specified path, otherwise false.
  * @throws {Error} If an error occurs while checking the existence of the path.
@@ -499,8 +511,9 @@ export async function existsPath( path: string ): Promise<boolean> {
 
 /**
  * Copy a file from input path to output path.
+ *
  * @param   {{input: string, output: string}} options - Options object with input and output paths.
- * @returns {Promise<void>}                                - Resolves when the file has been copied.
+ * @returns {Promise<void>}                           - Resolves when the file has been copied.
  * @throws {Error} If there is an error copying the file.
  * @example import { copyFile } from '@dovenv/utils'
  *
@@ -536,8 +549,9 @@ type CopyDirOptions = {
 }
 /**
  * Copy a directory from input path to output path.
+ *
  * @param   {{input: string, output: string}} options - Options object with input and output paths.
- * @returns {Promise<void>}                                - Resolves when the directory has been copied.
+ * @returns {Promise<void>}                           - Resolves when the directory has been copied.
  * @throws {Error} If there is an error copying the directory.
  * @example
  *
@@ -614,8 +628,9 @@ export const copyDir = async ( {
 
 /**
  * Creates a symbolic link from the input path to the output path.
+ *
  * @param   {{input: string, output: string}} options - Options object with input and output paths.
- * @returns {Promise<void>}                                - Resolves when the symbolic link has been created.
+ * @returns {Promise<void>}                           - Resolves when the symbolic link has been created.
  * @throws {Error} If there is an error creating the symbolic link.
  * @example import { createSymlink } from '@dovenv/utils'
  *

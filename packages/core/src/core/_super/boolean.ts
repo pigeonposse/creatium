@@ -8,7 +8,7 @@ import type {
 } from './_shared'
 
 type Value = boolean
-export type OptionBoolean =  OptionCommonWithPlaceholder<Value>
+export type OptionBoolean = OptionCommonWithPlaceholder<Value>
 
 export class Boolean extends Core<OptionBoolean, Value> implements CoreInterface<Value> {
 

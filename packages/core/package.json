@@ -1,14 +1,14 @@
 {
 	"name": "creatium",
-	"version": "0.1.12",
+	"version": "0.1.13",
 	"description": "Build your create-bins quickly and easily",
 	"keywords": [
-		"cli",
-		"library",
-		"create-bins",
-		"create",
-		"node",
 		"bin",
+		"cli",
+		"create",
+		"create-bins",
+		"library",
+		"node",
 		"pigeonposse",
 		"pp"
 	],
@@ -18,8 +18,8 @@
 		"email": "dev@pigeonposse.com"
 	},
 	"repository": {
-		"type": "git",
-		"url": "https://github.com/pigeonposse/creatium",
+		"type": "https",
+		"url": "https://github.com/pigeonposse/creatium/",
 		"directory": "packages/core"
 	},
 	"funding": {
@@ -33,6 +33,18 @@
 		"url": "https://github.com/angelespejo"
 	},
 	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/main.d.mts",
+				"default": "./dist/main.mjs"
+			},
+			"require": {
+				"types": "./dist/main.d.cts",
+				"default": "./dist/main.cjs"
+			}
+		}
+	},
 	"main": "dist/main.mjs",
 	"module": "dist/main.mjs",
 	"types": "dist/main.d.ts",
@@ -43,27 +55,25 @@
 		"build": "unbuild",
 		"dev": "tsx examples/simple/bin.ts",
 		"example": "run() { tsx examples/\"${@:1}\"/bin.ts; }; run $@",
+		"size": "pnpm dlx @sizium/cli -i ./ --res info",
 		"test": "vitest run -r src --passWithNoTests"
 	},
 	"dependencies": {
-		"@clack/core": "0.3.5",
-		"@clack/prompts": "0.8.2",
-		"boxen": "8.0.1",
-		"chalk": "5.4.1",
+		"@clack/core": "0.5.0",
+		"@clack/prompts": "0.11.0",
+		"@visulima/boxen": "1.0.30",
+		"cli-table3": "0.6.5",
 		"columnify": "1.6.0",
-		"conf": "13.1.0",
-		"deepmerge-ts": "7.1.3",
-		"globby": "14.0.2",
+		"deepmerge-ts": "7.1.5",
 		"gradient-string": "3.0.0",
 		"string-width": "7.2.0",
-		"table": "6.9.0",
-		"update-notifier": "7.3.1",
+		"tiny-glob": "0.2.9",
+		"tiny-updater": "3.5.3",
 		"yargs": "17.7.2"
 	},
 	"devDependencies": {
 		"@creatium/repo-config": "workspace:*",
 		"@types/columnify": "1.5.4",
-		"@types/update-notifier": "6.0.8",
 		"@types/yargs": "17.0.33"
 	},
 	"publishConfig": {

@@ -10,6 +10,7 @@ export * from './console'
 
 /**
  * Checks if the environment is a development environment.
+ *
  * @returns {boolean} True if the environment is a development environment.
  */
 export const isDev = () =>
@@ -37,6 +38,7 @@ export const rmDeprecationAlerts = () => {
  * This function sets the `process.noDeprecation` property to `true` | `false`
  * Note: This is not recommended for production environments, as it might
  * hide useful deprecation warnings that should be addressed.
+ *
  * @returns {object} An object with `show` and `hide` methods.
  * @example
  * const { show, hide } = deprecatedAlerts()
@@ -65,6 +67,7 @@ export const deprecatedAlerts = () => {
 }
 /**
  * Registers an event listener that will be called when the Node.js process exits.
+ *
  * @param {NodeJS.ExitListener} cb - The callback to be called when the process exits.
  */
 export const onExit = ( cb: NodeJS.ExitListener ) => {
@@ -76,8 +79,9 @@ export const onExit = ( cb: NodeJS.ExitListener ) => {
 /**
  * Registers an event listener that will be called when the user sends an
  * interrupt signal (e.g., pressing Ctrl+C in the terminal).
+ *
  * @param {NodeJS.ExitListener} cb - The callback to be called when the user
- * sends an interrupt signal.
+ *                                 sends an interrupt signal.
  */
 export const onCancel = ( cb: NodeJS.ExitListener ) => {
 

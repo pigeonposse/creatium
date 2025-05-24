@@ -14,8 +14,9 @@
 
 /**
  * Waits for the given number of milliseconds before resolving.
- * @param {number} ms - The number of milliseconds to wait.
- * @returns {Promise<void>} - A promise that resolves when the delay has finished.
+ *
+ * @param   {number}        ms - The number of milliseconds to wait.
+ * @returns {Promise<void>}    - A promise that resolves when the delay has finished.
  * @example
  * await delay( 1000 ); // waits 1 second
  */
@@ -24,6 +25,7 @@ export const delay = async ( ms: number ) =>
 
 /**
  * Gets the current date and time as an object containing separate fields for year, month, day, hours, minutes, and seconds.
+ *
  * @returns {{ year: string; month: string; day: string; hours: string; minutes: string; seconds: string }} - An object representing the current date and time.
  */
 export const getCurrentDateTime = (): {
@@ -56,6 +58,7 @@ export const getCurrentDateTime = (): {
 
 /**
  * Gets the current date and time in ISO 8601 format as a string.
+ *
  * @returns {string} - The current date and time as an ISO 8601 string.
  */
 export const getCurrentDateTimeString = (): string => {

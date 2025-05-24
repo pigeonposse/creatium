@@ -54,11 +54,13 @@ export type Config = {
 	version   : string
 	/**
 	 * Use cache
+	 *
 	 * @default true
 	 */
 	cache?    : boolean
 	/**
 	 * Use updater
+	 *
 	 * @default false
 	 */
 	updater?  : boolean
@@ -83,7 +85,7 @@ export type Config = {
 	}
 }
 
-export type ConfigSimple = Prettify< Omit<Config, 'prompt' | 'hooks'> & {
+export type ConfigSimple = Prettify<Omit<Config, 'prompt' | 'hooks'> & {
 	/** Set your prompt options */
 	opts?: {
 		/** Active/deactivate the name prompt */
@@ -110,11 +112,13 @@ export type ConfigSimple = Prettify< Omit<Config, 'prompt' | 'hooks'> & {
 export type CliOpts = {
 	/**
 	 * Arguments to pass to the command
+	 *
 	 * @default process.argv.slice(2)
 	 */
 	args?    : string[]
 	/**
 	 * Hide the first two arguments
+	 *
 	 * @default false
 	 */
 	hideBin? : boolean
@@ -123,6 +127,7 @@ export type CliOpts = {
 export type CreateOpts = CliOpts & {
 	/**
 	 * Options for activate cli.
+	 *
 	 * @default true
 	 */
 	activeCli? : boolean }

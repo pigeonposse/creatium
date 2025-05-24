@@ -438,7 +438,7 @@ bun create {my-library-name}
 deno create {my-library-name}
 ```
 
-## More
+## ➕ More
 
 - 💡 [Examples](examples.md)
 - 📖 [API Docs](api.md)

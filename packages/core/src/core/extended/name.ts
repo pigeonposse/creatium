@@ -1,9 +1,9 @@
 
 import { Text } from '../_super/text'
 
-export type OptionName = Partial< Name['config'] >
+export type OptionName = Partial<Name['config']>
 
-export class Name extends Text  {
+export class Name extends Text {
 
 	constructor( config: OptionName ) {
 

@@ -4,7 +4,7 @@
 
 web:
 
-  - id: "creatium"
+  creatium:
     name: "creatium"
     type: "library"
     subtypes:

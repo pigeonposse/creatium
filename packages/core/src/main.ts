@@ -31,6 +31,7 @@ export {
 
 /**
  * Class of `Creatium` for create project templates (CLI and Library).
+ *
  * @example
  * //////////////// core.js ///////////////////
  *
@@ -98,9 +99,10 @@ export class Creatium {
 
 	/**
 	 * A simplified version of the `build` method from the main class.
-	 * @param {ValuesSimple} [values] - The values to override the CLI prompts. If not set, the CLI prompts will be executed.
-	 * @param {CreateOpts} [opts] - The options to pass to the CLI.
-	 * @returns {Promise<ValuesSimple>} A promise resolving to the prompt values obtained after executing the CLI.
+	 *
+	 * @param   {ValuesSimple}          [values] - The values to override the CLI prompts. If not set, the CLI prompts will be executed.
+	 * @param   {CreateOpts}            [opts]   - The options to pass to the CLI.
+	 * @returns {Promise<ValuesSimple>}          A promise resolving to the prompt values obtained after executing the CLI.
 	 * @example
 	 * // simple usage
 	 * await core.build()
@@ -123,8 +125,9 @@ export class Creatium {
 	/**
 	 * A simplified version of the `cli` method from the main class.
 	 * Initializes and executes the command-line interface (CLI) process.
-	 * @param {CliOpts} [props] - Optional CLI options to configure the initialization process.
-	 * @returns {Promise<ValuesSimple>} A promise resolving to the prompt values obtained after executing the CLI.
+	 *
+	 * @param   {CliOpts}               [props] - Optional CLI options to configure the initialization process.
+	 * @returns {Promise<ValuesSimple>}         A promise resolving to the prompt values obtained after executing the CLI.
 	 * @example
 	 * // simple usage
 	 * await core.cli()

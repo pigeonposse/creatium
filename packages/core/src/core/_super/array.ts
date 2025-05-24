@@ -12,6 +12,7 @@ type Value = string[]
 export type OptionArray = OptionCommonWithPlaceholder<Value> & {
 	/**
 	 * Separator for value strings.
+	 *
 	 * @default ','
 	 */
 	separator? : string

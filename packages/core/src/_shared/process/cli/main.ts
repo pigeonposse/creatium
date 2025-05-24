@@ -9,6 +9,7 @@ import type { Argv } from 'yargs'
 type EmptyObject = {}
 /**
  * Hides the first two arguments from the process.argv array.
+ *
  * @returns {string[]} Array of arguments without the first two elements.
  * @example
  * import { hideBin } from '@dovenv/utils'

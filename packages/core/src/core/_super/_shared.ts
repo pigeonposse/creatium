@@ -33,6 +33,7 @@ export type CliOptionType = Exclude<NonNullable<CliOption['type']>, 'count'>
 
 /**
  * Core interface
+ *
  * @template V
  */
 export type CoreInterface<V = string> = {
@@ -49,11 +50,13 @@ export type CoreInterface<V = string> = {
 	} ) => Promise<V | undefined>
 	/**
 	 * Method to set the cli option
+	 *
 	 * @returns {Promise<CliOption | undefined>}
 	 */
 	cmd    : () => Promise<CliOption | undefined>
 	/**
 	 * Method to set the prompt for the option
+	 *
 	 * @returns {Promise<V>}
 	 */
 	prompt : () => Promise<V>
@@ -76,6 +79,7 @@ export class Core<Config extends OptionSuper = OptionCommon, V = string> {
 	/**
 	 * Set initial value.
 	 * For example if you want to prioritize a cli flag.
+	 *
 	 * @default undefined
 	 */
 	initialValue : V | undefined
@@ -92,8 +96,8 @@ export class Core<Config extends OptionSuper = OptionCommon, V = string> {
 	}
 
 	protected _text = {
-		initialValueSuccess : ( t:string, v: string ) => `${t}\n${this._utils.style.color.dim.gray( v )}`,
-		initialValueError   : ( v?: string ) => `Initial value ${this._utils.style.color.yellow( v )} is not valid`,
+		initialValueSuccess : ( t:string, v: string ) => `${t}\n${this._utils.style.color.dim( this._utils.style.color.gray( v ) )}`,
+		initialValueError   : ( v?: string ) => `Initial value ${this._utils.style.color.yellow( v || '' )} is not valid`,
 	}
 
 	async getPromptHooked() {

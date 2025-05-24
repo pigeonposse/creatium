@@ -1,23 +1,16 @@
 import { defineConfig } from '@dovenv/core'
-import ppTheme, {
+import  {
+	pigeonposseMonorepoTheme,
 	getWorkspaceConfig,
 	Predocs,
 } from '@dovenv/theme-pigeonposse'
 
-// import readmes from './readmes.js'
-
 const core = await getWorkspaceConfig( {
 	metaURL  : import.meta.url,
-	path     : '..',
-	packages : {
-		metaURL : import.meta.url,
-		path    : '../packages',
-	},
-	core : {
-		metaURL : import.meta.url,
-		path    : '../packages/core',
-	},
+	path     : '../',
+	corePath : './packages/core',
 } )
+
 export default defineConfig(
 	{ custom : { predocs : {
 		desc : 'build docs pages',
@@ -60,48 +53,14 @@ export default defineConfig(
 		},
 	} } },
 
-	ppTheme( {
-		core : await getWorkspaceConfig( {
-			metaURL  : import.meta.url,
-			path     : '..',
-			packages : {
-				metaURL : import.meta.url,
-				path    : '../packages',
-			},
-			core : {
-				metaURL : import.meta.url,
-				path    : '../packages/core',
-			},
-		} ),
+	pigeonposseMonorepoTheme( {
+		core,
 		docs : async () => ( {
 			version   : core.corePkg.version,
 			vitepress : {
 				ignoreDeadLinks : true,
 				themeConfig     : { outline: { level: [ 2, 3 ] } },
 			},
-			pwa : { manifest : {  icons : [
-				{
-					src   : 'pwa-64x64.png',
-					sizes : '64x64',
-					type  : 'image/png',
-				},
-				{
-					src   : 'pwa-192x192.png',
-					sizes : '192x192',
-					type  : 'image/png',
-				},
-				{
-					src   : 'pwa-512x512.png',
-					sizes : '512x512',
-					type  : 'image/png',
-				},
-				{
-					src     : 'maskable-icon-512x512.png',
-					sizes   : '512x512',
-					type    : 'image/png',
-					purpose : 'maskable',
-				},
-			] } },
 		} ),
 		repo : { commit : { scopes : [
 			{
@@ -125,26 +84,5 @@ export default defineConfig(
 				desc  : 'env, packages etc',
 			},
 		] } },
-		lint      : { staged: { '*.{js,cjs,mjs,jsx,ts,cts,mts,tsx,json,yml,yaml}': 'pnpm --silent . lint eslint --silent' } },
-		workspace : { check : { pkg : { schema : async ( {
-			v, path, content,
-		} ) => {
-
-			if ( !content ) throw new Error( `No data in ${path}` )
-			if ( 'private' in content ) return
-
-			if ( !content.keywords.includes( 'pp' ) || !content.keywords.includes( 'pigeonposse' ) )
-				throw new Error( `You must add "pigeonposse" and "pp" keywords in ${path}` )
-
-			return v.object( {
-				name          : v.string(),
-				version       : v.string(),
-				description   : v.string(),
-				files         : v.array( v.string() ),
-				keywords      : v.array( v.string() ),
-				publishConfig : v.object( { access: v.literal( 'public' ) } ),
-			} )
-
-		} } } },
 	} ),
 )

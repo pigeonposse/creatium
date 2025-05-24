@@ -17,7 +17,7 @@ export type GetPromptValues<C extends Config> = Prettify<{
 
 export type GetPromptKeys<C extends Config> = keyof C['prompt']
 
-export type GetArgvValues<V extends Config > = Prettify<GetPromptValues<V> & {
+export type GetArgvValues<V extends Config> = Prettify<GetPromptValues<V> & {
 	debug?   : boolean
 	version? : boolean
 	help?    : boolean

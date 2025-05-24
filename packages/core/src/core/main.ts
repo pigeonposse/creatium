@@ -40,22 +40,24 @@ export class Core {
 
 		if ( value === true ) {
 
+			const dim     = ( txt: string ) => this.utils.style.color.gray( this.utils.style.color.dim( txt ) )
 			console.debug = ( ...args ) => {
 
-				console.log(  )
-				const TITLE = this.utils.style.color.gray.dim( this.utils.style.line( {
+				console.log( )
+
+				const TITLE = dim( this.utils.style.line( {
 					title    : 'DEBUG',
 					lineChar : ' ',
 					align    : 'left',
 				} ) )
-				const LINE  = this.utils.style.color.gray.dim( this.utils.style.line( { title: '' } ) )
+				const LINE  = dim( this.utils.style.line( { title: '' } ) )
 
 				// console.log( LINE )
 				console.log( TITLE )
 				console.log( LINE )
 				console.log( ...args )
 				console.log( LINE )
-				console.log(  )
+				console.log( )
 
 			}
 
@@ -114,7 +116,7 @@ export class Core {
 
 	}
 
-	async getCmds(  ): Promise<GetCMDsResponse> {
+	async getCmds( ): Promise<GetCMDsResponse> {
 
 		const res: GetCMDsResponse = {}
 		const Klass                = this.#getClass()
@@ -147,7 +149,7 @@ export class Core {
 		const res: GetPromptsResponse = {}
 		const Klass                   = this.#getClass()
 		const cached                  = await this.#getCache()
-		const cachedValues            = cached?.get()
+		const cachedValues            = await cached?.get()
 
 		console.debug( { cacheData : {
 			active : this.cache,
@@ -176,7 +178,7 @@ export class Core {
 			if ( cachedValue ) instance.config.placeholderValue = cachedValue
 
 			// @ts-ignore
-			instance.afterPrompt = async value => cached?.set( { [key]: value } )
+			instance.afterPrompt = async value => await cached?.set( { [key]: value } )
 
 			if ( 'prompt' in instance )
 				res[key] = await instance.getPromptHooked.bind( instance )

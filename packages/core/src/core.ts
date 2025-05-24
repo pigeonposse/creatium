@@ -16,12 +16,11 @@ import {
 	writeFile,
 	existsDir,
 	resolvePath,
-} from './_shared/sys/main'
+} from './_shared/sys'
 import { OPTION }    from './core/const'
 import { INSTALLER } from './core/extended/install'
 import { Core }      from './core/main'
 
-import type { Response }   from './_shared/ts/return'
 import type { Prettify }   from './_shared/ts/super'
 import type { TextEditor } from './core/extended/editor'
 import type { Installer }  from './core/extended/install'
@@ -36,10 +35,10 @@ import type {
 	GetArgvValues,
 	GetPromptValues,
 } from './types.utils'
-import type { UpdateNotifier } from 'update-notifier'
 
 /**
  * Customizable class of `Creatium` for create project templates (CLI and Library).
+ *
  * @template C
  * @example
  * //////////////// core.js ///////////////////
@@ -89,7 +88,7 @@ export class CreatiumCore<C extends Config = Config> {
 		this.#core.cache       = this.config.cache === undefined ? true : this.config.cache
 		this.#core.projectName = this.config.name
 		this.debugMode         = false
-		this.#style            = { tick: this.utils.style.color.green.dim( '✓' ) }
+		this.#style            = { tick: this.utils.style.color.green( this.utils.style.color.dim( '✓' ) ) }
 
 	}
 
@@ -203,36 +202,17 @@ export class CreatiumCore<C extends Config = Config> {
 	 * **information**: If this 'custom' function is provided, the default
 	 * notification will not be shown.
 	 *
-	 * ---
-	 * @param {object} [opts] - Options for the update notification.
-	 * @param {object} [opts.opts] - Options for the `update-notifier` package.
-	 * @param {Function} [opts.custom] - A custom function to run with the update
-	 * @example
-	 * // With default options. Recommended for most use cases.
-	 * await core.updateNotify()
-	 * @example
-	 * // With custom options
-	 * await core.updateNotify({ opts: { ... } })
-	 * @example
-	 * // With custom function
-	 * await core.updateNotify({ custom: () => {} })
+	 * @returns {Promise<boolean>} - A promise that resolves when the notification has finished.
 	 */
-	async updateNotify( {
-		custom, opts,
-	}:{
-		opts?   : Parameters<UpdateNotifier['notify']>[0]
-		custom? : ( info?: UpdateNotifier['update'] ) => Response<void>
-	} = {} ) {
+	async updateNotify( ) {
 
-		const { default : up } = await import( 'update-notifier' )
+		const { default : up } = await import( 'tiny-updater' )
 
-		const updater = up( { pkg : {
+		return await up( {
 			name    : this.config.name,
 			version : this.config.version,
-		} } )
-
-		if ( custom ) await custom( updater.update )
-		else updater.notify( opts )
+			ttl     : 86_400_000,
+		} )
 
 	}
 
@@ -242,6 +222,7 @@ export class CreatiumCore<C extends Config = Config> {
 	 * If a `message` is provided, it will be displayed in the console.
 	 * If `onCancel` is set in the config, it will be called with the current data.
 	 * If `onCancel` is not set, a default message will be displayed.
+	 *
 	 * @param {string} [message] - The message to display before exiting.
 	 */
 	async cancel( message?: string ) {
@@ -271,7 +252,8 @@ export class CreatiumCore<C extends Config = Config> {
 	 * If the parameter `message` is provided, it will be used as the intro message.
 	 * If the `intro` option is a function, it will be called with the `this.#data` as the argument.
 	 * If the `intro` option is undefined, the default intro message will be used.
-	 * @param {string} [message] The intro message.
+	 *
+	 * @param {string} [message] - The intro message.
 	 */
 	async intro( message?: string ) {
 
@@ -282,7 +264,9 @@ export class CreatiumCore<C extends Config = Config> {
 		else if ( this.config.intro === undefined ) {
 
 			console.log()
-			this.utils.prompt.intro( this.utils.style.color.cyan.inverse( ` ${this.config.name} ` ) )
+			const badge = ( txt: string ) => this.utils.style.color.blue( this.utils.style.color.inverse( ' ' + this.utils.style.color.bold( txt ) + ' ' ) )
+
+			this.utils.prompt.intro( badge( this.config.name ) )
 			this.utils.prompt.log.step( '' )
 
 		}
@@ -295,7 +279,8 @@ export class CreatiumCore<C extends Config = Config> {
 	 * If the parameter `message` is provided, it will be used as the outro message.
 	 * If the `outro` option is a function, it will be called with the `this.#data` as the argument.
 	 * If the `outro` option is undefined, the default outro message will be used.
-	 * @param {string} [message] The outro message.
+	 *
+	 * @param {string} [message] - The outro message.
 	 */
 	async outro( message?: string ) {
 
@@ -315,10 +300,11 @@ export class CreatiumCore<C extends Config = Config> {
 
 	/**
 	 * Copy a directory from input path to output path.
-	 * @param {object} data - Options object with input and output paths.
-	 * @param {string} data.input  - The path to the directory to copy.
-	 * @param {string} data.output - The path to the destination directory.
-	 * @returns {Promise<void>}    - Resolves when the directory has been copied.
+	 *
+	 * @param   {object}        data        - Options object with input and output paths.
+	 * @param   {string}        data.input  - The path to the directory to copy.
+	 * @param   {string}        data.output - The path to the destination directory.
+	 * @returns {Promise<void>}             - Resolves when the directory has been copied.
 	 * @example
 	 *
 	 * const copyResult = await core.copyDir({
@@ -338,9 +324,10 @@ export class CreatiumCore<C extends Config = Config> {
 
 	/**
 	 * Installs the project with the given package manager.
-	 * @param {object} [options] - The options to install.
-	 * @param {Installer} [options.installer] - The package manager to use for the installation.
-	 * @param {string} [options.input] - The path to the folder. If not provided, the current directory is used.
+	 *
+	 * @param   {object}        [options]           - The options to install.
+	 * @param   {Installer}     [options.installer] - The package manager to use for the installation.
+	 * @param   {string}        [options.input]     - The path to the folder. If not provided, the current directory is used.
 	 * @returns {Promise<void>}
 	 * @example
 	 * await core.install( {
@@ -364,7 +351,7 @@ export class CreatiumCore<C extends Config = Config> {
 
 		const s = this.utils.prompt.spinner()
 
-		const  command = {
+		const command = {
 			[INSTALLER.PNPM] : `pnpm install${input ? ` --dir ${input}` : ''}`,
 			[INSTALLER.NPM]  : `npm install${input ? ` --prefix ${input}` : ''}`,
 			[INSTALLER.YARN] : `yarn install${input ? ` --cwd ${input}` : ''}`,
@@ -392,9 +379,10 @@ export class CreatiumCore<C extends Config = Config> {
 
 	/**
 	 * Open the project in the given editor.
-	 * @param {object} params - The parameters for opening the editor.
-	 * @param {TextEditor} params.editor - The editor to open the project in.
-	 * @param {string} params.input - The input path. If not provided, the current directory is used.
+	 *
+	 * @param   {object}        params        - The parameters for opening the editor.
+	 * @param   {TextEditor}    params.editor - The editor to open the project in.
+	 * @param   {string}        params.input  - The input path. If not provided, the current directory is used.
 	 * @returns {Promise<void>}
 	 * @example
 	 * await core.openEditor( {
@@ -444,10 +432,11 @@ export class CreatiumCore<C extends Config = Config> {
 	 * This function searches for files in the provided input directory and replaces
 	 * placeholders within those files using the specified parameters. The placeholders
 	 * in the content are replaced with values from the `params` object.
-	 * @param {object} args - The arguments object.
-	 * @param {string} [args.input] - The directory path containing files with placeholders.
-	 * @param {object} [args.params] - An object containing key-value pairs for replacing placeholders.
-	 * @returns {Promise<void>} A Promise that resolves once all placeholders have been replaced.
+	 *
+	 * @param   {object}        args          - The arguments object.
+	 * @param   {string}        [args.input]  - The directory path containing files with placeholders.
+	 * @param   {object}        [args.params] - An object containing key-value pairs for replacing placeholders.
+	 * @returns {Promise<void>}               A Promise that resolves once all placeholders have been replaced.
 	 * @example
 	 * await core.replacePlaceholders( {
 	 *   input  : 'my/project/path',
@@ -490,8 +479,8 @@ export class CreatiumCore<C extends Config = Config> {
 
 		}
 
-		const paths = await getPaths( [ input ], {
-			onlyFiles : true,
+		const paths = await getPaths( input, {
+			filesOnly : true,
 			dot       : true,
 			...inputOpts || {},
 		} )
@@ -516,8 +505,9 @@ export class CreatiumCore<C extends Config = Config> {
 
 	/**
 	 * Return the input path of a template by name or path.
-	 * @param {string} [input] The name of the template or the path to the template.
-	 * @returns {Promise<string | undefined>} The input path of the template or undefined if not found.
+	 *
+	 * @param   {string}                      [input] - The name of the template or the path to the template.
+	 * @returns {Promise<string | undefined>}         The input path of the template or undefined if not found.
 	 * @example
 	 * // with template path
 	 * const input = await core.getTemplateInput( { input : 'my/template/path' } )
@@ -556,8 +546,9 @@ export class CreatiumCore<C extends Config = Config> {
 
 	/**
 	 * Create a new project template.
-	 * @param {CreateTemplateOpts} values - The values to create the template.
-	 * @returns {Promise<void>} - A promise that resolves when the template is created.
+	 *
+	 * @param   {CreateTemplateOpts} values - The values to create the template.
+	 * @returns {Promise<void>}             - A promise that resolves when the template is created.
 	 * @example
 	 * // basic usage
 	 * await core.createTemplate( { input : 'my/template/path', output : 'my/project/path' } )
@@ -637,9 +628,10 @@ export class CreatiumCore<C extends Config = Config> {
 
 	/**
 	 * Initialize the CLI and executes the callback function passed in the config.
-	 * @param {GetPromptValues<C>} [values] - The values to override the CLI prompts. If not set, the CLI prompts will be executed.
-	 * @param {CreateOpts} [opts] - The options to pass to the CLI.
-	 * @returns The result of the callback function.
+	 *
+	 * @param   {GetPromptValues<C>} [values] - The values to override the CLI prompts. If not set, the CLI prompts will be executed.
+	 * @param   {CreateOpts}         [opts]   - The options to pass to the CLI.
+	 * @returns                               The result of the callback function.
 	 */
 	async build( values?: Prettify<GetPromptValues<C>>, opts?: CreateOpts ) {
 
@@ -653,8 +645,9 @@ export class CreatiumCore<C extends Config = Config> {
 
 	/**
 	 * Initializes and executes the command-line interface (CLI) process.
-	 * @param {CliOpts} [props] - Optional CLI options to configure the initialization process.
-	 * @returns A promise resolving to the prompt values obtained after executing the CLI.
+	 *
+	 * @param   {CliOpts} [props] - Optional CLI options to configure the initialization process.
+	 * @returns                   A promise resolving to the prompt values obtained after executing the CLI.
 	 * @example
 	 * // simple usage
 	 * await core.cli()

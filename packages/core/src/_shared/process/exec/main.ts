@@ -9,8 +9,9 @@ import { catchError } from '../../error/main'
 
 /**
  * Executes a command in the shell and waits for it to finish.
- * @param {string} cmd - The command to execute.
- * @returns {Promise<void>} - A promise that resolves when the command finishes successfully.
+ *
+ * @param   {string}        cmd - The command to execute.
+ * @returns {Promise<void>}     - A promise that resolves when the command finishes successfully.
  * @throws {Error} - Throws an error if the command fails.
  */
 export const exec = async ( cmd: string ): Promise<void> => {
@@ -41,8 +42,9 @@ export const exec = async ( cmd: string ): Promise<void> => {
 
 /**
  * Executes a command in a child process and captures its output.
- * @param {string} cmd - The command to execute.
- * @returns {Promise<{ stdout: string; stderr: string }>} - A promise that resolves with the output of the command.
+ *
+ * @param   {string}                                      cmd - The command to execute.
+ * @returns {Promise<{ stdout: string; stderr: string }>}     - A promise that resolves with the output of the command.
  * @throws {Error} - Throws an error if the command fails, along with its stdout and stderr.
  */
 export const execChild = async ( cmd: string ): Promise<{
@@ -113,8 +115,9 @@ export const execChild = async ( cmd: string ): Promise<{
 
 /**
  * Executes a command and captures its output.
- * @param {string} command - The command to execute, including any arguments.
- * @returns {Promise<string>} A promise that resolves with the captured output (stdout).
+ *
+ * @param   {string}          command - The command to execute, including any arguments.
+ * @returns {Promise<string>}         A promise that resolves with the captured output (stdout).
  * @throws Will reject with an error if the command fails.
  * @example
  * const [error, output] = await catchExecOutput('dovenv --help')
@@ -126,7 +129,7 @@ export const execChild = async ( cmd: string ): Promise<{
  */
 export const catchExecOutput = <Res = string>( command: string ) => {
 
-	return catchError ( new Promise<Res>( ( resolve, reject ) => {
+	return catchError( new Promise<Res>( ( resolve, reject ) => {
 
 		execNode( command, ( error, stdout, stderr ) => {
 

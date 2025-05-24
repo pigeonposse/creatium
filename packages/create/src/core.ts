@@ -56,19 +56,31 @@ export const core = new CreatiumCore( {
 			desc : 'Documentation of project',
 			fn   : ( ) => {
 
-				const tableData = [ [ 'Package version', version ], [ 'Documentation', homepage ] ]
-				const tableOpts = {
-					drawHorizontalLine : () => false,
-					drawVerticalLine   : () => false,
-
-				}
-				const value     = color.dim( `${table( [ [ description ] ], tableOpts )}\n${table( tableData, tableOpts )}` )
+				const tableData = [ [ 'Version', version ], [ 'Documentation', homepage ] ]
+					.map( v => [ color.dim( color.bold( v[0] ) ), color.dim( color.italic( v[1] ) ) ] )
+				const tableOpts = { chars : {
+					'top'          : '',
+					'top-mid'      : '',
+					'top-left'     : '',
+					'top-right'    : '',
+					'bottom'       : '',
+					'bottom-mid'   : '',
+					'bottom-left'  : '',
+					'bottom-right' : '',
+					'left'         : '',
+					'left-mid'     : '',
+					'mid'          : '',
+					'mid-mid'      : '',
+					'right'        : '',
+					'right-mid'    : '',
+					'middle'       : '',
+				} }
+				const value     =  `${table( [ [ color.dim( description ) ], [ '' ] ], tableOpts )}\n${table( tableData, tableOpts )}\n`
 				prompt.box( {
 					value : value,
 					opts  : {
 						padding     : 0,
 						borderStyle : 'none',
-						dimBorder   : true,
 					},
 				} )
 
@@ -102,8 +114,9 @@ export const core = new CreatiumCore( {
 
 /**
  * Function for create a new project template.
- * @param {CreateTemplateParams} params - The values to create the template.
- * @returns {Promise<void>} - A promise that resolves when the template is created.
+ *
+ * @param   {CreateTemplateParams} params - The values to create the template.
+ * @returns {Promise<void>}               - A promise that resolves when the template is created.
  */
 export const createTemplate = async ( params: CreateTemplateParams ) => {
 
@@ -119,8 +132,8 @@ export const createTemplate = async ( params: CreateTemplateParams ) => {
 			...consts
 		} = params
 
-		if ( !output )  throw new Error( 'Output is required' )
-		if ( !input )   throw new Error( 'Input is required' )
+		if ( !output ) throw new Error( 'Output is required' )
+		if ( !input ) throw new Error( 'Input is required' )
 		if ( !projectName ) throw new Error( 'Project name is required' )
 
 		// Add the partial files

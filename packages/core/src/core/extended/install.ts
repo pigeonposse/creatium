@@ -86,8 +86,9 @@ export class Install extends Select<Installer> {
 			this.config.options = Object.fromEntries(
 				Object.entries( this.config.options ).filter( ( [ key ] ) => key !== value ),
 			)
+			const badge         = ( txt: string ) => this._utils.style.color.red( this._utils.style.color.inverse( ' ' + txt + ' ' ) )
 
-			this._utils.prompt.log.error( `Binary ${this._utils.style.color.red.inverse( ' ' + value + ' ' )} not found in system` )
+			this._utils.prompt.log.error( `Binary ${badge( value )} not found in system` )
 			value = await this.prompt()
 
 		}

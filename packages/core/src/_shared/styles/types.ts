@@ -1,6 +1,3 @@
-import type chalk from 'chalk'
-
-export type Color = typeof chalk
 
 export type GradientColors = string[] | {
 	color : string

@@ -1,14 +1,14 @@
 {
 	"name": "create-creatium",
-	"version": "0.1.12",
+	"version": "0.1.13",
 	"description": "Create a new creatium project",
 	"keywords": [
-		"cli",
-		"library",
-		"create-bins",
-		"create",
-		"node",
 		"bin",
+		"cli",
+		"create",
+		"create-bins",
+		"library",
+		"node",
 		"pigeonposse",
 		"pp"
 	],
@@ -18,8 +18,8 @@
 		"email": "dev@pigeonposse.com"
 	},
 	"repository": {
-		"type": "git",
-		"url": "https://github.com/pigeonposse/creatium",
+		"type": "https",
+		"url": "https://github.com/pigeonposse/creatium/",
 		"directory": "packages/create"
 	},
 	"funding": {
@@ -33,6 +33,18 @@
 		"url": "https://github.com/angelespejo"
 	},
 	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/main.d.mts",
+				"default": "./dist/main.mjs"
+			},
+			"require": {
+				"types": "./dist/main.d.cts",
+				"default": "./dist/main.cjs"
+			}
+		}
+	},
 	"main": "dist/main.mjs",
 	"module": "dist/main.mjs",
 	"types": "dist/main.d.ts",
@@ -40,8 +52,8 @@
 		"create-creatium": "./dist/bin.mjs"
 	},
 	"files": [
-		"dist",
-		"data"
+		"data",
+		"dist"
 	],
 	"scripts": {
 		"build": "unbuild",

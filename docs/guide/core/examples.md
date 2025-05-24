@@ -214,12 +214,12 @@ export const creatium = new CreatiumCore( {
 			desc : 'Hello world',
 			fn   : ( ) => {
 
-				const value = `Package version: ${color.green( version )}\nAuthor: ${color.green( author.name )}`
+				const value = [ [ 'Package version', version ], [ 'Author', author.name ] ]
 				prompt.box( {
-					value : value,
+					value : value.map( v => `${color.dim( v[0] + ':' )} ${color.green( v[1] )}` ).join( '\n' ),
 					opts  : {
-						padding   : 1,
-						dimBorder : true,
+						padding     : 0,
+						borderStyle : 'none',
 					},
 				} )
 
@@ -273,8 +273,9 @@ export const creatium = new CreatiumCore( {
 
 /**
  * Function for create a new project template.
- * @param {Awaited<ReturnType<typeof creatium.cli>>} params - The values to create the template.
- * @returns {Promise<void>} - A promise that resolves when the template is created.
+ *
+ * @param   {Awaited<ReturnType<typeof creatium.cli>>} params - The values to create the template.
+ * @returns {Promise<void>}                                   - A promise that resolves when the template is created.
  */
 export const createTemplate = async ( params: Awaited<ReturnType<typeof creatium.cli>> ) => {
 
@@ -313,7 +314,7 @@ export const createTemplate = async ( params: Awaited<ReturnType<typeof creatium
 
 		}
 
-		if ( !output )  throw new Error( 'Output is required' )
+		if ( !output ) throw new Error( 'Output is required' )
 
 		// Copy the workspace files if wsFiles is true.
 		// this must be first than the creatium.createTemplate because creatium.createTemplate ends the line process

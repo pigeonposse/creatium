@@ -7,7 +7,7 @@
 [![Instagram](https://img.shields.io/badge/Instagram-black?style=for-the-badge&logoColor=white&logo=instagram)](https://www.instagram.com/pigeon.posse/)
 [![Medium](https://img.shields.io/badge/Medium-black?style=for-the-badge&logoColor=white&logo=medium)](https://medium.com/@pigeonposse)
 
-[![BANNER](https://github.com/pigeonposse/creatium/blob/main/docs/public/banner.png?raw=true)](https://creatium.pigeonposse.com)
+[![BANNER](https://github.com/pigeonposse/creatium/blob/main/docs/public/banner.png?raw=true)](https://creatium.pigeonposse.com/guide/core)
 
 [![License](https://img.shields.io/github/license/pigeonposse/creatium?style=for-the-badge&color=green&logoColor=white)](/LICENSE)
 [![Version](https://img.shields.io/npm/v/creatium?style=for-the-badge&color=blue&label=Version)](https://www.npmjs.com/package/creatium)
@@ -18,11 +18,11 @@ Build your create-bins quickly and easily
 
 - [What is it `creatium`?](#what-is-it-creatium)
 - [🔑 Installation](#-installation)
-- [More](#more)
+- [➕ More](#-more)
 - [👨‍💻 Development](#-development)
-- [☕ Donate](#-donate)
+- [❤️ Donate](#-donate)
 - [📜 License](#-license)
-- [🐦 About us](#-about-us)
+- [✨ About us](#-about-us)
 
 
 ## What is it `creatium`?
@@ -53,10 +53,10 @@ bun add creatium
 deno add creatium
 ```
 
-## More
+## ➕ More
 
-- [Core](https://creatium.pigeonposse.com/guide/core)
-- [Create](https://creatium.pigeonposse.com/guide/create)
+- 🌞 [Core](https://creatium.pigeonposse.com/guide/core)
+- 🚀 [Create](https://creatium.pigeonposse.com/guide/create)
 
 
 ---
@@ -69,7 +69,7 @@ __creatium__ is an open-source project and its development is open to anyone who
 [![Pull requests](https://img.shields.io/badge/Pulls-grey?style=for-the-badge)](https://github.com/pigeonposse/creatium/pulls)
 [![Read more](https://img.shields.io/badge/Read%20more-grey?style=for-the-badge)](https://creatium.pigeonposse.com)
 
-## ☕ Donate
+## ❤️ Donate
 
 Help us to develop more interesting things.
 
@@ -77,15 +77,23 @@ Help us to develop more interesting things.
 
 ## 📜 License
 
-This software is licensed with __[GPL-3.0](https://github.com/pigeonposse/creatium/blob/main/LICENSE)__.
+This software is licensed with __[GPL-3.0]({{const.pkg.extra.licenseURL}})__.
 
-[![Read more](https://img.shields.io/badge/Read-more-grey?style=for-the-badge)](https://github.com/pigeonposse/creatium/blob/main/LICENSE)
+[![Read more](https://img.shields.io/badge/Read-more-grey?style=for-the-badge)]({{const.pkg.extra.licenseURL}})
 
-## 🐦 About us
+## ✨ About us
 
-*PigeonPosse* is a ✨ __code development collective__ ✨ focused on creating practical and interesting tools that help developers and users enjoy a more agile and comfortable experience. Our projects cover various programming sectors and we do not have a thematic limitation in terms of projects.
+*PigeonPosse* is a __code development collective__ focused on creating practical and interesting tools that help developers and users enjoy a more agile and comfortable experience. Our projects cover various programming sectors and we do not have a thematic limitation in terms of projects.
 
 [![More](https://img.shields.io/badge/Read-more-grey?style=for-the-badge)](https://github.com/pigeonposse)
+
+
+## Contributors
+
+|   | Name | Role |
+| ----- | ---- | ---- |
+| ![Angelo](https://github.com/angelespejo.png?size=72) | [Angelo](https://github.com/angelespejo) | 👑 Author |
+| ![PigeonPosse](https://github.com/pigeonposse.png?size=72) | [PigeonPosse](https://github.com/pigeonposse) | 🏢 Organization |
 
 ---
 

@@ -2,16 +2,17 @@ import { color } from '../styles/main'
 
 /**
  * Returns a string representing the content of an object as a directory structure.
- * @param {object} opts An object with options for generating the directory structure string.
- * @param {object} opts.structure - An object representing the directory structure.
- * @param {string} [opts.name] - The name of the root directory. If provided, it will be printed as the first line.
- * @param {Function} [opts.folderStyle] - A function that returns a string representing a directory.
- *                                         Receives an object with properties: name, indent, isLast, and isFirst.
- * @param {Function} [opts.fileStyle] - A function that returns a string representing a file.
- *                                       Receives an object with properties: name, indent, isLast, and isFirst.
- * @returns {string} A string representing the content of `structure` as a directory structure.
  *
- * ---
+ * @param   {object}   opts               - An object with options for generating the directory structure string.
+ * @param   {object}   opts.structure     - An object representing the directory structure.
+ * @param   {string}   [opts.name]        - The name of the root directory. If provided, it will be printed as the first line.
+ * @param   {Function} [opts.folderStyle] - A function that returns a string representing a directory.
+ *                                        Receives an object with properties: name, indent, isLast, and isFirst.
+ * @param   {Function} [opts.fileStyle]   - A function that returns a string representing a file.
+ *                                        Receives an object with properties: name, indent, isLast, and isFirst.
+ * @returns {string}                      A string representing the content of `structure` as a directory structure.
+ *
+ *                                        ---
  * @example
  *
  * const result = setDirTree({
@@ -51,9 +52,9 @@ export const setDirTree = ( opts: {
 } ): string => {
 
 	const pattern = {
-		indent   : color.gray.dim( '│   ' ),
-		line     : color.gray.dim( '├── ' ),
-		lastLine : color.gray.dim( '└── ' ),
+		indent   : color.gray( color.dim( '│   ' ) ),
+		line     : color.gray( color.dim( '├── ' ) ),
+		lastLine : color.gray( color.dim( '└── ' ) ),
 	}
 
 	// Default folder style
@@ -69,7 +70,7 @@ export const setDirTree = ( opts: {
 		} ) => {
 
 			const prefix = pattern.indent.repeat( indent ) + ( isLast ? pattern.lastLine : pattern.line )
-			return prefix + color.blue.bold( name )
+			return prefix + color.blue( color.bold( name ) )
 
 		}
 

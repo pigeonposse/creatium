@@ -42,6 +42,7 @@ export type Prettify<T> = {
 
 /**
  * NonUndefined
+ *
  * @description Exclude undefined from set `A`
  * @example
  *   // Expect: "string | null"
@@ -51,6 +52,7 @@ export type NonUndefined<A> = A extends undefined ? never : A
 
 /**
  * FunctionKeys
+ *
  * @description Get union type of keys that are functions in object type `T`
  * @example
  *  type MixedProps = {name: string; setName: (name: string) => void; someKeys?: string; someFn?: (...args: any) => any;};
@@ -64,6 +66,7 @@ export type FunctionKeys<T extends object> = {
 
 /**
  * NonFunctionKeys
+ *
  * @description Get union type of keys that are non-functions in object type `T`
  * @example
  *   type MixedProps = {name: string; setName: (name: string) => void; someKeys?: string; someFn?: (...args: any) => any;};
@@ -77,6 +80,7 @@ export type NonFunctionKeys<T extends object> = {
 
 /**
  * AssertEqual
+ *
  * @description Checks if two types `T` and `U` are equal.
  * @example
  *   type Test = AssertEqual<string, string>; // Expected: true
@@ -86,6 +90,7 @@ export type AssertEqual<T, U> = ( <V>() => V extends T ? 1 : 2 ) extends ( <V>()
 
 /**
  * ExpectEqual
+ *
  * @description Returns the type `T` if `T` and `U` are equal; otherwise, returns `never`.
  * @example
  *   type Test = ExpectEqual<string, string>; // Expected: string

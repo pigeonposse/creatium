@@ -9,6 +9,7 @@ type Props = {
 	content    : string
 	/**
 	 * Parameters
+	 *
 	 * @example
 	 * const params = {
 	 *     name: 'Antonio',
@@ -18,6 +19,7 @@ type Props = {
 	params     : Params
 	/**
 	 * Transform parameters insde placeholders.
+	 *
 	 * @example
 	 * const transform = async ( param: string ) => {
 	 *     if ( param === 'url' ) return 'https://pigeonposse.com',
@@ -30,11 +32,13 @@ type Props = {
 	opts?: {
 		/**
 		 * Throw an error if a placeholder is not found.
+		 *
 		 * @default false
 		 */
 		throw? : boolean
 		/**
 		 * Throw an error if a parameter is not found.
+		 *
 		 * @default
 		 * {
 		 *   prefix : '{{',
@@ -56,12 +60,13 @@ type Props = {
  *
  * The function returns a Promise that resolves to the string with all placeholders
  * replaced.
- * @param {Props} props - Props for the function.
- * @param {Props['content']} props.content - The string with placeholders.
- * @param {Props['params']} props.params - An object with parameter values.
- * @param {Props['transform']} [props.transform] - An optional custom parameter function.
- * @param {Props['opts']} [props.opts] - Options to customize the behavior of the function.
- * @returns {Promise<string>} - A Promise that resolves to the string with all placeholders replaced.
+ *
+ * @param   {Props}              props             - Props for the function.
+ * @param   {Props['content']}   props.content     - The string with placeholders.
+ * @param   {Props['params']}    props.params      - An object with parameter values.
+ * @param   {Props['transform']} [props.transform] - An optional custom parameter function.
+ * @param   {Props['opts']}      [props.opts]      - Options to customize the behavior of the function.
+ * @returns {Promise<string>}                      - A Promise that resolves to the string with all placeholders replaced.
  */
 export const replacePlaceholders = async ( props: Props ): Promise<string> => {
 
