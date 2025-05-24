@@ -7,8 +7,8 @@
 # @see https://www.npmjs.com/package/lint-staged
 ###############################################################################
 
-echo 'Precommit 🚀'
+echo '🚀 Precommit'
 echo
-pnpm --silent . check --silent
+pnpm test:check-ws
 echo
-pnpm --silent . lint staged --silent
+node --run . lint:staged

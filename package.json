@@ -46,15 +46,16 @@
 		"build": "pnpm -F creatium build && pnpm -F create-creatium build",
 		"build-doc": "dovenv predocs && dovenv docs build",
 		"core": "pnpm -F creatium",
-		"lint:eslint": "node --run . -- lint eslint",
-		"lint:pkg": "node --run . -- lint custom -k pkg",
-		"lint:staged": "node --run . -- lint staged --silent",
+		"lint:commit": "dovenv lint commit --silent",
+		"lint:eslint": "dovenv lint eslint --silent",
+		"lint:pkg": "dovenv lint custom -k pkg --silent",
+		"lint:staged": "dovenv lint staged --silent",
 		"prepare": "dovenv git husky --silent",
 		"test": "pnpm run --sequential \"/test:.*/\"",
 		"test:check": "pnpm --parallel check",
-		"test:check-ws": "node --run . -- check --silent",
+		"test:check-ws": "dovenv check --silent",
 		"test:pkg": "pnpm --parallel test",
-		"test:transform-ws": "node --run . -- transform --silent"
+		"test:transform-ws": "dovenv transform --silent"
 	},
 	"devDependencies": {
 		"@changesets/changelog-github": "0.5.1",
