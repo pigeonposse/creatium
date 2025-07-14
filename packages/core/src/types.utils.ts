@@ -1,9 +1,9 @@
-import type { Prettify } from './_shared/ts/main'
 import type {
 	GetPromptValue,
 	OptionsClasses,
 } from './core/types'
-import type { Config } from './types'
+import type { Config }   from './types'
+import type { Prettify } from '@creatium-js/utils'
 
 export type GetPromptValues<C extends Config> = Prettify<{
 	[K in keyof C['prompt']]?: Prettify<(

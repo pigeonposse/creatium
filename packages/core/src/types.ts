@@ -1,8 +1,4 @@
 /* eslint-disable @stylistic/object-curly-newline */
-import type {
-	Prettify,
-	Response,
-} from './_shared/ts/main'
 import type { OPTION }     from './core/const'
 import type { TextEditor } from './core/extended/editor'
 import type { Installer }  from './core/extended/install'
@@ -10,6 +6,10 @@ import type {
 	Options,
 	OptionsParams,
 } from './core/types'
+import type {
+	Prettify,
+	Response,
+} from '@creatium-js/utils'
 
 export type HookParams = {
 	/** Values passed to the prompt */

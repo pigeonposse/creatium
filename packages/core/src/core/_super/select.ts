@@ -28,7 +28,7 @@ export class Select<V extends Value = Value> extends Core<OptionSelect<V>, V> im
 
 		return {
 			desc    : this.config.desc,
-			type    : this._type.string,
+			type    : this._type.choices,
 			alias   : this.config.alias,
 			choices : Object.keys( this.config.options ),
 		}

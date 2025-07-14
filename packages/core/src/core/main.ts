@@ -1,3 +1,5 @@
+import { cache } from '@creatium-js/utils'
+
 import { coreUtils }   from './_super/_shared'
 import { Array }       from './_super/array'
 import { Boolean }     from './_super/boolean'
@@ -6,14 +8,13 @@ import { Number }      from './_super/number'
 import { Select }      from './_super/select'
 import { Text }        from './_super/text'
 import { Void }        from './_super/void'
+import { name }        from './const'
 import { Editor }      from './extended/editor'
 import { Install }     from './extended/install'
 import { Name }        from './extended/name'
 import { Output }      from './extended/output'
-import { Template }    from './extended/template'
-import { name }        from '../../package.json'
 import { Path }        from './extended/path'
-import { cache }       from '../_shared/sys/cache'
+import { Template }    from './extended/template'
 
 import type {
 	GetCMDsResponse,
@@ -40,17 +41,17 @@ export class Core {
 
 		if ( value === true ) {
 
-			const dim     = ( txt: string ) => this.utils.style.color.gray( this.utils.style.color.dim( txt ) )
+			const dim     = ( txt: string ) => this.utils.color.gray( this.utils.color.dim( txt ) )
 			console.debug = ( ...args ) => {
 
 				console.log( )
 
-				const TITLE = dim( this.utils.style.line( {
+				const TITLE = dim( this.utils.line( {
 					title    : 'DEBUG',
 					lineChar : ' ',
 					align    : 'left',
 				} ) )
-				const LINE  = dim( this.utils.style.line( { title: '' } ) )
+				const LINE  = dim( this.utils.line( { title: '' } ) )
 
 				// console.log( LINE )
 				console.log( TITLE )

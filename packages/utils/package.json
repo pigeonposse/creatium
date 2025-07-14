@@ -1,0 +1,76 @@
+{
+	"name": "@creatium-js/utils",
+	"version": "0.2.0",
+	"description": "CLI utils for creatium",
+	"keywords": [
+		"bin",
+		"cli",
+		"create",
+		"create-bins",
+		"library",
+		"node",
+		"pigeonposse",
+		"pp",
+		"prompts"
+	],
+	"homepage": "https://creatium.pigeonposse.com/guide/utils",
+	"bugs": {
+		"url": "https://github.com/pigeonposse/creatium/issues",
+		"email": "dev@pigeonposse.com"
+	},
+	"repository": {
+		"type": "https",
+		"url": "https://github.com/pigeonposse/creatium/",
+		"directory": "packages/utils"
+	},
+	"funding": {
+		"type": "individual",
+		"url": "https://pigeonposse.com/?popup=donate"
+	},
+	"license": "GPL-3.0",
+	"author": {
+		"name": "Angelo",
+		"email": "angelo@pigeonposse.com",
+		"url": "https://github.com/angelespejo"
+	},
+	"type": "module",
+	"exports": {
+		".": {
+			"import": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		}
+	},
+	"main": "dist/index.js",
+	"module": "dist/index.js",
+	"types": "dist/index.d.js",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"build": "pnpm build:lib && pnpm build:types",
+		"build:lib": "pnpm dlx @vercel/ncc build src/index.ts --out dist --minify",
+		"build:types": "tsup src/index.ts --dts-only --out-dir dist --format esm",
+		"dev": "pnpm dlx tsx examples/index.ts",
+		"size": "pnpm dlx @sizium/cli -i ./ --res info",
+		"test": "vitest run -r src --passWithNoTests"
+	},
+	"devDependencies": {
+		"@clack/core": "0.5.0",
+		"@clack/prompts": "0.11.0",
+		"@creatium-js/repo-config": "workspace:*",
+		"@types/columnify": "1.5.4",
+		"@visulima/boxen": "2.0.2",
+		"cli-table3": "0.6.5",
+		"columnify": "1.6.0",
+		"deepmerge-ts": "7.1.5",
+		"gradient-string": "3.0.0",
+		"string-width": "7.2.0",
+		"tiny-glob": "0.2.9"
+	},
+	"publishConfig": {
+		"access": "public",
+		"registry": "https://registry.npjs.org/"
+	}
+}

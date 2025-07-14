@@ -1,6 +1,6 @@
 {
 	"name": "create-creatium",
-	"version": "0.1.17",
+	"version": "0.2.0",
 	"description": "Create a new creatium project",
 	"keywords": [
 		"bin",
@@ -65,7 +65,7 @@
 		"creatium": "workspace:*"
 	},
 	"devDependencies": {
-		"@creatium/repo-config": "workspace:*"
+		"@creatium-js/repo-config": "workspace:*"
 	},
 	"publishConfig": {
 		"access": "public",

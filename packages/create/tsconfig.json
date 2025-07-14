@@ -1,5 +1,5 @@
 {
-	"extends": "./node_modules/@creatium/repo-config/tsconfig.json",
+	"extends": "./node_modules/@creatium-js/repo-config/tsconfig.json",
 	"include": [
 		"./src",
 	]

@@ -27,7 +27,7 @@ export class Multiselect<V extends Value = Value> extends Core<OptionMultiselect
 
 		return {
 			desc    : this.config.desc,
-			type    : this._type.array,
+			type    : this._type.choices,
 			alias   : this.config.alias,
 			choices : Object.keys( this.config.options ),
 		}

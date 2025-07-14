@@ -56,7 +56,7 @@ import type {
 import type {
 	ObjectToArray,
 	Prettify,
-} from '../_shared/ts/super'
+} from '@creatium-js/utils'
 
 export type Options = {
 	/**Array of values*/

@@ -1,13 +1,14 @@
 
+import { existsLocalBin } from '@creatium-js/utils'
+
 import {
 	mergeSelectBaseOptions,
 	SELECT_BASE_OPTS,
 } from './_shared'
-import { existsLocalBin } from '../../_shared/process/main'
-import { Select }         from '../_super/select'
+import { Select } from '../_super/select'
 
 import type { SelectBaseOptions } from './_shared'
-import type { ObjectValues }      from '../../_shared/ts/super'
+import type { ObjectValues }      from '@creatium-js/utils'
 
 /** Text editor values used in `openEditor` option. */
 export const TEXT_EDITOR = {
@@ -81,7 +82,7 @@ export class Editor extends Select<TextEditor> {
 				Object.entries( this.config.options ).filter( ( [ key ] ) => key !== value ),
 			)
 
-			const badge = ( txt: string ) => this._utils.style.color.red( this._utils.style.color.inverse( ' ' + txt + ' ' ) )
+			const badge = ( txt: string ) => this._utils.color.red( this._utils.color.inverse( ' ' + txt + ' ' ) )
 
 			this._utils.prompt.log.error( `Binary ${badge( value )} not found in system` )
 			value = await this.prompt()

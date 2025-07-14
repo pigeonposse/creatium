@@ -1,9 +1,11 @@
 /* eslint-disable @stylistic/object-curly-newline */
 
-import * as utils from '../../_shared/utils'
+import * as utils from '@creatium-js/utils'
 
-import type { Prettify } from '../../_shared/ts/super'
-import type { Options }  from 'yargs'
+import type { Prettify }     from '@creatium-js/utils'
+import type { ClippiumData } from 'clippium'
+
+type Option = NonNullable<ClippiumData['flags']>[number]
 
 export type OptionSuper = {
 	/** Key of the option */
@@ -28,8 +30,8 @@ export type OptionCommonWithPlaceholder<V> = Prettify<OptionCommon & {
 	placeholderValue? : V
 }>
 
-export type CliOption = Prettify<Options & { desc: string }>
-export type CliOptionType = Exclude<NonNullable<CliOption['type']>, 'count'>
+export type CliOption = Option
+export type CliOptionType = Exclude<CliOption['type'], 'object'>
 
 /**
  * Core interface
@@ -63,6 +65,7 @@ export type CoreInterface<V = string> = {
 }
 
 export const coreUtils = utils
+
 export class Core<Config extends OptionSuper = OptionCommon, V = string> {
 
 	// for use outside
@@ -84,20 +87,21 @@ export class Core<Config extends OptionSuper = OptionCommon, V = string> {
 	 */
 	initialValue : V | undefined
 
-	protected _type: Record<CliOptionType, CliOptionType> = {
+	protected _type = {
 		string  : 'string',
 		number  : 'number',
 		boolean : 'boolean',
 		array   : 'array',
-	} as const
+		choices	: 'choices',
+	} as const satisfies Record<CliOptionType, CliOptionType>
 
 	constructor( public config: Prettify<Config> ) {
 
 	}
 
 	protected _text = {
-		initialValueSuccess : ( t:string, v: string ) => `${t}\n${this._utils.style.color.dim( this._utils.style.color.gray( v ) )}`,
-		initialValueError   : ( v?: string ) => `Initial value ${this._utils.style.color.yellow( v || '' )} is not valid`,
+		initialValueSuccess : ( t:string, v: string ) => `${t}\n${this._utils.color.dim( this._utils.color.gray( v ) )}`,
+		initialValueError   : ( v?: string ) => `Initial value ${this._utils.color.yellow( v || '' )} is not valid`,
 	}
 
 	async getPromptHooked() {

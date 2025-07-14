@@ -1,8 +1,8 @@
-// import { existsDir } from '../../_shared/sys/main'
 import {
 	existsDir,
 	existsFile,
-} from '../../_shared/sys'
+} from '@creatium-js/utils'
+
 import { Text } from '../_super/text'
 
 export const PATH_TYPE = {

@@ -1,9 +1,13 @@
 import {
 	CreatiumCore,
 	prompt,
-	sys,
-	style,
+	color,
+	table,
+	copyDir,
+	joinPath as join,
 	Config,
+	getCurrentDir,
+	getClosestPackageDir,
 } from 'creatium'
 import process from 'node:process'
 
@@ -15,15 +19,6 @@ import {
 	version,
 	description,
 } from '../package.json'
-
-const {
-	copyDir,
-	joinPath: join,
-} = sys
-const {
-	color,
-	table,
-} = style
 
 const name = extra.libraryId
 
@@ -137,7 +132,7 @@ export type CoreRes = {
  */
 export const core = async (): Promise<CoreRes> => {
 
-	const pkgDir       = await sys.getClosestPackageDir( sys.getCurrentDir( import.meta.url ) )
+	const pkgDir       = await getClosestPackageDir( getCurrentDir( import.meta.url ) )
 	const dataDir      = join( pkgDir, 'data' )
 	const partialsDir  = join( dataDir, 'partials' )
 	const templatesDir = join( dataDir, 'templates' )

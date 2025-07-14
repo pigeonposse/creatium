@@ -1,5 +1,16 @@
 # creatium
 
+## 0.2.0
+
+### Minor Changes
+
+- add utils package, change yargs to clippium etc
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @creatium-js/utils@0.2.0
+
 ## 0.1.17
 
 ### Patch Changes

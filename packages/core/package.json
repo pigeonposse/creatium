@@ -1,6 +1,6 @@
 {
 	"name": "creatium",
-	"version": "0.1.17",
+	"version": "0.2.0",
 	"description": "Build your create-bins quickly and easily",
 	"keywords": [
 		"bin",
@@ -36,45 +36,36 @@
 	"exports": {
 		".": {
 			"import": {
-				"types": "./dist/main.d.mts",
-				"default": "./dist/main.mjs"
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
 			},
 			"require": {
-				"types": "./dist/main.d.cts",
-				"default": "./dist/main.cjs"
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
 			}
 		}
 	},
-	"main": "dist/main.mjs",
-	"module": "dist/main.mjs",
-	"types": "dist/main.d.ts",
+	"main": "dist/index.mjs",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
 	"files": [
 		"dist"
 	],
 	"scripts": {
 		"build": "unbuild",
-		"dev": "tsx examples/simple/bin.ts",
+		"dev": "pnpx tsx examples/simple/bin.ts",
 		"example": "run(){ tsx examples/\"${@:1}\"/bin.ts; }; run $@",
 		"size": "pnpm dlx @sizium/cli -i ./ --res info",
 		"test": "vitest run -r src --passWithNoTests"
 	},
 	"dependencies": {
-		"@clack/core": "0.5.0",
-		"@clack/prompts": "0.11.0",
-		"@visulima/boxen": "1.0.30",
-		"cli-table3": "0.6.5",
-		"columnify": "1.6.0",
-		"deepmerge-ts": "7.1.5",
-		"gradient-string": "3.0.0",
-		"string-width": "7.2.0",
-		"tiny-glob": "0.2.9",
-		"tiny-updater": "3.5.3",
-		"yargs": "17.7.2"
+		"@clippium/preset-colored": "1.0.0",
+		"@creatium-js/utils": "workspace:*",
+		"clippium": "0.1.0",
+		"tiny-updater": "3.5.3"
 	},
 	"devDependencies": {
-		"@creatium/repo-config": "workspace:*",
-		"@types/columnify": "1.5.4",
-		"@types/yargs": "17.0.33"
+		"@creatium-js/repo-config": "workspace:*"
 	},
 	"publishConfig": {
 		"access": "public",

@@ -1,4 +1,3 @@
-
 import {
 	Path,
 	PATH_TYPE,

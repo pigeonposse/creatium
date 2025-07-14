@@ -1,4 +1,10 @@
-# @creatium/repo-config
+# @creatium-js/repo-config
+
+## 0.2.0
+
+### Minor Changes
+
+- add utils package, change yargs to clippium etc
 
 ## 0.1.17
 

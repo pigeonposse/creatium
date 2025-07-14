@@ -1,14 +1,7 @@
 /* eslint-disable jsdoc/require-returns-type */
 
-import { deepmergeCustom } from 'deepmerge-ts'
-
-import {
-	createCli,
-	hideBin,
-	currentProcess,
-	execChild,
-} from './_shared/process/main'
-import { replacePlaceholders } from './_shared/string/placeholder'
+import { formatter }           from '@clippium/preset-colored'
+import { replacePlaceholders } from '@creatium-js/utils'
 import {
 	copyDir,
 	readFile,
@@ -16,12 +9,20 @@ import {
 	writeFile,
 	existsDir,
 	resolvePath,
-} from './_shared/sys'
+	deepmergeCustom,
+	currentProcess,
+	execChild,
+	color,
+} from '@creatium-js/utils'
+import {
+	Clippium,
+	hiddenBin,
+} from 'clippium'
+
 import { OPTION }    from './core/const'
 import { INSTALLER } from './core/extended/install'
 import { Core }      from './core/main'
 
-import type { Prettify }   from './_shared/ts/super'
 import type { TextEditor } from './core/extended/editor'
 import type { Installer }  from './core/extended/install'
 import type {
@@ -35,6 +36,7 @@ import type {
 	GetArgvValues,
 	GetPromptValues,
 } from './types.utils'
+import type { Prettify } from '@creatium-js/utils'
 
 /**
  * Customizable class of `Creatium` for create project templates (CLI and Library).
@@ -88,7 +90,7 @@ export class CreatiumCore<C extends Config = Config> {
 		this.#core.cache       = this.config.cache === undefined ? true : this.config.cache
 		this.#core.projectName = this.config.name
 		this.debugMode         = false
-		this.#style            = { tick: this.utils.style.color.green( this.utils.style.color.dim( '✓' ) ) }
+		this.#style            = { tick: this.utils.color.green( this.utils.color.dim( '✓' ) ) }
 
 	}
 
@@ -128,8 +130,7 @@ export class CreatiumCore<C extends Config = Config> {
 
 		this.#core.onCancel = async () => await this.cancel()
 
-		if ( this.config.hooks?.beforePrompt )
-			await this.config.hooks.beforePrompt( this.#data )
+		await this.config.hooks?.beforePrompt?.( this.#data )
 
 		console.debug( { beforePromptData: this.#data } )
 
@@ -144,8 +145,7 @@ export class CreatiumCore<C extends Config = Config> {
 
 		console.debug( { promptData: this.#data } )
 
-		if ( this.config.hooks?.afterPrompt )
-			await this.config.hooks.afterPrompt( this.#data )
+		await this.config.hooks?.afterPrompt?.( this.#data )
 
 		console.debug( { afterPromptData: this.#data } )
 
@@ -159,10 +159,10 @@ export class CreatiumCore<C extends Config = Config> {
 	#getCliArgs( props?: CliOpts ) {
 
 		return props?.args && props.hideBin
-			? hideBin( props.args )
+			? hiddenBin( props.args )
 				? props.args
 				: props?.args
-			: hideBin( currentProcess.argv )
+			: hiddenBin( currentProcess.argv )
 
 	}
 
@@ -171,49 +171,65 @@ export class CreatiumCore<C extends Config = Config> {
 		if ( this.config.updater ) await this.updateNotify()
 
 		const args = this.#getCliArgs( props )
+		const cli  = new Clippium( {
+			name    : this.config.name.replaceAll( ' ', '-' ).toLowerCase(),
+			version : this.config.version,
 
-		const instance = await createCli<GetArgvValues<C>>( {
-			args,
-			fn : async cli => {
-
-				cli.scriptName( this.config.name )
-					.version( this.config.version )
-					.usage( 'Usage: $0 [options]' )
-					.locale( 'en' )
-					.help( false )
-					.showHelpOnFail( false )
-					.alias( 'h', 'help' )
-					.alias( 'v', 'version' )
-
-				if ( this.config.prompt ) {
-
-					const props = await this.#core.getCmds()
-					cli.options( props )
-
-				}
-
-				cli.option( 'debug', {
-					desc : 'Set Debug mode',
-					type : 'boolean',
-				} )
-
-				return cli
-
+			flags : {
+				...( this.config.prompt
+					? await this.#core.getCmds()
+					: {}
+				),
+				help : {
+					type  : 'boolean',
+					alias : [ 'h' ],
+					group : 'Global flags:',
+					desc  : 'Show help',
+				},
+				version : {
+					type  : 'boolean',
+					alias : [ 'v' ],
+					group : 'Global flags:',
+					desc  : 'Show version',
+				},
+				debug : {
+					type  : 'boolean',
+					group : 'Global flags:',
+					desc  : 'Debug mode',
+				},
 			},
-		} )
+		}, { help : { formatter : formatter( {
+			title         : v => color.cyan( color.inverse( color.bold( v ) ) ),
+			bin           : color.cyan,
+			version       : v => color.cyan( color.dim( color.italic( v ) ) ),
+			name          : color.bold,
+			positionals   : v => color.green( color.dim( v ) ),
+			commands      : color.green,
+			flags         : color.yellow,
+			desc          : v => color.white( color.dim( v ) ),
+			examples      : color.cyan,
+			sectionTitle  : v => color.white( color.bold( color.underline( v ) ) ), //color.white.bold.underline,
+			sectionDesc   : v => color.white( color.dim( v ) ),
+			sectionsProps : v => color.white( color.dim( color.italic( v ) ) ),
+		} ) } } )
 
-		const argv = await instance.argv
+		const { flags } = await cli.parse( args )
+		if ( flags.help ) {
 
-		if ( !argv.debug ) this.debugMode = false
+			console.log( cli.getHelp( args ) )
+			currentProcess.exit( 0 )
+
+		}
+		else if ( flags.version ) {
+
+			console.log( cli.getVersion( ) )
+			currentProcess.exit( 0 )
+
+		}
+		if ( !flags.debug ) this.debugMode = false
 		else this.debugMode = true
 
-		const {
-			_,
-			$0,
-			...values
-		} = argv
-
-		return values as unknown as GetArgvValues<C>
+		return flags as unknown as GetArgvValues<C>
 
 	}
 
@@ -285,7 +301,7 @@ export class CreatiumCore<C extends Config = Config> {
 		else if ( this.config.intro === undefined ) {
 
 			console.log()
-			const badge = ( txt: string ) => this.utils.style.color.blue( this.utils.style.color.inverse( ' ' + this.utils.style.color.bold( txt ) + ' ' ) )
+			const badge = ( txt: string ) => this.utils.color.blue( this.utils.color.inverse( ' ' + this.utils.color.bold( txt ) + ' ' ) )
 
 			this.utils.prompt.intro( badge( this.config.name ) )
 			this.utils.prompt.log.step( '' )
@@ -313,7 +329,7 @@ export class CreatiumCore<C extends Config = Config> {
 			await this.config.outro( this.#data )
 		else if ( this.config.outro === undefined ) {
 
-			this.utils.prompt.outro( this.utils.style.color.greenBright( 'Successfully completed 🌈' ) )
+			this.utils.prompt.outro( this.utils.color.greenBright( 'Successfully completed 🌈' ) )
 
 		}
 

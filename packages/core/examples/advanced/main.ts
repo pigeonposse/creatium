@@ -12,12 +12,10 @@ import {
 import {
 	CreatiumCore,
 	prompt,
-	sys,
-	style,
-} from '../../src/main' // change for `import { Creatium } from 'creatium'`
+	copyDir,
+	color,
+} from '../../src' // change for `import { Creatium } from 'creatium'`
 
-const { copyDir }  = sys
-const { color }    = style
 const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
 const templatesDir = join( currentDir, 'templates' )
 const name         = 'Advanced test'
