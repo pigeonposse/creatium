@@ -2,6 +2,5 @@
 	"extends": "./node_modules/@creatium-js/repo-config/tsconfig.json",
 	"include": [
 		"./src",
-		"../utils/dist"
 	]
 }

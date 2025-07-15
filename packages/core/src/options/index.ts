@@ -1,5 +1,4 @@
 import { cache }       from '../utils'
-import { coreUtils }   from './_super/_shared'
 import { Array }       from './_super/array'
 import { Boolean }     from './_super/boolean'
 import { Multiselect } from './_super/multiselect'
@@ -7,7 +6,7 @@ import { Number }      from './_super/number'
 import { Select }      from './_super/select'
 import { Text }        from './_super/text'
 import { Void }        from './_super/void'
-import { name }        from './const'
+import { name }        from '../_shared/const'
 import { Editor }      from './extended/editor'
 import { Install }     from './extended/install'
 import { Name }        from './extended/name'
@@ -15,6 +14,7 @@ import { Output }      from './extended/output'
 import { Path }        from './extended/path'
 import { Template }    from './extended/template'
 
+import type { OptionsUtils } from './_super/_shared'
 import type {
 	GetCMDsResponse,
 	GetPromptsResponse,
@@ -22,9 +22,8 @@ import type {
 	OptionsParams,
 } from './types'
 
-export class Core {
+export class Options {
 
-	utils
 	onCancel
 
 	/** Enable cache */
@@ -66,9 +65,8 @@ export class Core {
 
 	}
 
-	constructor( public config: OptionsParams ) {
+	constructor( public config: OptionsParams, public utils: OptionsUtils ) {
 
-		this.utils    = coreUtils
 		this.onCancel = async () => {}
 
 	}

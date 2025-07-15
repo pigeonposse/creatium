@@ -1,5 +1,11 @@
 # @creatium-js/utils
 
+## 0.2.2
+
+### Patch Changes
+
+- Lighter core
+
 ## 0.2.1
 
 ### Patch Changes

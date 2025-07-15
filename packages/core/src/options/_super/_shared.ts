@@ -1,11 +1,19 @@
 /* eslint-disable @stylistic/object-curly-newline */
 
-import * as utils from '../../utils'
-
-import type { Prettify }     from '../../utils'
+import type {
+	color,
+	prompt,
+	line,
+	Prettify,
+} from '../../utils'
 import type { ClippiumData } from 'clippium'
 
 type Option = NonNullable<ClippiumData['flags']>[number]
+export type OptionsUtils = {
+	color  : typeof color
+	prompt : typeof prompt
+	line   : typeof line
+}
 
 export type OptionSuper = {
 	/** Key of the option */
@@ -64,12 +72,8 @@ export type CoreInterface<V = string> = {
 	prompt : () => Promise<V>
 }
 
-export const coreUtils = utils
-
 export class Core<Config extends OptionSuper = OptionCommon, V = string> {
 
-	// for use outside
-	_utils = utils
 	/** On cancel callback */
 	_onCancel = async () => {}
 
@@ -95,7 +99,7 @@ export class Core<Config extends OptionSuper = OptionCommon, V = string> {
 		choices	: 'choices',
 	} as const satisfies Record<CliOptionType, CliOptionType>
 
-	constructor( public config: Prettify<Config> ) {
+	constructor( public config: Prettify<Config>, public _utils: OptionsUtils ) {
 
 	}
 

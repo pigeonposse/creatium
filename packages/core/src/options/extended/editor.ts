@@ -4,6 +4,7 @@ import {
 	SELECT_BASE_OPTS,
 } from './_shared'
 import { existsLocalBin } from '../../utils'
+import { OptionsUtils }   from '../_super/_shared'
 import { Select }         from '../_super/select'
 
 import type { SelectBaseOptions } from './_shared'
@@ -23,7 +24,7 @@ export type OptionEditor = SelectBaseOptions<TextEditor>
 
 export class Editor extends Select<TextEditor> {
 
-	constructor( config: OptionEditor ) {
+	constructor( config: OptionEditor, public _utils: OptionsUtils ) {
 
 		const defaultOptions = {
 			[TEXT_EDITOR.SUBLIME]  : { name: 'Sublime Text' },
@@ -38,7 +39,7 @@ export class Editor extends Select<TextEditor> {
 		if ( !config.desc ) config.desc = 'Select the text editor to open the project'
 		const finalConfig = mergeSelectBaseOptions( config, defaultOptions ) as Select<TextEditor>['config']
 
-		super( finalConfig )
+		super( finalConfig, _utils )
 
 		this.config = finalConfig
 

@@ -3,7 +3,7 @@ import {
 	OPTION,
 	TEXT_EDITOR,
 	INSTALLER,
-} from './core/const'
+} from './options/const'
 
 import type {
 	CliOpts,
@@ -27,9 +27,6 @@ export {
 	INSTALLER,
 	CreatiumCore,
 }
-
-export * from './utils'
-export type * from './utils'
 
 /**
  * Class of `Creatium` for create project templates (CLI and Library).

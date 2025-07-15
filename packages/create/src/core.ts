@@ -1,31 +1,24 @@
+import { CreatiumCore } from 'creatium'
 import {
-	CreatiumCore,
 	prompt,
 	color,
 	table,
 	copyDir,
 	joinPath as join,
-	type Config,
 	currentProcess,
 	truncate,
-} from 'creatium'
+} from 'creatium/utils'
 
 import {
-	extra,
-	homepage,
-} from '../../../package.json'
-import data     from '../data'
-import {
+	name,
 	version,
 	description,
-} from '../package.json'
+	homepage,
+	data,
+	TEMPLATES,
+} from './const'
 
-const name = extra.libraryId
-
-const TEMPLATES = {
-	JS : 'js',
-	TS : 'ts',
-} as const
+import type { Config } from 'creatium'
 
 const cancelFn = ( ) => {
 

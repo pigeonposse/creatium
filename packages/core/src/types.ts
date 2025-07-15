@@ -1,11 +1,11 @@
 /* eslint-disable @stylistic/object-curly-newline */
-import type { OPTION }     from './core/const'
-import type { TextEditor } from './core/extended/editor'
-import type { Installer }  from './core/extended/install'
+import type { OPTION }     from './options/const'
+import type { TextEditor } from './options/extended/editor'
+import type { Installer }  from './options/extended/install'
 import type {
 	Options,
 	OptionsParams,
-} from './core/types'
+} from './options/types'
 import type {
 	Prettify,
 	Response,
@@ -130,4 +130,5 @@ export type CreateOpts = CliOpts & {
 	 *
 	 * @default true
 	 */
-	activeCli? : boolean }
+	activeCli? : boolean
+}

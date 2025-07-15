@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.2.2
+
+### Patch Changes
+
+- Lighter core
+
+- Updated dependencies []:
+  - creatium@0.2.2
+
 ## 0.2.1
 
 ### Patch Changes

@@ -1,4 +1,4 @@
-import type { ContentInput } from 'creatium'
+import type { ContentInput } from 'creatium/utils'
 
 export default {
   "templates": {

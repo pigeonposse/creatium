@@ -6,9 +6,9 @@ import {
 	hiddenBin,
 } from 'clippium'
 
-import { OPTION }       from './core/const'
-import { INSTALLER }    from './core/extended/install'
-import { Core }         from './core/main'
+import { Options }   from './options'
+import { OPTION }    from './options/const'
+import { INSTALLER } from './options/extended/install'
 import {
 	copyDir,
 	readFile,
@@ -22,10 +22,12 @@ import {
 	color,
 	truncate,
 	replacePlaceholders,
+	line,
+	prompt,
 } from './utils'
 
-import type { TextEditor } from './core/extended/editor'
-import type { Installer }  from './core/extended/install'
+import type { TextEditor } from './options/extended/editor'
+import type { Installer }  from './options/extended/install'
 import type {
 	CliOpts,
 	Config,
@@ -73,7 +75,7 @@ import type { Prettify } from './utils'
  */
 export class CreatiumCore<C extends Config = Config> {
 
-	#core  : Core
+	#core  : Options
 	#data  : HookParams | undefined
 	utils
 	config : C
@@ -83,7 +85,11 @@ export class CreatiumCore<C extends Config = Config> {
 	constructor( config: C ) {
 
 		// MUST BE THE FIRST
-		this.#core = new Core( config.prompt )
+		this.#core = new Options( config.prompt, {
+			color  : color,
+			line   : line,
+			prompt : prompt,
+		} )
 
 		this.config = config
 

@@ -1,18 +1,19 @@
 
-import { Text } from '../_super/text'
+import { OptionsUtils } from '../_super/_shared'
+import { Text }         from '../_super/text'
 
 export type OptionName = Partial<Name['config']>
 
 export class Name extends Text {
 
-	constructor( config: OptionName ) {
+	constructor( config: OptionName, public _utils: OptionsUtils ) {
 
 		const finalConfig = {
 			desc : config.desc ?? 'Set the name of the project',
 			...config,
 		}
 
-		super( finalConfig )
+		super( finalConfig, _utils )
 		this.config = finalConfig
 
 	}

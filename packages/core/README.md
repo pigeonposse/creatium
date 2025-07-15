@@ -12,7 +12,7 @@
 [![License](https://img.shields.io/github/license/pigeonposse/creatium?style=for-the-badge&color=green&logoColor=white)](/LICENSE)
 [![Version](https://img.shields.io/npm/v/creatium?style=for-the-badge&color=blue&label=Version)](https://www.npmjs.com/package/creatium)
 [![NPM package minimized gzipped size](https://img.shields.io/bundlejs/size/creatium?style=for-the-badge&color=orange&label=Minimized+size&logoColor=white)](https://www.npmjs.com/package/creatium)
-[![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/creatium/0.1.17?style=for-the-badge&color=orange&logoColor=white)](https://www.npmjs.com/package/creatium)
+[![NPM Unpacked Size](https://img.shields.io/npm/unpacked-size/creatium/0.2.1?style=for-the-badge&color=orange&logoColor=white)](https://www.npmjs.com/package/creatium)
 
 Build your create-bins quickly and easily
 
@@ -59,7 +59,6 @@ deno add creatium
 
 - 🌞 [Core](https://creatium.pigeonposse.com/guide/core)
 - 🚀 [Create](https://creatium.pigeonposse.com/guide/create)
-- ⚒️ [Utils](https://creatium.pigeonposse.com/guide/utils)
 
 
 ---
@@ -80,7 +79,7 @@ Help us to develop more interesting things.
 
 ## 📜 License
 
-This software is licensed with __[GPL-3.0]({{const.pkg.extra.licenseURL}})__.
+This software is licensed with __[MIT]({{const.pkg.extra.licenseURL}})__.
 
 [![Read more](https://img.shields.io/badge/Read-more-grey?style=for-the-badge)]({{const.pkg.extra.licenseURL}})
 

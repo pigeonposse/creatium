@@ -1,4 +1,5 @@
-import { Select } from '../_super/select'
+import { OptionsUtils } from '../_super/_shared'
+import { Select }       from '../_super/select'
 
 import type { ContentInput } from '../../utils'
 
@@ -21,7 +22,7 @@ export type OptionTemplate = Partial<Omit<Select['config'], 'options'>> & { opti
 
 export class Template extends Select<keyof OptionTemplate['options']> {
 
-	constructor( config: OptionTemplate ) {
+	constructor( config: OptionTemplate, public _utils: OptionsUtils ) {
 
 		const {
 			options: _options, ...rest
@@ -43,7 +44,7 @@ export class Template extends Select<keyof OptionTemplate['options']> {
 			...rest, // Propiedades opcionales adicionales
 		}
 
-		super( finalConfig )
+		super( finalConfig, _utils )
 		this.config = finalConfig
 
 	}

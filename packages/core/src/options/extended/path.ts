@@ -2,7 +2,8 @@ import {
 	existsDir,
 	existsFile,
 } from '../../utils'
-import { Text } from '../_super/text'
+import { OptionsUtils } from '../_super/_shared'
+import { Text }         from '../_super/text'
 
 export const PATH_TYPE = {
 	folder : 'folder',
@@ -29,7 +30,7 @@ export class Path extends Text {
 	#existsPath : boolean
 	#pathType   : PathType
 
-	constructor( config: OptionPath ) {
+	constructor( config: OptionPath, public _utils: OptionsUtils ) {
 
 		if ( !config.pathType ) config.pathType = PATH_TYPE.file
 		if ( !config.exists ) config.exists = false
@@ -39,7 +40,7 @@ export class Path extends Text {
 			...config,
 		}
 
-		super( finalConfig )
+		super( finalConfig, _utils )
 		this.config = finalConfig
 
 		this.#existsPath = config.exists as boolean

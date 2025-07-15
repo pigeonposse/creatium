@@ -1,11 +1,9 @@
 import { TEXT_EDITOR } from './extended/editor'
 import { INSTALLER }   from './extended/install'
-import { name }        from '../../package.json'
 
 export {
 	TEXT_EDITOR,
 	INSTALLER,
-	name,
 }
 
 /** Object of the CREATIUM types */

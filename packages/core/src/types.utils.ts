@@ -1,7 +1,7 @@
 import type {
 	GetPromptValue,
 	OptionsClasses,
-} from './core/types'
+} from './options/types'
 import type { Config }   from './types'
 import type { Prettify } from './utils'
 

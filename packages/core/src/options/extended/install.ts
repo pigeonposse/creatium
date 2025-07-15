@@ -2,10 +2,14 @@ import {
 	mergeSelectBaseOptions,
 	SELECT_BASE_OPTS,
 } from './_shared'
-import { Select } from '../_super/select'
+import {
+	existsLocalBin,
+	type ObjectValues,
+} from '../../utils'
+import { OptionsUtils } from '../_super/_shared'
+import { Select }       from '../_super/select'
 
 import type { SelectBaseOptions } from './_shared'
-import type { ObjectValues }      from '../../utils'
 
 /** installer values used in `install` option. */
 export const INSTALLER = {
@@ -23,7 +27,7 @@ export type OptionInstall = SelectBaseOptions<Installer>
 
 export class Install extends Select<Installer> {
 
-	constructor( config: OptionInstall ) {
+	constructor( config: OptionInstall, public _utils: OptionsUtils ) {
 
 		const defaultOptions = {
 			[INSTALLER.NPM]  : { name: 'npm' },
@@ -40,7 +44,7 @@ export class Install extends Select<Installer> {
 
 		const finalConfig = mergeSelectBaseOptions( config, defaultOptions ) as Select<Installer>['config']
 
-		super( finalConfig )
+		super( finalConfig, _utils )
 
 		this.config = finalConfig
 
@@ -53,7 +57,7 @@ export class Install extends Select<Installer> {
 
 		const validateValue = await super.validateInitialValue( { showSuccess: false } )
 		if ( !validateValue ) return undefined // Nothing to print in log because it will be printed in super function
-		const exists = await this._utils.existsLocalBin( validateValue )
+		const exists = await existsLocalBin( validateValue )
 		if ( validateValue && exists ) {
 
 			if ( data?.showSuccess !== false )
@@ -76,7 +80,7 @@ export class Install extends Select<Installer> {
 
 		if ( value === INSTALLER.NONE ) return value
 
-		const exists = await this._utils.existsLocalBin( value )
+		const exists = await existsLocalBin( value )
 
 		if ( !exists ) {
 

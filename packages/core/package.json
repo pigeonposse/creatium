@@ -1,6 +1,6 @@
 {
 	"name": "creatium",
-	"version": "0.2.1",
+	"version": "0.2.2",
 	"description": "Build your create-bins quickly and easily",
 	"keywords": [
 		"bin",
@@ -35,10 +35,12 @@
 	"type": "module",
 	"exports": {
 		".": {
-			"import": {
-				"types": "./dist/index.d.mts",
-				"default": "./dist/index.mjs"
-			}
+			"types": "./dist/index.d.mts",
+			"default": "./dist/index.mjs"
+		},
+		"./utils": {
+			"types": "./dist/utils.d.mts",
+			"default": "./dist/utils.mjs"
 		}
 	},
 	"main": "dist/index.mjs",

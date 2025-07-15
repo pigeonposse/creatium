@@ -3,7 +3,7 @@ import {
 	getCurrentDir,
 	joinPath,
 	writeFile,
-} from 'creatium'
+} from 'creatium/utils'
 
 const dir     = await getCurrentDir( import.meta.url )
 const dataDir = joinPath( dir, 'data' )
@@ -36,4 +36,4 @@ for ( const template of templates ) {
 
 }
 
-await writeFile( outDir, `import type { ContentInput } from 'creatium'\n\nexport default ${JSON.stringify( res, null, 2 )} satisfies Record<string, Record<string, ContentInput[]>>` )
+await writeFile( outDir, `import type { ContentInput } from 'creatium/utils'\n\nexport default ${JSON.stringify( res, null, 2 )} satisfies Record<string, Record<string, ContentInput[]>>` )
