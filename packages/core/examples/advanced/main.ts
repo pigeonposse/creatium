@@ -9,12 +9,12 @@ import {
 	version,
 	author,
 } from '../../package.json'
+import { CreatiumCore } from '../../src' // change for `import { Creatium } from 'creatium'`
 import {
-	CreatiumCore,
 	prompt,
 	copyDir,
 	color,
-} from '../../src' // change for `import { Creatium } from 'creatium'`
+} from '../../src/utils' // change for `import { Creatium } from 'creatium/utils'`
 
 const currentDir   = join( dirname( fileURLToPath( import.meta.url ) ) )
 const templatesDir = join( currentDir, 'templates' )

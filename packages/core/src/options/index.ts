@@ -14,7 +14,11 @@ import { Output }      from './extended/output'
 import { Path }        from './extended/path'
 import { Template }    from './extended/template'
 
-import type { OptionsUtils } from './_super/_shared'
+import type {
+	AnyOption,
+	AnyOptionInstance,
+	OptionsUtils,
+} from './_super/_shared'
 import type {
 	GetCMDsResponse,
 	GetPromptsResponse,
@@ -94,7 +98,7 @@ export class Options {
 
 	}
 
-	#getClass(): OptionsClasses {
+	#getClasses(): OptionsClasses {
 
 		return {
 			array       : Array,
@@ -114,10 +118,27 @@ export class Options {
 
 	}
 
+	#getClass( type:keyof OptionsClasses ) {
+
+		const Klass = this.#getClasses()
+
+		if ( !( type in Klass ) ) throw new Error( `Option ${type} not found` )
+
+		return Klass[type] as unknown as AnyOption
+
+	}
+
+	#getClassInstance( type:keyof OptionsClasses, props:Record<string, unknown> ) {
+
+		const Klass    = this.#getClass( type )
+		const instance = new Klass( props, this.utils ) as AnyOptionInstance
+		return instance
+
+	}
+
 	async getCmds( ): Promise<GetCMDsResponse> {
 
 		const res: GetCMDsResponse = {}
-		const Klass                = this.#getClass()
 
 		await Promise.all( Object.entries( this.config ).map( async ( [ key, value ] ) => {
 
@@ -125,10 +146,7 @@ export class Options {
 				type, ...props
 			} = value
 
-			if ( !( type in Klass ) ) return
-
-			// @ts-ignore
-			const instance = new Klass[type]( props )
+			const instance = this.#getClassInstance( type, props )
 
 			if ( 'cmd' in instance ) {
 
@@ -145,9 +163,9 @@ export class Options {
 	async getPrompts( initialValues?: { [key: string]: unknown } ): Promise<GetPromptsResponse> {
 
 		const res: GetPromptsResponse = {}
-		const Klass                   = this.#getClass()
-		const cached                  = await this.#getCache()
-		const cachedValues            = await cached?.get()
+
+		const cached       = await this.#getCache()
+		const cachedValues = await cached?.get()
 
 		console.debug( { cacheData : {
 			active : this.cache,
@@ -161,10 +179,7 @@ export class Options {
 				type, ...props
 			} = value
 
-			if ( !( type in Klass ) ) return
-
-			// @ts-ignore
-			const instance = new Klass[type]( props )
+			const instance = this.#getClassInstance( type, props )
 
 			instance._onCancel = this.onCancel
 			instance.debugMode = this.debugMode

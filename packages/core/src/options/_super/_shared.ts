@@ -5,6 +5,7 @@ import type {
 	prompt,
 	line,
 	Prettify,
+	Any,
 } from '../../utils'
 import type { ClippiumData } from 'clippium'
 
@@ -144,3 +145,6 @@ export class Core<Config extends OptionSuper = OptionCommon, V = string> {
 	}
 
 }
+
+export type AnyOption = typeof Core<Any, Any>
+export type AnyOptionInstance = CoreInterface<Any> & Core<Any, Any>

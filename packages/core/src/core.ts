@@ -41,6 +41,11 @@ import type {
 } from './types.utils'
 import type { Prettify } from './utils'
 
+const utils = {
+	color  : color,
+	line   : line,
+	prompt : prompt,
+}
 /**
  * Customizable class of `Creatium` for create project templates (CLI and Library).
  *
@@ -85,14 +90,9 @@ export class CreatiumCore<C extends Config = Config> {
 	constructor( config: C ) {
 
 		// MUST BE THE FIRST
-		this.#core = new Options( config.prompt, {
-			color  : color,
-			line   : line,
-			prompt : prompt,
-		} )
+		this.#core = new Options( config.prompt, utils )
 
-		this.config = config
-
+		this.config            = config
 		this.utils             = this.#core.utils
 		this.#core.cache       = this.config.cache === undefined ? true : this.config.cache
 		this.#core.projectName = this.config.name
