@@ -59,14 +59,16 @@ export class Select<V extends Value = Value> extends Core<OptionSelect<V>, V> im
 
 		const value = await this._utils.prompt.select( {
 			message : this.config.promptMsg || this.config.desc,
-			options : Object.entries<OptionSelect['options'][number]>( this.config.options ).map( ( [ key, value ] ) => ( {
+			options : Object.entries<OptionSelect['options'][number]>( this.config.options ).map( ( [ key, v ] ) => ( {
 				value : key,
-				label : value?.name || key,
-				hint  : value?.desc,
+				label : v?.name || key,
+				hint  : v?.desc,
 			} ) ),
 			initialValue : this.config.placeholderValue?.toString(),
 		} )
-
+		console.debug( { selectData : {
+			value,
+		} } )
 		if ( this._utils.prompt.isCancel( value ) ) {
 
 			await this._onCancel()

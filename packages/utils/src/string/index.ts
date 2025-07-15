@@ -47,3 +47,18 @@ export const joinUrl = ( ...parts: string[] ) => {
  */
 export const object2string = ( data: unknown ): string => JSON.stringify( data, null, '\t' ) + '\n'
 
+/**
+ * Truncates a given string to a maximum length and adds an ellipsis (...) at the end.
+ *
+ * @param   {string} text       - The string to truncate.
+ * @param   {number} maxLength  - The maximum length of the string.
+ * @param   {string} [ellipsis] - The ellipsis to add at the end of the truncated string (default is '…').
+ * @returns {string}            - The truncated string.
+ */
+export const truncate = ( text: string, maxLength: number, ellipsis: string = '…' ): string => {
+
+	if ( text.length <= maxLength ) return text
+	return text.slice( 0, maxLength ).trimEnd() + ellipsis
+
+}
+

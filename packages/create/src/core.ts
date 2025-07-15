@@ -6,15 +6,15 @@ import {
 	copyDir,
 	joinPath as join,
 	Config,
-	getCurrentDir,
-	getClosestPackageDir,
+	currentProcess,
+	truncate,
 } from 'creatium'
-import process from 'node:process'
 
 import {
 	extra,
 	homepage,
 } from '../../../package.json'
+import data     from '../data'
 import {
 	version,
 	description,
@@ -30,11 +30,11 @@ const TEMPLATES = {
 const cancelFn = ( ) => {
 
 	prompt.cancel( color.red( 'Operation canceled 💔' ) )
-	process.exit( 0 )
+	currentProcess.exit( 0 )
 
 }
 
-const setCoreProps = ( templatesDir: string ) => ( {
+const setCoreProps = ( ) => ( {
 	name,
 	version,
 	updater  : true,
@@ -90,11 +90,11 @@ const setCoreProps = ( templatesDir: string ) => ( {
 			type    : 'template',
 			options : {
 				[TEMPLATES.JS] : {
-					input : join( templatesDir, 'js' ),
+					input : data.templates.js,
 					name  : 'JavaScript project',
 				},
 				[TEMPLATES.TS] : {
-					input : join( templatesDir, 'ts' ),
+					input : data.templates.ts,
 					name  : 'TypeScript project',
 				},
 			},
@@ -132,12 +132,7 @@ export type CoreRes = {
  */
 export const core = async (): Promise<CoreRes> => {
 
-	const pkgDir       = await getClosestPackageDir( getCurrentDir( import.meta.url ) )
-	const dataDir      = join( pkgDir, 'data' )
-	const partialsDir  = join( dataDir, 'partials' )
-	const templatesDir = join( dataDir, 'templates' )
-
-	const core = new CreatiumCore( setCoreProps( templatesDir ) )
+	const core = new CreatiumCore( setCoreProps( ) )
 
 	return {
 		cli            : ( ...args ) => core.cli( ...args ),
@@ -163,12 +158,12 @@ export const core = async (): Promise<CoreRes> => {
 				// Add the partial files
 
 				await copyDir( {
-					input : join( partialsDir, 'workspace' ),
+					input : data.partials.workspace,
 					output,
 				} )
 
 				await copyDir( {
-					input  : join( partialsDir, 'templates' ),
+					input  : data.partials.templates,
 					output : join( output, 'templates' ),
 				} )
 
@@ -176,7 +171,7 @@ export const core = async (): Promise<CoreRes> => {
 				const pkg = {
 					name    : projectName,
 					version : '0.0.1',
-					license : 'GPL-3.0',
+					license : 'MIT',
 					type    : 'module',
 					main    : 'dist/lib.mjs',
 					module  : 'dist/lib.mjs',
@@ -238,9 +233,9 @@ export const core = async (): Promise<CoreRes> => {
 				prompt.log.step( '' )
 
 				if ( error instanceof Error )
-					prompt.log.error( color.red( error.message ) )
+					prompt.log.error( color.red( truncate( error.message, 300, '...' ) ) )
 				else
-					console.error( 'Unexpected error:', error )
+					console.error( 'Unexpected error' )
 
 				prompt.log.step( '' )
 				cancelFn()

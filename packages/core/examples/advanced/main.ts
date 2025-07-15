@@ -182,7 +182,7 @@ export const createTemplate = async ( params: Awaited<ReturnType<typeof creatium
 		if ( error instanceof Error )
 			prompt.log.error( color.red( error.message ) )
 		else
-			console.error( 'Unexpected error:', error )
+			console.error( 'Unexpected error creating template:' )
 
 		prompt.log.step( '' )
 		cancelFn()

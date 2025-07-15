@@ -4,4 +4,4 @@
 
 ### Minor Changes
 
-- add utils package, change yargs to clippium etc
+- add utils package, change yargs to clippium, change LICENSE to MIT, add support for contentDirs etc

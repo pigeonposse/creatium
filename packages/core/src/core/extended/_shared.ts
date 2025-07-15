@@ -1,4 +1,4 @@
-import { deepmergeCustom } from '@creatium-js/utils'
+import { deepmerge } from '@creatium-js/utils'
 
 import type { OptionSelect } from '../_super/select'
 
@@ -30,7 +30,7 @@ export type SelectBaseOptions<Value extends string = string> = Partial<Omit<Opti
 
 export const mergeSelectBaseOptions = <V extends string, C extends SelectBaseOptions>( config: C, defaultOptions: Record<V, OptionsValue> ) => {
 
-	const options = deepmergeCustom( defaultOptions || {}, config.options || {} )
+	const options = deepmerge( defaultOptions || {}, config.options || {} )
 
 	const filteredOptions = config.onlyOptions && config.onlyOptions.length > 1
 		? Object.entries( options ).reduce( ( acc, [ key, value ] ) => {

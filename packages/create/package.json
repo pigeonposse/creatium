@@ -26,7 +26,7 @@
 		"type": "individual",
 		"url": "https://pigeonposse.com/?popup=donate"
 	},
-	"license": "GPL-3.0",
+	"license": "MIT",
 	"author": {
 		"name": "Angelo",
 		"email": "angelo@pigeonposse.com",
@@ -36,18 +36,18 @@
 	"exports": {
 		".": {
 			"import": {
-				"types": "./dist/main.d.mts",
-				"default": "./dist/main.mjs"
+				"types": "./dist/index.d.mts",
+				"default": "./dist/index.mjs"
 			},
 			"require": {
-				"types": "./dist/main.d.cts",
-				"default": "./dist/main.cjs"
+				"types": "./dist/index.d.cts",
+				"default": "./dist/index.cjs"
 			}
 		}
 	},
-	"main": "dist/main.mjs",
-	"module": "dist/main.mjs",
-	"types": "dist/main.d.ts",
+	"main": "dist/index.mjs",
+	"module": "dist/index.mjs",
+	"types": "dist/index.d.ts",
 	"bin": {
 		"create-creatium": "./dist/bin.mjs"
 	},
@@ -56,8 +56,10 @@
 		"dist"
 	],
 	"scripts": {
-		"build": "unbuild",
-		"dev": "tsx src/bin.ts",
+		"build": "pnpm run build:data && pnpm run build:lib",
+		"build:data": "pnpx tsx build.data.js",
+		"build:lib": "unbuild",
+		"dev": "pnpx tsx src/bin.ts",
 		"preview": "node dist/bin.mjs",
 		"test": "vitest run -r src --passWithNoTests"
 	},

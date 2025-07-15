@@ -1,11 +1,13 @@
 import { Select } from '../_super/select'
 
+import type { ContentInput } from '@creatium-js/utils'
+
 export type OptionTemplate = Partial<Omit<Select['config'], 'options'>> & { options: { [key: string]: {
 	/**
 	 * Input for download
-	 * Could be an directory
+	 * Could be an directory or an array of files
 	 */
-	input : string
+	input : string | ContentInput[]
 	/**
 	 * Name of the template.
 	 * If not set, the name of the template will be the key of the template

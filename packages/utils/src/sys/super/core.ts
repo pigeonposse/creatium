@@ -16,7 +16,6 @@ import {
 	lstat,
 	readdir,
 	unlink,
-	copyFile as nodeCopyFile,
 	rm,
 } from 'node:fs/promises'
 import {
@@ -50,8 +49,6 @@ export const writeFile = nodeWriteFile
 /**
  * Find files and directories using glob patterns.
  *
- * @example const paths = await getPaths(['*', '!src']);
- * console.log(paths);
  */
 export const getPaths = glob
 
@@ -506,123 +503,6 @@ export async function existsPath( path: string ): Promise<boolean> {
 	if ( isFile ) return true
 	const isDir = await existsDir( path )
 	return isDir
-
-}
-
-/**
- * Copy a file from input path to output path.
- *
- * @param   {{input: string, output: string}} options - Options object with input and output paths.
- * @returns {Promise<void>}                           - Resolves when the file has been copied.
- * @throws {Error} If there is an error copying the file.
- * @example import { copyFile } from '@dovenv/utils'
- *
- * const copyResult = await copyFile({
- *   input : '/path/to/source.txt',
- *   output: '/path/to/destination.txt',
- * })
- */
-export const copyFile = async ( {
-	input, output,
-}: {
-	input  : string
-	output : string
-} ) => {
-
-	try {
-
-		await nodeCopyFile( input, output )
-		// await fs.promises.rename( output, name )
-
-	}
-	catch ( error ) {
-
-		console.error( error )
-
-	}
-
-}
-type CopyDirOptions = {
-
-	input  : string
-	output : string
-}
-/**
- * Copy a directory from input path to output path.
- *
- * @param   {{input: string, output: string}} options - Options object with input and output paths.
- * @returns {Promise<void>}                           - Resolves when the directory has been copied.
- * @throws {Error} If there is an error copying the directory.
- * @example
- *
- * const copyResult = await copyDir({
- *   input : '/path/to/sourceDir',
- *   output: '/path/to/destinationDir',
- * })
- */
-export const copyDir = async ( {
-	input,
-	output,
-}: CopyDirOptions ) => {
-
-	const _copyDir = async ( {
-		input,
-		output,
-	}: CopyDirOptions ) => {
-
-		if ( !await existsDir( input ) ) throw new Error( `Input directory does not exist` )
-
-		// Read the source directory
-		const entries = await readDir( input )
-
-		// Create the destination directory if it doesn't exist
-		const exist = await existsDir( output )
-		if ( !exist ) await createDir( output )
-
-		// Loop through the entries in the source directory
-		for ( const entry of entries ) {
-
-			const srcPath  = join( input, entry.name )
-			const destPath = join( output, entry.name )
-
-			if ( entry.isDirectory() ) {
-
-				// Recursively copy the subdirectory
-				await _copyDir( {
-					input  : srcPath,
-					output : destPath,
-				} )
-
-			}
-			else {
-
-				// Copy the file
-				await copyFile( {
-					input  : srcPath,
-					output : destPath,
-				} )
-
-			}
-
-		}
-
-	}
-
-	try {
-
-		await _copyDir( {
-			input,
-			output,
-		} )
-
-	}
-	catch ( error ) {
-
-		if ( error instanceof Error )
-			throw new Error( `Error copying directory "${input}" to "${output}": ${error.message}` )
-		throw new Error( `Error copying directory: ${error}` )
-
-	}
 
 }
 

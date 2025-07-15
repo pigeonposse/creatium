@@ -13,6 +13,7 @@ import {
 	currentProcess,
 	execChild,
 	color,
+	truncate,
 } from '@creatium-js/utils'
 import {
 	Clippium,
@@ -124,35 +125,47 @@ export class CreatiumCore<C extends Config = Config> {
 
 	async #exec( values?: GetPromptValues<C> ): Promise<GetPromptValues<C>> {
 
-		this.#data = { values }
+		try {
 
-		console.debug( { initData: this.#data } )
+			this.#data = { values }
 
-		this.#core.onCancel = async () => await this.cancel()
+			console.debug( { initData: this.#data } )
 
-		await this.config.hooks?.beforePrompt?.( this.#data )
+			this.#core.onCancel = async () => await this.cancel()
 
-		console.debug( { beforePromptData: this.#data } )
+			await this.config.hooks?.beforePrompt?.( this.#data )
 
-		// INTRO
-		await this.intro()
+			console.debug( { beforePromptData: this.#data } )
 
-		// PROMPT
-		const prompts = await this.#core.getPrompts( this.#data.values )
-		const answers = await this.utils.prompt.group( prompts, { onCancel: this.#core.onCancel } ) as unknown as GetPromptValues<C>
+			// INTRO
+			await this.intro()
 
-		this.#data.values = answers
+			// PROMPT
+			const prompts = await this.#core.getPrompts( this.#data.values )
 
-		console.debug( { promptData: this.#data } )
+			const answers = await this.utils.prompt.group( prompts, { onCancel: this.#core.onCancel } ) as unknown as GetPromptValues<C>
 
-		await this.config.hooks?.afterPrompt?.( this.#data )
+			this.#data.values = answers
 
-		console.debug( { afterPromptData: this.#data } )
+			console.debug( { promptData: this.#data } )
 
-		// CREATION
-		// await this.#createTemplate( answers as GetPromptValues<C> )
+			await this.config.hooks?.afterPrompt?.( this.#data )
 
-		return answers
+			console.debug( { afterPromptData: this.#data } )
+
+			// CREATION
+			// await this.#createTemplate( answers as GetPromptValues<C> )
+
+			return answers
+
+		}
+		catch ( err ) {
+
+			if ( err instanceof Error ) throw new Error( truncate( err.message, 200, '...' ) )
+
+			throw new Error( 'Unexpected error in execution' )
+
+		}
 
 	}
 
@@ -338,21 +351,29 @@ export class CreatiumCore<C extends Config = Config> {
 	/**
 	 * Copy a directory from input path to output path.
 	 *
-	 * @param   {object}        data        - Options object with input and output paths.
-	 * @param   {string}        data.input  - The path to the directory to copy.
-	 * @param   {string}        data.output - The path to the destination directory.
-	 * @returns {Promise<void>}             - Resolves when the directory has been copied.
+	 * @param   {object}        data - Options object with input and output paths.
+	 * @returns {Promise<void>}      - Resolves when the directory has been copied.
 	 * @example
 	 *
 	 * const copyResult = await core.copyDir({
 	 *   input : '/path/to/sourceDir',
 	 *   output: '/path/to/destinationDir',
 	 * })
+	 * const copyResult = await copyDir({
+	 * input : [
+	 *   {
+	 *     name: 'file1.txt',
+	 *     content: 'Hello, world!',
+	 *   },
+	 *   {
+	 *     name: 'file2.txt',
+	 *     content: 'Goodbye, world!',
+	 *   },
+	 * ],
+	 * output: '/path/to/destinationDir',
+	 * })
 	 */
-	async copyDir( data: {
-		input  : string
-		output : string
-	} ) {
+	async copyDir( data: Parameters<typeof copyDir>[0] ) {
 
 		console.debug( { copyDirData: data } )
 		return await copyDir( data )
@@ -659,7 +680,7 @@ export class CreatiumCore<C extends Config = Config> {
 		catch ( e ) {
 
 			const error = e instanceof Error ? e.message : e?.toString()
-			this.utils.prompt.log.error( `Unexpected error creating template:\n${error}\n\n` )
+			this.utils.prompt.log.error( `Unexpected error creating template:\n${truncate( error || '', 100, '...' )}\n\n` )
 
 			await this.#core.onCancel()
 

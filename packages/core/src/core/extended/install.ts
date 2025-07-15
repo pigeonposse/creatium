@@ -1,5 +1,3 @@
-import { existsLocalBin } from '@creatium-js/utils'
-
 import {
 	mergeSelectBaseOptions,
 	SELECT_BASE_OPTS,
@@ -55,8 +53,8 @@ export class Install extends Select<Installer> {
 
 		const validateValue = await super.validateInitialValue( { showSuccess: false } )
 		if ( !validateValue ) return undefined // Nothing to print in log because it will be printed in super function
-
-		if ( validateValue && ( await existsLocalBin( validateValue ) ) ) {
+		const exists = await this._utils.existsLocalBin( validateValue )
+		if ( validateValue && exists ) {
 
 			if ( data?.showSuccess !== false )
 				this._utils.prompt.log.success( this._text.initialValueSuccess( this.config.promptMsg || this.config.desc, validateValue ) )
@@ -78,7 +76,7 @@ export class Install extends Select<Installer> {
 
 		if ( value === INSTALLER.NONE ) return value
 
-		const exists = await existsLocalBin( value )
+		const exists = await this._utils.existsLocalBin( value )
 
 		if ( !exists ) {
 

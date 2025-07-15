@@ -66,7 +66,10 @@ export class Creatium {
 	constructor( options: ConfigSimple ) {
 
 		const {
-			templates, opts, consts, ...restConf
+			templates,
+			opts,
+			consts,
+			...restConf
 		} = options
 
 		this.options = options
@@ -140,6 +143,7 @@ export class Creatium {
 	async cli( props?: CliOpts ) {
 
 		const data = await this.#core.cli( props )
+
 		await this.#core.createTemplate( {
 			...data,
 			consts : this.options.consts,

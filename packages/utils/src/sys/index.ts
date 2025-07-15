@@ -3,6 +3,12 @@ export * from './cache'
 export * from './object'
 export * from './pkg'
 
-import { deepmergeCustom } from 'deepmerge-ts'
+import {
+	deepmergeCustom,
+	deepmerge,
+} from 'deepmerge-ts'
 
-export { deepmergeCustom }
+export {
+	deepmergeCustom,
+	deepmerge,
+}

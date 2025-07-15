@@ -131,7 +131,7 @@ export class Core<Config extends OptionSuper = OptionCommon, V = string> {
 		catch ( error ) {
 
 			if ( error instanceof Error )
-				this._utils.prompt.log.error( 'Unexpected error:' + error?.message )
+				this._utils.prompt.log.error( 'Unexpected error: ' + error?.message )
 
 			return await this.prompt()
 
