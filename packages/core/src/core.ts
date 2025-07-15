@@ -1,7 +1,14 @@
 /* eslint-disable jsdoc/require-returns-type */
 
-import { formatter }           from '@clippium/preset-colored'
-import { replacePlaceholders } from '@creatium-js/utils'
+import { formatter } from '@clippium/preset-colored'
+import {
+	Clippium,
+	hiddenBin,
+} from 'clippium'
+
+import { OPTION }       from './core/const'
+import { INSTALLER }    from './core/extended/install'
+import { Core }         from './core/main'
 import {
 	copyDir,
 	readFile,
@@ -14,15 +21,8 @@ import {
 	execChild,
 	color,
 	truncate,
-} from '@creatium-js/utils'
-import {
-	Clippium,
-	hiddenBin,
-} from 'clippium'
-
-import { OPTION }    from './core/const'
-import { INSTALLER } from './core/extended/install'
-import { Core }      from './core/main'
+	replacePlaceholders,
+} from './utils'
 
 import type { TextEditor } from './core/extended/editor'
 import type { Installer }  from './core/extended/install'
@@ -37,7 +37,7 @@ import type {
 	GetArgvValues,
 	GetPromptValues,
 } from './types.utils'
-import type { Prettify } from '@creatium-js/utils'
+import type { Prettify } from './utils'
 
 /**
  * Customizable class of `Creatium` for create project templates (CLI and Library).

@@ -1,6 +1,7 @@
 {
 	"name": "@creatium-js/utils",
-	"version": "0.2.0",
+	"version": "0.2.1",
+	"private": true,
 	"description": "CLI utils for creatium",
 	"keywords": [
 		"bin",
@@ -53,7 +54,6 @@
 		"build:lib": "pnpm dlx @vercel/ncc build src/index.ts --out dist --minify",
 		"build:types": "tsup src/index.ts --dts-only --out-dir dist --format esm",
 		"dev": "pnpm dlx tsx examples/index.ts",
-		"size": "pnpm dlx @sizium/cli -i ./ --res info",
 		"test": "vitest run -r src --passWithNoTests"
 	},
 	"devDependencies": {
@@ -68,9 +68,5 @@
 		"gradient-string": "3.0.0",
 		"string-width": "7.2.0",
 		"tiny-glob": "0.2.9"
-	},
-	"publishConfig": {
-		"access": "public",
-		"registry": "https://registry.npjs.org/"
 	}
 }

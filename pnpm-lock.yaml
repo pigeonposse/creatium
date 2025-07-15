@@ -29,9 +29,6 @@ importers:
       tsup:
         specifier: 8.5.0
         version: 8.5.0(jiti@2.4.2)(postcss@8.5.6)(tsx@4.20.3)(typescript@5.8.3)(yaml@2.8.0)
-      tsx:
-        specifier: 4.20.3
-        version: 4.20.3
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -49,9 +46,6 @@ importers:
       '@clippium/preset-colored':
         specifier: 1.0.0
         version: 1.0.0(clippium@0.1.0)
-      '@creatium-js/utils':
-        specifier: workspace:*
-        version: link:../utils
       clippium:
         specifier: 0.1.0
         version: 0.1.0
@@ -14227,6 +14221,7 @@ snapshots:
       get-tsconfig: 4.10.1
     optionalDependencies:
       fsevents: 2.3.3
+    optional: true
 
   tunnel-agent@0.6.0:
     dependencies:

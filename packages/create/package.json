@@ -1,6 +1,6 @@
 {
 	"name": "create-creatium",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"description": "Create a new creatium project",
 	"keywords": [
 		"bin",
@@ -38,10 +38,6 @@
 			"import": {
 				"types": "./dist/index.d.mts",
 				"default": "./dist/index.mjs"
-			},
-			"require": {
-				"types": "./dist/index.d.cts",
-				"default": "./dist/index.cjs"
 			}
 		}
 	},

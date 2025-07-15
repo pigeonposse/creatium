@@ -5,7 +5,7 @@ import {
 import { Select } from '../_super/select'
 
 import type { SelectBaseOptions } from './_shared'
-import type { ObjectValues }      from '@creatium-js/utils'
+import type { ObjectValues }      from '../../utils'
 
 /** installer values used in `install` option. */
 export const INSTALLER = {

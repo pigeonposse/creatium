@@ -1,8 +1,7 @@
 import {
 	existsDir,
 	existsFile,
-} from '@creatium-js/utils'
-
+} from '../../utils'
 import { Text } from '../_super/text'
 
 export const PATH_TYPE = {

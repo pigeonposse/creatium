@@ -1,8 +1,8 @@
 /* eslint-disable @stylistic/object-curly-newline */
 
-import * as utils from '@creatium-js/utils'
+import * as utils from '../../utils'
 
-import type { Prettify }     from '@creatium-js/utils'
+import type { Prettify }     from '../../utils'
 import type { ClippiumData } from 'clippium'
 
 type Option = NonNullable<ClippiumData['flags']>[number]

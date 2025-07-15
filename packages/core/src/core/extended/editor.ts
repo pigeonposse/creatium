@@ -1,14 +1,13 @@
 
-import { existsLocalBin } from '@creatium-js/utils'
-
 import {
 	mergeSelectBaseOptions,
 	SELECT_BASE_OPTS,
 } from './_shared'
-import { Select } from '../_super/select'
+import { existsLocalBin } from '../../utils'
+import { Select }         from '../_super/select'
 
 import type { SelectBaseOptions } from './_shared'
-import type { ObjectValues }      from '@creatium-js/utils'
+import type { ObjectValues }      from '../../utils'
 
 /** Text editor values used in `openEditor` option. */
 export const TEXT_EDITOR = {

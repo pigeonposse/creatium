@@ -5,7 +5,7 @@ import type {
 	CoreInterface,
 	OptionSuper,
 } from './_shared'
-import type { Response } from '@creatium-js/utils'
+import type { Response } from '../../utils'
 
 export type OptionVoid = OptionSuper & { fn: () => Response<void> }
 

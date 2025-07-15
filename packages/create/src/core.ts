@@ -5,7 +5,7 @@ import {
 	table,
 	copyDir,
 	joinPath as join,
-	Config,
+	type Config,
 	currentProcess,
 	truncate,
 } from 'creatium'

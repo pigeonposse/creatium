@@ -1,5 +1,4 @@
-import { cache } from '@creatium-js/utils'
-
+import { cache }       from '../utils'
 import { coreUtils }   from './_super/_shared'
 import { Array }       from './_super/array'
 import { Boolean }     from './_super/boolean'

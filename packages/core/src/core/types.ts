@@ -1,4 +1,8 @@
 
+import type {
+	ObjectToArray,
+	Prettify,
+} from '../utils'
 import type { CliOption } from './_super/_shared'
 import type {
 	OptionArray,
@@ -53,10 +57,6 @@ import type {
 	OptionTemplate,
 	Template,
 } from './extended/template'
-import type {
-	ObjectToArray,
-	Prettify,
-} from '@creatium-js/utils'
 
 export type Options = {
 	/**Array of values*/

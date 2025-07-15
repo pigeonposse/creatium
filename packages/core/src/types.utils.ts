@@ -3,7 +3,7 @@ import type {
 	OptionsClasses,
 } from './core/types'
 import type { Config }   from './types'
-import type { Prettify } from '@creatium-js/utils'
+import type { Prettify } from './utils'
 
 export type GetPromptValues<C extends Config> = Prettify<{
 	[K in keyof C['prompt']]?: Prettify<(

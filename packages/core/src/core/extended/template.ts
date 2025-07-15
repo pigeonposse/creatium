@@ -1,6 +1,6 @@
 import { Select } from '../_super/select'
 
-import type { ContentInput } from '@creatium-js/utils'
+import type { ContentInput } from '../../utils'
 
 export type OptionTemplate = Partial<Omit<Select['config'], 'options'>> & { options: { [key: string]: {
 	/**

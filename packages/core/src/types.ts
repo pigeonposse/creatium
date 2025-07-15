@@ -9,7 +9,7 @@ import type {
 import type {
 	Prettify,
 	Response,
-} from '@creatium-js/utils'
+} from './utils'
 
 export type HookParams = {
 	/** Values passed to the prompt */

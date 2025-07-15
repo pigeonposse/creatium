@@ -1,4 +1,4 @@
-import { deepmerge } from '@creatium-js/utils'
+import { deepmerge } from '../../utils'
 
 import type { OptionSelect } from '../_super/select'
 

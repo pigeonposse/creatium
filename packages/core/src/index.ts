@@ -28,8 +28,8 @@ export {
 	CreatiumCore,
 }
 
-export * from '@creatium-js/utils'
-export type * from '@creatium-js/utils'
+export * from './utils'
+export type * from './utils'
 
 /**
  * Class of `Creatium` for create project templates (CLI and Library).
