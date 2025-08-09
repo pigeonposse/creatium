@@ -1,7 +1,10 @@
 /* eslint-disable jsdoc/require-returns-type */
 
 import { formatter } from '@clippium/preset-colored'
-import { Clippium }  from 'clippium'
+import {
+	Clippium,
+	hideBin,
+} from 'clippium'
 
 import { updater }   from './_shared/up'
 import { Options }   from './options'
@@ -176,10 +179,10 @@ export class CreatiumCore<C extends Config = Config> {
 	#getCliArgs( props?: CliOpts ) {
 
 		return props?.args && props.hideBin
-			? hiddenBin( props.args )
+			? hideBin( props.args )
 				? props.args
 				: props?.args
-			: hiddenBin( currentProcess.argv )
+			: hideBin( currentProcess.argv )
 
 	}
 

@@ -5,6 +5,8 @@
 ### Patch Changes
 
 - change tiny-updater to @clippium/updater
+- Up clippium library
+- Refactor code
 
 ## 0.2.3
 

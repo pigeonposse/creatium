@@ -3,10 +3,10 @@ import {
 	validateHomeDir,
 } from './super'
 
-export type CommonObj =
-	Record<string, unknown>
-	| Record<string, unknown>[]
-	| unknown[]
+export type CommonObj
+	= Record<string, unknown>
+		| Record<string, unknown>[]
+		| unknown[]
 
 const getFileContent = async ( path:string ) => {
 

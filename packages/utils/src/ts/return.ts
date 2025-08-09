@@ -3,8 +3,8 @@ import type { Any } from './super'
 export type ReturnAwaitedType<T extends ( ...args: Any ) => Any> = Awaited<ReturnType<T>>
 
 export type Response<V> = Promise<V> | V
-export type GetResponse<T> =
-	T extends ( ...args: Any[] ) => infer R
+export type GetResponse<T>
+	= T extends ( ...args: Any[] ) => infer R
 		? Awaited<R>
 		: T
 
