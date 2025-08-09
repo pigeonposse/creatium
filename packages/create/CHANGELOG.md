@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.2.4
+
+### Patch Changes
+
+- change tiny-updater to @clippium/updater
+
+- Updated dependencies []:
+  - creatium@0.2.4
+
 ## 0.2.3
 
 ### Patch Changes

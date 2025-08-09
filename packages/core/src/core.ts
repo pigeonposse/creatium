@@ -1,11 +1,9 @@
 /* eslint-disable jsdoc/require-returns-type */
 
 import { formatter } from '@clippium/preset-colored'
-import {
-	Clippium,
-	hiddenBin,
-} from 'clippium'
+import { Clippium }  from 'clippium'
 
+import { updater }   from './_shared/up'
 import { Options }   from './options'
 import { OPTION }    from './options/const'
 import { INSTALLER } from './options/extended/install'
@@ -262,13 +260,7 @@ export class CreatiumCore<C extends Config = Config> {
 	 */
 	async updateNotify( ) {
 
-		const { default : up } = await import( 'tiny-updater' )
-
-		return await up( {
-			name    : this.config.name,
-			version : this.config.version,
-			ttl     : 86_400_000,
-		} )
+		return await updater( this.config.name, this.config.version )
 
 	}
 

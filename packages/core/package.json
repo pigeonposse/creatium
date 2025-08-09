@@ -1,6 +1,6 @@
 {
 	"name": "creatium",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"description": "Build your create-bins quickly and easily",
 	"keywords": [
 		"bin",
@@ -57,9 +57,9 @@
 		"test": "vitest run -r src --passWithNoTests"
 	},
 	"dependencies": {
-		"@clippium/preset-colored": "1.0.0",
-		"clippium": "0.1.0",
-		"tiny-updater": "3.5.3"
+		"@clippium/preset-colored": "1.0.2",
+		"@clippium/updater": "1.0.2",
+		"clippium": "1.0.2"
 	},
 	"devDependencies": {
 		"@creatium-js/repo-config": "workspace:*"

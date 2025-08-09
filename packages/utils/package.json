@@ -1,6 +1,6 @@
 {
 	"name": "@creatium-js/utils",
-	"version": "0.2.3",
+	"version": "0.2.4",
 	"private": true,
 	"description": "CLI utils for creatium",
 	"keywords": [

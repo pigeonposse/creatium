@@ -9,6 +9,6 @@ web:
     type:
       - library
     license:
-      name: GPL-3.0
+      name: MIT
       url: https://github.com/pigeonposse/creatium/blob/main/LICENSE
     status: active

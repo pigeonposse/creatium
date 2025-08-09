@@ -1,5 +1,11 @@
 # @creatium-js/repo-config
 
+## 0.2.4
+
+### Patch Changes
+
+- change tiny-updater to @clippium/updater
+
 ## 0.2.3
 
 ### Patch Changes
