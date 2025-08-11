@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.2.5
+
+### Patch Changes
+
+- add prcedance on npm
+
+- Updated dependencies []:
+  - creatium@0.2.5
+
 ## 0.2.4
 
 ### Patch Changes
