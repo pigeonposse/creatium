@@ -1,5 +1,11 @@
 # creatium
 
+## 0.2.6
+
+### Patch Changes
+
+- up deps
+
 ## 0.2.5
 
 ### Patch Changes

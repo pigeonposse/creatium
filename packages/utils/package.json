@@ -1,6 +1,6 @@
 {
 	"name": "@creatium-js/utils",
-	"version": "0.2.5",
+	"version": "0.2.6",
 	"private": true,
 	"description": "CLI utils for creatium",
 	"keywords": [
@@ -61,12 +61,12 @@
 		"@clack/prompts": "0.11.0",
 		"@creatium-js/repo-config": "workspace:*",
 		"@types/columnify": "1.5.4",
-		"@visulima/boxen": "2.0.2",
+		"@visulima/boxen": "2.0.10",
 		"cli-table3": "0.6.5",
 		"columnify": "1.6.0",
 		"deepmerge-ts": "7.1.5",
 		"gradient-string": "3.0.0",
-		"string-width": "7.2.0",
+		"string-width": "8.1.0",
 		"tiny-glob": "0.2.9"
 	}
 }

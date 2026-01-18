@@ -1,5 +1,14 @@
 # create-creatium
 
+## 0.2.6
+
+### Patch Changes
+
+- up deps
+
+- Updated dependencies []:
+  - creatium@0.2.6
+
 ## 0.2.5
 
 ### Patch Changes
