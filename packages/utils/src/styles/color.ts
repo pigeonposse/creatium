@@ -1,6 +1,9 @@
 
 import gradientString from 'gradient-string'
-import { styleText }  from 'node:util'
+import {
+	type InspectColor,
+	styleText,
+} from 'node:util'
 
 import type {
 	GradientColors,
@@ -72,14 +75,14 @@ const cTypes = [
 	'underline',
 ] as const
 
-const _color = ( t: typeof cTypes[number], v: string ) => styleText( t, v )
-
-const _colorObj = cTypes.reduce( ( acc, t ) => {
+const _color    = ( t: InspectColor, v: string ) => styleText( t, v )
+const tc        = cTypes as unknown as InspectColor[]
+const _colorObj = tc.reduce( ( acc, t ) => {
 
 	acc[t] = ( v: string ) => _color( t, v )
 	return acc
 
-}, {} as Record<typeof cTypes[number], ( v: string ) => string> )
+}, {} as Record<InspectColor, ( v: string ) => string> )
 
 /**
  * Provides colors for terminal output.
